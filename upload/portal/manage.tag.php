@@ -159,10 +159,10 @@ function king_edt(){
 			$tdefa=$king->config('templatedefault');
 
 			$ktemplate1=$tpath.'/'.$tdefa;
-			$data['ktemplate1']=is_file(KC_ROOT.$ktemplate1) ? $ktemplate1 : '';
+			$data['ktemplate1']=is_file(ROOT.$ktemplate1) ? $ktemplate1 : '';
 
 			$ktemplate2=$tpath.'/inside/tag/'.$tdefa;
-			$data['ktemplate2']=is_file(KC_ROOT.$ktemplate2) ? $ktemplate2 : '';
+			$data['ktemplate2']=is_file(ROOT.$ktemplate2) ? $ktemplate2 : '';
 		}
 	}else{	//编辑数据，从数据库读出
 		$data=$king->db->getRows_one('select '.$_sql.' from %s_tag where kid='.$kid.' limit 1;');

@@ -15,7 +15,7 @@ function king_ajax_left(){
 	$space=kc_post('space',2) ? kc_post('space') : 0;
 	$ID=kc_post('ID');
 
-	$dirs=kc_f_getdir($path,'dir',array('.','..','.svn',KC_CACHE_PATH));
+	$dirs=kc_f_getdir($path,'dir',array('.','..','.svn',PATH_CACHE));
 
 	$js='';
 
@@ -68,7 +68,7 @@ function king_ajax_right(){
 
 	$js.="var jsi='';";
 
-	$dirs=kc_f_getdir($path,'dir',array('.','..','.svn',KC_CACHE_PATH));
+	$dirs=kc_f_getdir($path,'dir',array('.','..','.svn',PATH_CACHE));
 	foreach($dirs as $val){
 		$js.="jsi+=iii('b1','$path','$val','--','".kc_formatdate(kc_f_mtime($path.$val))."');";;
 	}

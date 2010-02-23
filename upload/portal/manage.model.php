@@ -268,7 +268,7 @@ function king_def(){
 	$_js=array(
 		"$.kc_list(K[0],K[1],'manage.field.php?modelid='+K[0],1)",
 		$_manage,
-		"'".KC_DB_PRE."__'+K[2]",
+		"'".DB_PRE."__'+K[2]",
 		"'{King:Portal.'+K[2]+'}<span class=\"i green\">&lt;-- INNER --&gt;</span>{/King:Portal.'+K[2]+'}'",
 		"'<i>'+K[3]+'</i>'",
 	);
@@ -331,14 +331,14 @@ function king_edt(){
 			$tdefa=$king->config('templatedefault');
 
 			$ktemplate=$tpath.'/'.$tdefa;
-			$data['ktemplatesearch']=is_file(KC_ROOT.$ktemplate) ? $ktemplate : '';
-			$data['ktemplatepublish']=is_file(KC_ROOT.$ktemplate) ? $ktemplate : '';
-			$data['ktemplatecomment']=is_file(KC_ROOT.$ktemplate) ? $ktemplate : '';
+			$data['ktemplatesearch']=is_file(ROOT.$ktemplate) ? $ktemplate : '';
+			$data['ktemplatepublish']=is_file(ROOT.$ktemplate) ? $ktemplate : '';
+			$data['ktemplatecomment']=is_file(ROOT.$ktemplate) ? $ktemplate : '';
 
 		}
 	}else{	//编辑数据，从数据库读出
 		$data=$king->db->getRows_one('select '.$_sql.' from %s_model where modelid='.$modelid.' limit 1;');
-		$data['modeltable']=KC_DB_PREFIX.'__'.$data['modeltable'];
+		$data['modeltable']=DB_PREFIX.'__'.$data['modeltable'];
 	}
 	$data=kc_data($fields,$data);
 

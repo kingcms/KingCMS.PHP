@@ -22,7 +22,7 @@ define('API_RETURN_SUCCEED', '1');
 define('API_RETURN_FAILED', '-1');
 define('API_RETURN_FORBIDDEN', '-2');
 
-define('KC_INDEX',True);
+define('INCDEX',True);
 define('KC_CALL_FUNC',True);
 
 require_once '../global.php';//加载KingCMS
@@ -32,9 +32,9 @@ $king->load('user');//加载用户类
 	error_reporting(0);
 	restore_error_handler();
 	set_magic_quotes_runtime(0);
-	define('KC_ROOT', substr(dirname(__FILE__), 0, -3));
+	define('ROOT', substr(dirname(__FILE__), 0, -3));
 	defined('MAGIC_QUOTES_GPC') || define('MAGIC_QUOTES_GPC', get_magic_quotes_gpc());
-	define('UC_CLIENT_ROOT', KC_ROOT.'user/client/');
+	define('UC_CLIENT_ROOT', ROOT.'user/client/');
 
 	$_DCACHE = $get = $post = array();
 //解码传入参数
@@ -125,12 +125,12 @@ class uc_note {
 			return API_RETURN_FAILED;
 		}
 
-		$tag = $king->db->getRows_one("SELECT * FROM ".KC_DB_PRE."tag WHERE ktag='$name'");
+		$tag = $king->db->getRows_one("SELECT * FROM ".DB_PRE."tag WHERE ktag='$name'");
 
 		$tpp = 10;
 		$PHP_SELF = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
 		$kcurl = 'http://'.$_SERVER['HTTP_HOST'].preg_replace("/\/+(api)?\/*$/i", '', substr($PHP_SELF, 0, strrpos($PHP_SELF, '/'))).'/';
-		$query = $this->db->query("SELECT t.* FROM ".KC_DB_PRE."_tag tt LEFT JOIN ".KC_DB_PRE."__article t ON t.tid=tt.tid AND t.displayorder>='0' WHERE tt.tagname='$name' ORDER BY tt.tid DESC LIMIT $tpp");
+		$query = $this->db->query("SELECT t.* FROM ".DB_PRE."_tag tt LEFT JOIN ".DB_PRE."__article t ON t.tid=tt.tid AND t.displayorder>='0' WHERE tt.tagname='$name' ORDER BY tt.tid DESC LIMIT $tpp");
 		$threadlist = array();
 		while($tagthread = $this->db->fetch_array($query)) {
 			if($tagthread['tid']) {
@@ -237,11 +237,11 @@ class uc_note {
 		fclose($fp);
 
 		//note 写配置文件
-		if(is_writeable(KC_ROOT.'./config.php')) {
-			$configfile = trim(file_get_contents(KC_ROOT.'./config.php'));
+		if(is_writeable(ROOT.'./config.php')) {
+			$configfile = trim(file_get_contents(ROOT.'./config.php'));
 			$configfile = substr($configfile, -2) == '?>' ? substr($configfile, 0, -2) : $configfile;
 			$configfile = preg_replace("/define\('UC_API',\s*'.*?'\);/i", "define('UC_API', '$UC_API');", $configfile);
-			if($fp = @fopen(KC_ROOT.'./config.php', 'w')) {
+			if($fp = @fopen(ROOT.'./config.php', 'w')) {
 				@fwrite($fp, trim($configfile));
 				@fclose($fp);
 			}

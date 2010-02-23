@@ -1,4 +1,4 @@
-<?php !defined('KC_IN') && exit('No direct script access allowed');
+<?php !defined('INC') && exit('No direct script access allowed');
 
 /* ======= >>> KingCMS <<< ========================== *
 

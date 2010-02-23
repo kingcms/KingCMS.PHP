@@ -1,4 +1,4 @@
-<?php !defined('KC_IN') && exit('No direct script access allowed');
+<?php !defined('INC') && exit('No direct script access allowed');
 
 /* ======= >>> KingCMS <<< ========================== *
 
@@ -33,7 +33,7 @@ public function output($title,$leftmenu=array(),$rightmenu=array(),$inside=null)
 	$skinpath=$king->admin?$king->admin['adminskins']:'default';
 
 	$outTmp='system/skins/'.$skinpath.'/'.$module;
-	!file_exists(KC_ROOT.$outTmp) && $outTmp='system/skins/'.$skinpath.'/default.htm';//设置默认的模板
+	!file_exists(ROOT.$outTmp) && $outTmp='system/skins/'.$skinpath.'/default.htm';//设置默认的模板
 
 	$tmp=new KC_template_class($outTmp);
 
@@ -204,7 +204,7 @@ public function tag($name,$inner,$ass,$attrib){
 public function tag_info(){
 	global $king;
 
-	$array_dirs=array(KC_CACHE_PATH,'config.php');
+	$array_dirs=array(PATH_CACHE,'config.php');
 	$array_func=array('mysql_connect','file_get_contents','file_put_contents','simplexml_load_file');//,'fsockopen'
 
 	$s='<table class="k_table" id="k_info" cellspacing="0">';
@@ -219,7 +219,7 @@ public function tag_info(){
 	$s.='<tr><th colspan="3">'.$king->lang->get('system/skin/writeinfo').'</th></tr>';
 	$s.='<tr class="red"><td>'.$king->lang->get('system/skin/filedir').'</td><td>'.$king->lang->get('system/skin/required').'</td><td>'.$king->lang->get('system/skin/this').'</td></tr>';
 	foreach($array_dirs as $val){
-		$s.='<tr><td>'.$val.'</td><td>'.$king->lang->get('system/skin/write/w1').'</td><td>'.$king->lang->get('system/skin/write/w'.(is_writable(KC_ROOT.$val)?1:0)).'</td></tr>';
+		$s.='<tr><td>'.$val.'</td><td>'.$king->lang->get('system/skin/write/w1').'</td><td>'.$king->lang->get('system/skin/write/w'.(is_writable(ROOT.$val)?1:0)).'</td></tr>';
 	}
 	$s.='<tr><th colspan="3">'.$king->lang->get('system/skin/func').'</th></tr>';
 	$s.='<tr class="red"><td>'.$king->lang->get('system/skin/funs').'</td><td>'.$king->lang->get('system/skin/required').'</td><td>'.$king->lang->get('system/skin/this').'</td></tr>';
@@ -453,7 +453,7 @@ public function tag_menu($inner,$ass,$attrib){
 	if(!$king->isModule($module))
 		return;
 
-	$language= is_file(KC_ROOT.$module.'/language/'.$king->admin['adminlanguage'].'.xml') ? $king->admin['adminlanguage'] : KC_CONFIG_LANGUAGE;
+	$language= is_file(ROOT.$module.'/language/'.$king->admin['adminlanguage'].'.xml') ? $king->admin['adminlanguage'] : LANGUAGE;
 
 	$xml=new KC_XML_class;
 	$xml->load_file($module.'/language/'.$language.'.xml');

@@ -1,4 +1,4 @@
-<?php !defined('KC_IN') && exit('No direct script access allowed');
+<?php !defined('INC') && exit('No direct script access allowed');
 
 class KC_Language_class{
 
@@ -76,21 +76,21 @@ private function load($module='system'){/*
 		$language=kc_cookie('language');
 
 	if(!isset($language{0}))
-		$language=KC_CONFIG_LANGUAGE;
+		$language=LANGUAGE;
 
 
 	if($module=='plugin'){
 		$path=$this->getPath();
 		global $action;
 		$plugin= $action=='ajax' ? CMD : $action;
-		$filepath=KC_ROOT.$path.'/plugin/'.$plugin.'/'.$language.'.xml';
+		$filepath=ROOT.$path.'/plugin/'.$plugin.'/'.$language.'.xml';
 	}else{
-		$filepath=KC_ROOT.$module.'/language/'.$language.'.xml';
+		$filepath=ROOT.$module.'/language/'.$language.'.xml';
 	}
 
 	if(!file_exists($filepath)){
-		$language=KC_CONFIG_LANGUAGE;
-		$filepath=KC_ROOT.$module.'/language/'.$language.'.xml';
+		$language=LANGUAGE;
+		$filepath=ROOT.$module.'/language/'.$language.'.xml';
 	}
 
 	if(file_exists($filepath)){
@@ -107,7 +107,7 @@ private function load($module='system'){/*
 
 	if($module=='system'){
 		$jsFile='system/js/lang.'.$language.'.js';
-		if(!file_exists(KC_ROOT.$jsFile)){//若无文件
+		if(!file_exists(ROOT.$jsFile)){//若无文件
 			$entries=@$this->mPath['system'];
 			$lang=array();
 

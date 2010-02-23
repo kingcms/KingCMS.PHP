@@ -6,7 +6,7 @@
 	@return
 */
 
-define('KC_INDEX',True);
+define('INCDEX',True);
 
 require_once 'global.php';
 

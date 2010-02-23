@@ -36,7 +36,7 @@ public function connect($data=''){
 
 	global $king;
 	if(!isset($this->link)){
-		$file=$data ? KC_ROOT.$data : KC_ROOT.KC_DB_SQLITE;
+		$file=$data ? ROOT.$data : ROOT.DB_SQLITE;
 
 		if(!file_exists($file)){//若找不到文件则报错
 			global $king;
@@ -65,9 +65,9 @@ public function query($sql,$is=0){
 	if(isset($num{0})){
 		$sql_left=substr($sql,0,$num);
 		$sql_right=substr($sql,$num);
-		$sql=str_replace(array('%s','%a'),array(KC_DB_PRE,KC_DB_ADMIN),$sql_left).$sql_right;
+		$sql=str_replace(array('%s','%a'),array(DB_PRE,KC_DB_ADMIN),$sql_left).$sql_right;
 	}else{
-		$sql=str_replace(array('%s','%a'),array(KC_DB_PRE,KC_DB_ADMIN),$sql);
+		$sql=str_replace(array('%s','%a'),array(DB_PRE,KC_DB_ADMIN),$sql);
 	}
 	if(!isset($this->link))
 		$this->connect();//判断数据库连接是否可用
@@ -87,7 +87,7 @@ public function query($sql,$is=0){
 public function insert($_table,$_array){
 	$_fields=array();
 	$_values=array();
-	$_table=str_replace(array('%s','%a'),array(KC_DB_PRE,KC_DB_ADMIN),$_table);
+	$_table=str_replace(array('%s','%a'),array(DB_PRE,KC_DB_ADMIN),$_table);
 	foreach($_array as $_key=>$_val){
 		array_push($_fields,$_key);
 		array_push($_values,$this->escape($_val));
@@ -110,7 +110,7 @@ public function insert($_table,$_array){
 public function update($table,$array,$where=null){
 	$fields=array();
 	$values=array();
-	$table=str_replace(array('%s','%a'),array(KC_DB_PRE,KC_DB_ADMIN),$table);
+	$table=str_replace(array('%s','%a'),array(DB_PRE,KC_DB_ADMIN),$table);
 	foreach($array as $key=>$val){
 
 		$values[]=preg_match("/^\[\[.+\]\]$/",$val)//[[hit=hit+1]]
@@ -163,7 +163,7 @@ public function getRows($sql,$_is=0,$_pid=0,$_rn=0){
 		if(!sqlite_seek($this->mQuery,$i)){
 
 			global $king;
-			if(KC_CONFIG_DEBUG){
+			if(DEBUG){
 				kc_error($king->lang->get('system/dberr/err3').htmlspecialchars($sql));
 			}else{
 				kc_error($king->lang->get('system/dberr/err3'));
@@ -324,7 +324,7 @@ public function updown($_table,$id,$_where=null,$_order=1,$_kidname='kid',$_nord
 	if($_num==0)
 		$_num=$this->Rows;
 
-	$_table=sprintf($_table,KC_DB_PRE);
+	$_table=sprintf($_table,DB_PRE);
 
 	$array=is_object($this->mQuery) ? $this->mQuery->fetchAll() : $array();
 
@@ -413,7 +413,7 @@ private function formatSql($sql){
 */
 public function createDB($file=null){
 
-	$file= $file==null ? KC_ROOT.KC_DB_SQLITE : KC_ROOT.$file;
+	$file= $file==null ? ROOT.DB_SQLITE : ROOT.$file;
 
 	try{
 		$this->link=new PDO('sqlite:'.$file);

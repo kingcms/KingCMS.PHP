@@ -1,4 +1,4 @@
-<?php !defined('KC_IN') && exit('No direct script access allowed');
+<?php !defined('INC') && exit('No direct script access allowed');
 
 /* ======= >>> KingCMS <<< ========================== *
 
@@ -65,7 +65,7 @@ public function __construct(){
 
 	$this->lang=new KC_Language_class;
 
-	$dbClassName="KC_".KC_DB_TYPE."_class";
+	$dbClassName="KC_".DB_TYPE."_class";
 
 	$this->db=new $dbClassName;
 
@@ -156,7 +156,7 @@ public function pageEngine(){
 	}
 
 
-	if(!defined('KC_INDEX')){
+	if(!defined('INCDEX')){
 		$path=basename(dirname($_SERVER['PHP_SELF']));
 
 		if(!in_array($path,array('system'))){
@@ -208,8 +208,8 @@ public function Load($module){
 			kc_error($this->lang->get('system/module/tip').'<br/><br/><a href="../system/manage.php?action=module&module='.$val.'">'.$this->lang->get('system/module/install').' : '.$val.'</a>');
 		}
 		//加载core.class.php，并$this->$val=new $val;
-		if(is_file(KC_ROOT.$val.'/core.class.php')){
-			require_once(KC_ROOT.$val.'/core.class.php');
+		if(is_file(ROOT.$val.'/core.class.php')){
+			require_once(ROOT.$val.'/core.class.php');
 			$classname=$val.'_class';
 			$this->$val=new $classname();
 		}

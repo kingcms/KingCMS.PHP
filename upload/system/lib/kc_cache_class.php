@@ -47,7 +47,7 @@ public function get($path,$time=null){
 	if(empty($GLOBALS['Cache_class_array']))
 		$GLOBALS['Cache_class_array']=array();
 */
-	$path=KC_CACHE_PATH.'/'.strtolower($path).$this->ext;
+	$path=PATH_CACHE.'/'.strtolower($path).$this->ext;
 /*
 */
 	if(empty($GLOBALS['file_get_contents_array']))
@@ -56,10 +56,10 @@ public function get($path,$time=null){
 	if(array_key_exists($path,$GLOBALS['file_get_contents_array'])){//如果已经存在这个键值
 		return $GLOBALS['file_get_contents_array'][$path];
 	}else{//如果没有这个键值，则加入
-		if(file_exists(KC_ROOT.$path)){
+		if(file_exists(ROOT.$path)){
 			if($time){//如果有日期限制，则需要做比较
 				if($time==1) $time=time()-$king->config('cachetime');
-				$filetime=filemtime(KC_ROOT.$path);//读取文件日期
+				$filetime=filemtime(ROOT.$path);//读取文件日期
 				if($filetime<$time)//如果文件日期小于给定的日期，则为过时
 					return false;
 			}
@@ -68,7 +68,7 @@ public function get($path,$time=null){
 			$s=unserialize(substr(kc_f_get_contents($path),49));
 			/**
 			//unserialize效率竟然远远高于include??
-			$s=include(KC_CACHE_PATH.'/'.$path.$this->ext);
+			$s=include(PATH_CACHE.'/'.$path.$this->ext);
 			/**/
 			$GLOBALS['file_get_contents_array'][$path]=$s;//重写file数组
 			return $s;
@@ -89,14 +89,14 @@ public function get($path,$time=null){
 */
 public function put($path,$content){
 
-	$path=KC_CACHE_PATH.'/'.strtolower($path).$this->ext;
+	$path=PATH_CACHE.'/'.strtolower($path).$this->ext;
 	/**/
 	kc_f_put_contents($path,'<?php exit(\'No direct script access allowed\'); ?>'.serialize($content));
 	/**
 	if(is_array($content)){
-		kc_f_put_contents(KC_CACHE_PATH.'/'.$path.$this->ext,print_r($content,1));
+		kc_f_put_contents(PATH_CACHE.'/'.$path.$this->ext,print_r($content,1));
 	}else{
-		kc_f_put_contents(KC_CACHE_PATH.'/'.$path.$this->ext,$content);
+		kc_f_put_contents(PATH_CACHE.'/'.$path.$this->ext,$content);
 	}
 	/**/
 	$GLOBALS['file_get_contents_array'][$path]=$content;
@@ -111,7 +111,7 @@ public function put($path,$content){
 */
 public function del($path){
 	$path=strtolower($path);
-	kc_f_delete(KC_CACHE_PATH.'/'.$path.'.php');
+	kc_f_delete(PATH_CACHE.'/'.$path.'.php');
 }
 /**
 
@@ -124,9 +124,9 @@ public function rd($path=null){
 
 	if($path){
 		$path=strtolower($path);
-		kc_f_rd(KC_CACHE_PATH.'/'.$path);
+		kc_f_rd(PATH_CACHE.'/'.$path);
 	}else{
-		kc_f_rd(KC_CACHE_PATH);
+		kc_f_rd(PATH_CACHE);
 	}
 }
 /**
@@ -137,7 +137,7 @@ public function rd($path=null){
 public function info($path){
 	global $king;
 	$s='<table class="k_cache"><tr><td class="l">'.kc_icon('n1').' '.$king->lang->get('system/time/cache').': ';
-	$filename=KC_ROOT.KC_CACHE_PATH.'/'.$path.$this->ext;
+	$filename=ROOT.PATH_CACHE.'/'.$path.$this->ext;
 	$filemtime=is_file($filename)?filemtime($filename):0;
 	$s.=kc_formatdate($filemtime);
 	$s.=' -&gt; ('.kc_formattime(time()-$filemtime);

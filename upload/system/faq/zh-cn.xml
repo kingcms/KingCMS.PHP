@@ -41,7 +41,7 @@
 		<title>事件查看器中有很多错误该怎么办</title>
 		<body><![CDATA[这些错误并不影响程序的正常使用，这些是用来记录在写程序的过程中忽视的小错误的，如未对变量进行定义等。
 		建议把这些错误反馈到KingCMS开发者手中，或发邮件到：KingCMS@Gmail.com告知。
-		若要关闭错误记录，打开config.php，KC_CONFIG_DEBUG值设置为False]]></body>
+		若要关闭错误记录，打开config.php，DEBUG值设置为False]]></body>
 	</item>
 
 	<item>

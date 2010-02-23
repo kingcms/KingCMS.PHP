@@ -1,4 +1,4 @@
-<?php !defined('KC_IN') && exit('No direct script access allowed');
+<?php !defined('INC') && exit('No direct script access allowed');
 
 /* ======= >>> KingCMS <<< ========================== *
 
@@ -1065,12 +1065,12 @@ public function unModelCode($code,$modelname,$modeltable){
 
 		//(当没有默认内部模板的时候)创建对应的默认内部模板
 		$path=$king->config('templatepath')."/inside/{$modeltable}[page]/".$king->config('templatedefault');
-		if(!is_file(KC_ROOT.$path)){
+		if(!is_file(ROOT.$path)){
 			kc_f_put_contents($path,$s);
 		}
 
 		$path=$king->config('templatepath')."/inside/{$modeltable}[list]/".$king->config('templatedefault');
-		if(!is_file(KC_ROOT.$path)){
+		if(!is_file(ROOT.$path)){
 			$s="{king:portal.{$modeltable} type=\"list\"}
 					<p><a href=\"{king:path/}\">{king:title/}</a></p>
 				{/king:portal.{$modeltable}}
@@ -1442,7 +1442,7 @@ public function infoID($listid,$kid){
 	$xmlpath=$king->config('xmlpath','portal').'/portal/'.$info['modelid'].'/'.wordwrap($kid,1,'/',1).'.xml';
 
 	$xml=new KC_XML_class;
-	if(is_file(KC_ROOT.$xmlpath)){
+	if(is_file(ROOT.$xmlpath)){
 		$xml->load_file($xmlpath);
 		$id=$xml->xml2array();
 	}else{
@@ -1490,7 +1490,7 @@ public function infoTag($tagname){
 	$xmlpath=$king->config('xmlpath','portal').'/portal/tag/'.$md5path.'.xml';
 
 	$xml=new KC_XML_class;
-	if(is_file(KC_ROOT.$xmlpath)){
+	if(is_file(ROOT.$xmlpath)){
 		$xml->load_file($xmlpath);
 		$tag=$xml->xml2array();
 	}else{
@@ -1920,7 +1920,7 @@ public function installmodeltable($modeltable){
 
 	//创建默认模板
 	$path=$king->config('templatepath')."/inside/{$modeltable}[page]/".$king->config('templatedefault');
-	if(!is_file(KC_ROOT.$path)){
+	if(!is_file(ROOT.$path)){
 		$s = '<p><strong>主题</strong>{king:title/}</p>
 				<p><strong>副标题</strong>{king:subtitle/}</p>
 				<p><strong>缩略图</strong>{king:image/}</p>
@@ -1945,7 +1945,7 @@ public function installmodeltable($modeltable){
 	}
 
 	$path=$king->config('templatepath')."/inside/{$modeltable}[list]/".$king->config('templatedefault');
-	if(!is_file(KC_ROOT.$path)){
+	if(!is_file(ROOT.$path)){
 		$s="{king:portal.{$modeltable} type=\"list\"}
 				<p><a href=\"{king:path/}\">{king:title/}</a></p>
 			{/king:portal.{$modeltable}}
@@ -2275,8 +2275,8 @@ public function install(){
 		}
 		$king->db->query("delete from %s_model");
 
-		if(is_file(KC_ROOT.'portal/_model.inc.php')){//先判断文件是否存在，如果不存在，则不初始化模型
-			$array=require_once KC_ROOT.'portal/_model.inc.php';
+		if(is_file(ROOT.'portal/_model.inc.php')){//先判断文件是否存在，如果不存在，则不初始化模型
+			$array=require_once ROOT.'portal/_model.inc.php';
 			foreach($array as $val){
 				$this->unModelCode($val['code'],$val['name'],$val['table']);
 			}

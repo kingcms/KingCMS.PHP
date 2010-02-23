@@ -450,7 +450,7 @@ function king_bank(){
 		if(!in_array($ext,array('jpg','jpeg'))){
 			$s.='<p class="k_error">'.$king->lang->get('portal/error/ext').'</p>';//提示文件类型不正确
 			$s.='<p><a href="cart.php?action=bank&oid='.$oid.'">'.$king->lang->get('portal/cart/reup').'</a></p>';
-		}elseif(move_uploaded_file($_FILES['bankfile']['tmp_name'],KC_ROOT.$king->config('uppath')."/orders/$oid.jpg")){
+		}elseif(move_uploaded_file($_FILES['bankfile']['tmp_name'],ROOT.$king->config('uppath')."/orders/$oid.jpg")){
 			$s.='<p>'.$king->lang->get('portal/cart/upok').'</p>';
 			$array=array(
 				'paymethod'=>'bank',

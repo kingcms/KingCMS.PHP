@@ -835,9 +835,9 @@ function king_edt(){
 				$data['ismenu3']=1;
 				//默认模板
 				$ktemplatelist1=$tpath.'/'.$tdefa;
-				$data['ktemplatelist1']=is_file(KC_ROOT.$ktemplatelist1) ? $ktemplatelist1 : '';
+				$data['ktemplatelist1']=is_file(ROOT.$ktemplatelist1) ? $ktemplatelist1 : '';
 				$ktemplatelist2=$tpath.'/inside/onepage/'.$tdefa;
-				$data['ktemplatelist2']=is_file(KC_ROOT.$ktemplatelist2) ? $ktemplatelist2 : '';
+				$data['ktemplatelist2']=is_file(ROOT.$ktemplatelist2) ? $ktemplatelist2 : '';
 			break;
 			case -1:
 				$data['klistpath']='http://';
@@ -855,14 +855,14 @@ function king_edt(){
 				$data['nlistnumber']=$model['nlistnumber'];
 				//默认模板
 				$ktemplatelist1=$tpath.'/'.$tdefa;
-				$data['ktemplatelist1']=is_file(KC_ROOT.$ktemplatelist1) ? $ktemplatelist1 : '';
-				$data['ktemplatepage1']=is_file(KC_ROOT.$ktemplatelist1) ? $ktemplatelist1 : '';
+				$data['ktemplatelist1']=is_file(ROOT.$ktemplatelist1) ? $ktemplatelist1 : '';
+				$data['ktemplatepage1']=is_file(ROOT.$ktemplatelist1) ? $ktemplatelist1 : '';
 
 				$ktemplatelist2=$tpath.'/inside/'.$model['modeltable'].'[list]/'.$tdefa;
-				$data['ktemplatelist2']=is_file(KC_ROOT.$ktemplatelist2) ? $ktemplatelist2 : '';
+				$data['ktemplatelist2']=is_file(ROOT.$ktemplatelist2) ? $ktemplatelist2 : '';
 
 				$ktemplatepage2=$tpath.'/inside/'.$model['modeltable'].'[page]/'.$tdefa;
-				$data['ktemplatepage2']=is_file(KC_ROOT.$ktemplatepage2) ? $ktemplatepage2 : '';
+				$data['ktemplatepage2']=is_file(ROOT.$ktemplatepage2) ? $ktemplatepage2 : '';
 
 			}
 		}

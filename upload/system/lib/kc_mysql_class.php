@@ -53,10 +53,10 @@ public function connect($_host='',$_data='',$_user='',$_pass='',$_type=1){
 
 	if($this->link==0){
 
-		$_host=$_host?$_host:KC_DB_HOST;
-		$_data=$_data?$_data:KC_DB_DATA;
-		$_user=$_user?$_user:KC_DB_USER;
-		$_pass=$_pass?$_pass:KC_DB_PASS;
+		$_host=$_host?$_host:DB_HOST;
+		$_data=$_data?$_data:DB_DATA;
+		$_user=$_user?$_user:DB_USER;
+		$_pass=$_pass?$_pass:DB_PASS;
 
 		$this->link=$_type ? @mysql_pconnect($_host,$_user,$_pass) : @mysql_connect($_host,$_user,$_pass);
 
@@ -91,9 +91,9 @@ public function query($_str,$is=0){
 	if(isset($num{0})){
 		$_str_left=substr($sql,0,$num);
 		$_str_right=substr($sql,$num);
-		$_str=str_replace(array('%s','%a'),array(KC_DB_PREFIX,KC_DB_ADMIN),$_str_left).$_str_right;
+		$_str=str_replace(array('%s','%a'),array(DB_PREFIX,KC_DB_ADMIN),$_str_left).$_str_right;
 	}else{
-		$_str=str_replace(array('%s','%a'),array(KC_DB_PREFIX,KC_DB_ADMIN),$_str);
+		$_str=str_replace(array('%s','%a'),array(DB_PREFIX,KC_DB_ADMIN),$_str);
 	}
 /*
 	if($this->mQuery){//释放上次查询消耗的内存
@@ -103,10 +103,10 @@ public function query($_str,$is=0){
 	$this->link==0 && $this->connect();//判断数据库连接是否可用
 
 	try{
-		mysql_query('set names '.KC_DB_CHARSET);//设置字符集
+		mysql_query('set names '.DB_CHARSET);//设置字符集
 		$this->mQuery=mysql_query($_str,$this->link);
 	}catch(Exception $e){
-		if(KC_CONFIG_DEBUG){
+		if(DEBUG){
 			kc_error('<label>'.$e.'</label><textarea style="width:300px;" rows="6">'.htmlspecialchars($_str).'</textarea>');
 		}else{
 			global $king;
@@ -129,7 +129,7 @@ public function query($_str,$is=0){
 public function insert($_table,$_array){
 	$_fields=array();
 	$_values=array();
-	$_table=str_replace(array('%s','%a'),array(KC_DB_PREFIX,KC_DB_ADMIN),$_table);
+	$_table=str_replace(array('%s','%a'),array(DB_PREFIX,KC_DB_ADMIN),$_table);
 	foreach($_array as $_key=>$_val){
 		array_push($_fields,$_key);
 		array_push($_values,$this->escape($_val));
@@ -149,7 +149,7 @@ public function insert($_table,$_array){
 public function update($table,$array,$where=null){
 	$fields=array();
 	$values=array();
-	$table=str_replace(array('%s','%a'),array(KC_DB_PREFIX,KC_DB_ADMIN),$table);
+	$table=str_replace(array('%s','%a'),array(DB_PREFIX,KC_DB_ADMIN),$table);
 	foreach($array as $key=>$val){
 
 		$values[]=preg_match("/^\[\[.+\]\]$/",$val)//[[hit=hit+1]]
@@ -191,7 +191,7 @@ public function getRows($_sql,$_is=0,$_pid=0,$_rn=0){
 		if(!mysql_data_seek($this->mQuery,$i)){
 
 			global $king;
-			if(KC_CONFIG_DEBUG){
+			if(DEBUG){
 				kc_error('<label>'.$king->lang->get('system/dberr/err3').'</label><textarea>'.htmlspecialchars($_sql).'</textarea>');
 			}else{
 				kc_error('<label>'.$king->lang->get('system/dberr/err3').'</label>');
@@ -351,7 +351,7 @@ public function updown($_table,$id,$_where=null,$_order=1,$_kidname='kid',$_nord
 	if($_num==0)
 		$_num=$this->Rows;
 
-	$_table=sprintf($_table,KC_DB_PREFIX);
+	$_table=sprintf($_table,DB_PREFIX);
 
 	for($i=0;$i<$this->Rows;$i++){
 
@@ -406,7 +406,7 @@ public function createTable($tableName,$sql,$kid=null,$auto_increment=0){
 
 	$autoSql=$auto_increment>0 ? " AUTO_INCREMENT={$auto_increment}" : '';
 
-	$this->query("create table IF NOT EXISTS {$tableName} ({$kidSql}{$sql}) ENGINE=MyISAM  CHARSET=".KC_DB_CHARSET."{$autoSql};");
+	$this->query("create table IF NOT EXISTS {$tableName} ({$kidSql}{$sql}) ENGINE=MyISAM  CHARSET=".DB_CHARSET."{$autoSql};");
 }
 /**
 	修改数据表
@@ -423,7 +423,7 @@ public function alterTable($tableName,$sql,$is=0){
 	@return
 */
 public function createDB(){
-	@mysql_query("CREATE DATABASE IF NOT EXISTS ".KC_DB_DATA." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;",@mysql_connect(KC_DB_HOST,KC_DB_USER,KC_DB_PASS));
+	@mysql_query("CREATE DATABASE IF NOT EXISTS ".DB_DATA." DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;",@mysql_connect(DB_HOST,DB_USER,DB_PASS));
 }
 /**
 	安全字符转换

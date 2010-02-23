@@ -54,11 +54,11 @@ public function Put($salt,$str){
 */
 public function Clear(){
 	global $king;
-	$array=kc_f_getdir(KC_CACHE_PATH.'/verify','php');
+	$array=kc_f_getdir(PATH_CACHE.'/verify','php');
 	foreach($array as $val){
-		$filetime=filemtime(KC_ROOT.KC_CACHE_PATH.'/verify/'.$val);//读取文件日期
+		$filetime=filemtime(ROOT.PATH_CACHE.'/verify/'.$val);//读取文件日期
 		if($filetime<time()-$king->config('verifytime'))//如果文件日期小于给定的日期，则删除
-			kc_f_delete(KC_CACHE_PATH.'/verify/'.$val);
+			kc_f_delete(PATH_CACHE.'/verify/'.$val);
 	}
 
 }

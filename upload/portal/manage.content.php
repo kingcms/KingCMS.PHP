@@ -665,7 +665,7 @@ function king_inc_location($safetime,$url){//,$stat
 function king_iframe_create(){
 	global $king;
 
-	echo '<html><head><script type="text/javascript" charset="UTF-8" src="../system/js/jquery.js"></script><style type="text/css">p{font-size:12px;padding:0px;margin:0px;line-height:14px;width:450px;white-space:nowrap;}</style><meta http-equiv="Content-Type" content="text/html; charset='.KC_PAGE_CHARSET.'" /></head><body></body></html>';
+	echo '<html><head><script type="text/javascript" charset="UTF-8" src="../system/js/jquery.js"></script><style type="text/css">p{font-size:12px;padding:0px;margin:0px;line-height:14px;width:450px;white-space:nowrap;}</style><meta http-equiv="Content-Type" content="text/html; charset='.PAGE_CHARSET.'" /></head><body></body></html>';
 
 /*
 
@@ -816,7 +816,7 @@ listid  当前正在生成中的列表id
 										$filepath=$id1['kfilepath'];
 									}
 
-									if(is_file(KC_ROOT.$filepath)){//如果文件存在，则跳出这次循环
+									if(is_file(ROOT.$filepath)){//如果文件存在，则跳出这次循环
 										echo kc_progress('progress',$king->lang->get('portal/progress/create/page').' ('.$king->lang->get('portal/progress/remainder').':'.($lists_count-1).')',$k,$info['ncount'],"<p>".$king->lang->get('portal/progress/success')." ID:".$rs['kid'].'('.$i."/".$pcount.") ".$king->lang->get('portal/progress/exist').": ".htmlspecialchars($rs['ktitle'])."</p>");
 										flush();
 										king_inc_location(
@@ -850,7 +850,7 @@ listid  当前正在生成中的列表id
 								if($create=='not'){//生成未生成内容
 									$filepath=$king->portal->pathPage($info,$rs['kid'],$rs['kpath'],1,1);
 
-									if(is_file(KC_ROOT.$filepath)){//如果文件存在，则跳出这次循环
+									if(is_file(ROOT.$filepath)){//如果文件存在，则跳出这次循环
 										echo kc_progress('progress',$king->lang->get('portal/progress/create/page').' ('.$king->lang->get('portal/progress/remainder').':'.($lists_count-1).')',$k,$info['ncount'],"<p>".$king->lang->get('portal/progress/success')." ID:".$rs['kid'].'('.$i."/".$pcount.") ".$king->lang->get('portal/progress/exist').": ".htmlspecialchars($rs['ktitle'])."</p>");
 										flush();
 										king_inc_location(
@@ -1185,7 +1185,7 @@ function king_def(){
 
 		if($info['npage']==0){
 			$kpath=$king->portal->pathPage($info,$rs['kid'],$rs['kpath'],1, 1);//根相对地址
-			$isexist=is_file(KC_ROOT.$kpath) ? 1 : 0;
+			$isexist=is_file(ROOT.$kpath) ? 1 : 0;
 		}else{
 			$isexist=1;
 		}
@@ -1349,7 +1349,7 @@ function king_edt(){
 			if(kc_post('isoneimage')){//抓第一张图为缩略图
 				if($oneimage=preg_match('/(<img([^>]*))( src=)(["\'])(.*?)\4(([^>]*)\/?>)/is',$_array['kcontent'],$oneimage_array)){
 					$smartimg=$oneimage_array[5];
-					if(is_file(KC_ROOT.substr($smartimg,strlen($king->config('inst'))))){//判断是否为本地文件
+					if(is_file(ROOT.substr($smartimg,strlen($king->config('inst'))))){//判断是否为本地文件
 						$_array['kimage']=substr($smartimg,strlen($king->config('inst')));
 					}else{//若是远程文件，则抓取
 						if($path=kc_grab_get($smartimg)){//抓取成功

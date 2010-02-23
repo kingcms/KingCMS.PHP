@@ -16,23 +16,23 @@ if(strtolower(substr($_SERVER['SCRIPT_FILENAME'],-10))=='global.php') exit('No d
  * ================================================== */
 
 
-define('KC_ROOT',dirname(__FILE__).'/');
+define('ROOT',dirname(__FILE__).'/');
 
-define('KC_IN',True);
+define('INC',True);
 
-require KC_ROOT.'config.php';
+require ROOT.'config.php';
 
-require KC_ROOT.'system/core.class.php';
+require ROOT.'system/core.class.php';
 
-require KC_ROOT.'system/lib/func.php';
+require ROOT.'system/lib/func.php';
 
-require KC_ROOT.'system/lib/kc_'.KC_DB_TYPE.'_class.php';
+require ROOT.'system/lib/kc_'.DB_TYPE.'_class.php';
 
-require KC_ROOT.'system/lib/kc_language_class.php';
+require ROOT.'system/lib/kc_language_class.php';
 
-require KC_ROOT.'system/lib/kc_cache_class.php';
+require ROOT.'system/lib/kc_cache_class.php';
 
-require KC_ROOT.'system/lib/kc_skin_class.php';
+require ROOT.'system/lib/kc_skin_class.php';
 
 
 /* ------>>> 全局变量 <<<---------------------------- */
@@ -52,9 +52,9 @@ define('KC_MAGIC_QUOTES_GPC',get_magic_quotes_gpc());
 
 define('NL',chr(13).chr(10));
 
-define('KC_PAGE_CHARSET','UTF-8');
+define('PAGE_CHARSET','UTF-8');
 
-define('KC_DB_PREFIX',KC_DB_DATA.'.'.KC_DB_PRE);
+define('DB_PREFIX',DB_DATA.'.'.DB_PRE);
 
 define('CMD',kc_get('CMD',4));
 
@@ -65,7 +65,7 @@ kc_pageLoad();
 
 $king=new KingCMS_class;
 
-KC_CONFIG_DEBUG && set_error_handler('kc_error_handler');
+DEBUG && set_error_handler('kc_error_handler');
 
 $king->pageEngine();
 

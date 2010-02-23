@@ -1,4 +1,4 @@
-<?php !defined('KC_IN') && exit('No direct script access allowed');
+<?php !defined('INC') && exit('No direct script access allowed');
 
 /* ======= >>> KingCMS <<< ========================== *
 
@@ -30,7 +30,7 @@ public function load_string($str){
 	@return void
 */
 public function load_file($filepath){
-	$path=KC_ROOT.$filepath;
+	$path=ROOT.$filepath;
 	if(is_file($path)){
 
 		kc_runtime('loadXMLFile');

@@ -83,7 +83,7 @@ function king_ajax_edt(){
 		//dbfile
 		$array=array(
 			array('dbfile',0,4,50),
-			array('dbfile',12,$king->lang->get('dbquery/error/dbfile'),!is_file(KC_ROOT.$data['dbfile'])),
+			array('dbfile',12,$king->lang->get('dbquery/error/dbfile'),!is_file(ROOT.$data['dbfile'])),
 		);
 		$s.=$king->htmForm($king->lang->get('dbquery/label/dbfile'),kc_htm_input('dbfile',$data['dbfile'],50,400),$array);
 

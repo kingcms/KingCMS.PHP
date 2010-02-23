@@ -1,4 +1,4 @@
-<?php !defined('KC_IN') && exit('No direct script access allowed');
+<?php !defined('INC') && exit('No direct script access allowed');
 
 /* ======= >>> KingCMS <<< ========================== *
 
@@ -43,7 +43,7 @@ function kc_error($s,$_js='',$_width=350,$_height=100){
 		kc_ajax('Warning!',"<p class=\"k_err\">$s</p>",0,$_js,$_width,$_height);
 	}else{
 
-	exit('<html><head><meta http-equiv="Content-Type" content="text/html; charset='.KC_PAGE_CHARSET.'" /><title>ERROR!</title><style>body{font-family:Arial,宋体;font-size:75%;}</style></head>
+	exit('<html><head><meta http-equiv="Content-Type" content="text/html; charset='.PAGE_CHARSET.'" /><title>ERROR!</title><style>body{font-family:Arial,宋体;font-size:75%;}</style></head>
 <body><h2>ERROR!</h2><p>'.$s.'</p></body></html>');
 	}
 }
@@ -177,7 +177,7 @@ function kc_error_handler($type,$msg,$file,$line){
 		global $king;
 
 
-		if(!KC_CONFIG_DEBUG) return;//关闭错误记录的话……直接退出
+		if(!DEBUG) return;//关闭错误记录的话……直接退出
 		echo "<h2>$msg</h2><p>$file - $line</p>";
 		if(!$king->db->link) return;//如果没有数据库链接则直接退出
 
@@ -1991,7 +1991,7 @@ function kc_f_iconv($s,$is=0){
 	}
 
 	if(isset($code)){
-		$s=$is ? kc_iconv($s,$code,KC_PAGE_CHARSET) : kc_iconv($s,KC_PAGE_CHARSET,$code);
+		$s=$is ? kc_iconv($s,$code,PAGE_CHARSET) : kc_iconv($s,PAGE_CHARSET,$code);
 	}
 
 	return $s;
@@ -2169,7 +2169,7 @@ function kc_clsnl($_text){
 
 */
 function kc_goto($_lang,$_url_ok='',$_url_cancel=''){
-	$s='<meta http-equiv="Content-Type" content="text/html; charset='.KC_PAGE_CHARSET.'" />';
+	$s='<meta http-equiv="Content-Type" content="text/html; charset='.PAGE_CHARSET.'" />';
 	$s.='<script type="text/javascript">';
 	if($_url_cancel){
 		$s.='confirm(\''.$_lang.'\')?eval("parent.location=\''.$_url_ok.'\'"):eval("parent.location=\''.$_url_cancel.'\'");';

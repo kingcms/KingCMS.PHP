@@ -1,4 +1,4 @@
-<?php !defined('KC_IN') && exit('No direct script access allowed');
+<?php !defined('INC') && exit('No direct script access allowed');
 
 
 
@@ -20,7 +20,7 @@ public function __construct(){
 		foreach($array_const as $val){
 			define($val,$king->config(strtolower($val),'user'));
 		}
-		require_once KC_ROOT.$king->config('ucpath','user').'/client.php';
+		require_once ROOT.$king->config('ucpath','user').'/client.php';
 	}
 }
 /**

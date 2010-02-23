@@ -359,7 +359,7 @@ function king_ajax_module_add(){
 	$modulepath=kc_post('modulepath');
 	$is=false;
 	if(isset($modulepath{0})){
-		is_file(KC_ROOT.$modulepath.'/core.class.php')&&is_file(KC_ROOT.$modulepath.'/manage.php')
+		is_file(ROOT.$modulepath.'/core.class.php')&&is_file(ROOT.$modulepath.'/manage.php')
 			? $is=false
 			: $is=true;
 	}
@@ -439,7 +439,7 @@ function king_ajax_findmodule(){
 	$s.='<th>'.$king->lang->get('system/module/path').'</th>';
 	$s.='<th class="c">'.$king->lang->get('system/common/install').'</th></tr>';
 	foreach($array as $val){
-		if(is_file(KC_ROOT.$val.'/core.class.php') && is_file(KC_ROOT.$val.'/manage.php')){
+		if(is_file(ROOT.$val.'/core.class.php') && is_file(ROOT.$val.'/manage.php')){
 			$s.='<tr>';
 			if($king->isModule($val)){
 				$s.='<td><a href="../'.$val.'/manage.php">'.kc_icon('k7').' '.$king->lang->get($val.'/name').'</a></td>';
@@ -635,7 +635,7 @@ function king_ajax_faq(){
 	if(!$module){//如果module为空
 		$s.='<p>'.kc_icon('l9').'<a href="javascript:;" class="k_ajax" rel="{CMD:\'faq\',module:\'system\',URL:\'../system/manage.php\',IS:1}">'.$king->lang->get('system/name').'</a></p>';
 		foreach($modules as $val){
-			if(file_exists(KC_ROOT.$val.'/faq/'.$king->admin['adminlanguage'].'.xml')){
+			if(file_exists(ROOT.$val.'/faq/'.$king->admin['adminlanguage'].'.xml')){
 				$s.='<p>'.kc_icon('l9').'<a href="javascript:;" class="k_ajax" rel="{CMD:\'faq\',module:\''.$val.'\',IS:1,URL:\'../system/manage.php\'}">'.$king->lang->get($val.'/name').'</a></p>';
 			}
 		}
@@ -645,7 +645,7 @@ function king_ajax_faq(){
 	}else{
 
 		$doc=new DOMDocument;
-		$filepath=KC_ROOT.$module.'/faq/'.$king->admin['adminlanguage'].'.xml';
+		$filepath=ROOT.$module.'/faq/'.$king->admin['adminlanguage'].'.xml';
 		$doc->load($filepath);
 		$path=new DOMXPath($doc);
 		$title=@$path->evaluate('//kingcms/item/title');
@@ -680,7 +680,7 @@ function king_ajax_view_event(){
 	if(kc_validate($kid,2)){
 		if(!$res=$king->db->getRows_one("select kfile,nline,kmsg,kurl from %s_event where kid=$kid;"))
 			kc_error($king->lang->get('system/error/param'));
-		$files=file(KC_ROOT.$res['kfile']);
+		$files=file(ROOT.$res['kfile']);
 
 		$s='<p>URL: <a href="">'.$res['kurl'].'</a></p>';
 
@@ -1090,7 +1090,7 @@ function king_iframe_upfile(){
 
 	$s="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 	<html xmlns=\"http://www.w3.org/1999/xhtml\"><head>
-	<meta http-equiv=\"Content-Type\" content=\"text/html; charset=".KC_PAGE_CHARSET."\" />
+	<meta http-equiv=\"Content-Type\" content=\"text/html; charset=".PAGE_CHARSET."\" />
 	<script type=\"text/javascript\" src=\"".$king->config('inst')."system/js/jquery.js\"></script>
 	<style type=\"text/css\">
 		<!--
@@ -1133,7 +1133,7 @@ function king_iframe_upfile(){
 						? $filename=time().$i.'.'.$ext //这里定义的filename和$info数组中的filename不是一个对象
 						: $filename=$_FILES['file']['name'][$i];
 					//上传操作
-					if(move_uploaded_file($_FILES['file']['tmp_name'][$i],KC_ROOT.$path.iconv('UTF-8','',$filename))){
+					if(move_uploaded_file($_FILES['file']['tmp_name'][$i],ROOT.$path.iconv('UTF-8','',$filename))){
 						//上传成功,并记录上传文件地址
 						$s.="<p class=\"c1\">".$king->lang->get('system/common/file').($i+1).' : '.$king->lang->get('system/brow/t1');
 						$s.='<a href="../'.$path.$filename.'" target="_blank">['.$king->lang->get('system/common/view').': '.$filename.']</a>';
@@ -1473,7 +1473,7 @@ function king_admin_edt(){
 	if($GLOBALS['ismethod']||$_adminid==''){//POST过程或新添加的过程
 		$data=$_POST;
 		if(!$GLOBALS['ismethod']){	//初始化新添加的数据
-			$data['adminlanguage']=KC_CONFIG_LANGUAGE;
+			$data['adminlanguage']=LANGUAGE;
 			$data['adminlogin']='manage.php';
 		}
 	}else{//编辑数据，从数据库读出
@@ -1591,7 +1591,7 @@ function king_admin_edt(){
 
 		$module=$king->getModule();
 		foreach($module as $val){
-			$language= is_file(KC_ROOT.$val.'/language/'.$king->admin['adminlanguage'].'.xml') ? $king->admin['adminlanguage'] : KC_CONFIG_LANGUAGE;
+			$language= is_file(ROOT.$val.'/language/'.$king->admin['adminlanguage'].'.xml') ? $king->admin['adminlanguage'] : LANGUAGE;
 
 			$xml=new KC_XML_class;
 			$xml->load_file($val.'/language/'.$language.'.xml');
