@@ -21,11 +21,7 @@ function king_ajax_delete(){
 	global $king;
 	if(file_exists('INSTALL.php')){
 		if(unlink('INSTALL.php')){
-			$array=array(
-				'BUT'	=>	2,
-				'JS'	=>	"parent.location='system/login.php';"
-			);
-			kc_ajax($array);
+			kc_ajax('','',0,'parent.location=\'system/login.php\';');
 		}else{
 			kc_error($king->lang->get('system/error/unlink'));
 		}
@@ -37,84 +33,11 @@ function king_ajax_delete(){
 //king_ajax_language
 function king_ajax_language(){
 	setcookie('language',kc_post('lang'),time()+864000000,'/');
-	$array=array(
-		'JS'	=>	"parent.location='INSTALL.php';"
-	);
-	kc_ajax($array);
+	kc_ajax('','',0,'parent.location=\'INSTALL.php\';');
 }
 
 function king_ajax_config(){
 	global $king;
-
-//exit(kc_post('dbtype'));
-//exit('starg'.$_POST['dbtype']);
-
-	$dbtype=kc_post('dbtype');
-	$license=kc_post('license');
-	$host=kc_post('host');
-	$data=kc_post('data');
-	$user=kc_post('user');
-	$sqlitedata=kc_post('sqlitedata');
-	$pre=kc_post('pre');
-	$preadmin=kc_post('preadmin');
-	$adminname=kc_post('adminname');
-	$adminpass=kc_post('adminpass');
-	$cache=kc_post('cache');
-	$inst=kc_post('inst');
-	$timediff=kc_post('timediff');
-	$debug=kc_post('debug')==1?'True':'False';
-	$isdelete=kc_post('isdelete')==1?1:0;
-
-	$check=array(
-		array('dbtype',12,$king->lang->get('system/install/dbtypeerr'),!in_array($dbtype,array('mysql','sqlite'))),
-		array('license',12,$king->lang->get('system/install/licenseerr'),$license!=1),
-	);
-	if($dbtype=='mysql'){
-		$check[]=array('dbhost',12,$king->lang->get('system/install/ckhost'),!kc_validate($host,'/^[A-Za-z0-9\.\:\/]+$/'));
-		$check[]=array('dbdata',12,$king->lang->get('system/install/ckdata'),!kc_validate($data,'/^[A-Za-z0-9\-\_]+$/'));
-		$check[]=array('dbuser',12,$king->lang->get('system/install/ckuser'),!kc_validate($user,'/^[A-Za-z0-9\-\_]+$/'));
-	}elseif($dbtype=='sqlite'){
-		$check[]=array('sqlitedata',12,$king->lang->get('system/install/ckdata'),!kc_validate($sqlitedata,'/^[A-Za-z0-9\-\_\.]+$/'));
-	}
-	$check[]=array('pre',12,$king->lang->get('system/install/ckpre'),!kc_validate($pre,'/^[A-Za-z0-9\_]+$/'));
-	$check[]=array('preadmin',12,$king->lang->get('system/install/ckpreadmin'),!kc_validate($preadmin,'/^[A-Za-z0-9\_]+$/'));
-	$check[]=array('adminname',0,$king->lang->get('system/install/ckadminname'),2,12);
-	$check[]=array('adminname',1);
-	$check[]=array('adminpass',0,$king->lang->get('system/install/ckadminpass'),6,30);
-	$check[]=array('cache',12,$king->lang->get('system/install/ckcache'),!kc_validate($cache,'/^[A-Za-z0-9\_]+$/'));
-
-	$form=new kc_form_class();
-	$form->check=$check;
-	if($form->create()){//做数据验证,若通过的话，做数据操作
-		$s=kc_f_get_contents('config.php');
-
-		$s=preg_replace("%(define\('KC_DB_TYPE',')([A-Za-z]+)('\))%s","\${1}{$dbtype}\${3}",$s);
-		$s=preg_replace("%(define\('KC_DB_PRE',')([A-Za-z0-9\_]*)('\))%s","\${1}$pre\${3}",$s);
-		$s=preg_replace("%(define\('KC_DB_ADMIN',')([A-Za-z0-9\_]*)('\))%s","\${1}$preadmin\${3}",$s);
-		//sqlite
-		$s=preg_replace("%(define\('KC_DB_SQLITE',')([A-Za-z0-9\-\_\.\/]+)('\))%s","\${1}$sqlitedata\${3}",$s);
-		//mysql
-		$s=preg_replace("%(define\('KC_DB_HOST',')([A-Za-z0-9\.\:\/]+)('\))%s","\${1}{$host}\${3}",$s);
-		$s=preg_replace("%(define\('KC_DB_DATA',')([A-Za-z0-9\-\_]+)('\))%s","\${1}$data\${3}",$s);
-		$s=preg_replace("%(define\('KC_DB_USER',')([A-Za-z0-9\-\_]+)('\))%s","\${1}$user\${3}",$s);
-		$s=preg_replace("%(define\('KC_DB_PASS',')([^']*)('\))%s","\${1}$pass\${3}",$s);
-
-		$s=preg_replace("%(define\('KC_CACHE_PATH',')([A-Za-z0-9\_]*)('\))%s","\${1}$cache\${3}",$s);
-		$s=preg_replace("%(define\('KC_CONFIG_DEBUG',)(True|False)(\))%s","\${1}$debug\${3}",$s);
-
-		if(kc_f_put_contents('config.php',$s)){//写入成功
-			$js="\$.kc_ajax('{CMD:\'install\',adminname:\'$adminname\',adminpass:\'$adminpass\',timediff:\'$timediff\',inst:\'$inst\',isdelete:\'$isdelete\'}')";
-			$array=array(
-				'JS'=>$js
-			);
-			kc_ajax($array);
-		}else{
-			kc_error($king->lang->get('system/install/puterror'));
-		}
-	}
-
-/*
-
 	//dbtype
 	$dbtype=kc_post('dbtype');
 	if(!in_array($dbtype,array('mysql','sqlite'))){
@@ -145,13 +68,14 @@ function king_ajax_config(){
 		//user
 		if(!kc_validate($user,'/^[A-Za-z0-9\-\_]+$/')){
 			kc_error($king->lang->get('system/install/ckuser'));
-		}
+		}		
 	}else{
 		//sqlitedata
 		if(!kc_validate($sqlitedata,'/^[A-Za-z0-9\-\_\.]+$/')){
 			kc_error($king->lang->get('system/install/ckdata'));
 		}
 	}
+	
 	//pre
 	$pre=kc_post('pre');
 	if(!kc_validate($pre,'/^[A-Za-z0-9\_]+$/')){
@@ -190,32 +114,28 @@ function king_ajax_config(){
 
 	$s=kc_f_get_contents('config.php');
 
-	$s=preg_replace("%(define\('KC_DB_TYPE',')([A-Za-z]+)('\))%s","\${1}{$dbtype}\${3}",$s);
-	$s=preg_replace("%(define\('KC_DB_PRE',')([A-Za-z0-9\_]*)('\))%s","\${1}$pre\${3}",$s);
+	$s=preg_replace("%(define\('DB_TYPE',')([A-Za-z]+)('\))%s","\${1}{$dbtype}\${3}",$s);
+	$s=preg_replace("%(define\('DB_PRE',')([A-Za-z0-9\_]*)('\))%s","\${1}$pre\${3}",$s);
 	$s=preg_replace("%(define\('KC_DB_ADMIN',')([A-Za-z0-9\_]*)('\))%s","\${1}$preadmin\${3}",$s);
 	//sqlite
-	$s=preg_replace("%(define\('KC_DB_SQLITE',')([A-Za-z0-9\-\_\.\/]+)('\))%s","\${1}$sqlitedata\${3}",$s);
+	$s=preg_replace("%(define\('DB_SQLITE',')([A-Za-z0-9\-\_\.\/]+)('\))%s","\${1}$sqlitedata\${3}",$s);
 	//mysql
-	$s=preg_replace("%(define\('KC_DB_HOST',')([A-Za-z0-9\.\:\/]+)('\))%s","\${1}{$host}\${3}",$s);
-	$s=preg_replace("%(define\('KC_DB_DATA',')([A-Za-z0-9\-\_]+)('\))%s","\${1}$data\${3}",$s);
-	$s=preg_replace("%(define\('KC_DB_USER',')([A-Za-z0-9\-\_]+)('\))%s","\${1}$user\${3}",$s);
-	$s=preg_replace("%(define\('KC_DB_PASS',')([^']*)('\))%s","\${1}$pass\${3}",$s);
+	$s=preg_replace("%(define\('DB_HOST',')([A-Za-z0-9\.\:\/]+)('\))%s","\${1}{$host}\${3}",$s);
+	$s=preg_replace("%(define\('DB_DATA',')([A-Za-z0-9\-\_]+)('\))%s","\${1}$data\${3}",$s);
+	$s=preg_replace("%(define\('DB_USER',')([A-Za-z0-9\-\_]+)('\))%s","\${1}$user\${3}",$s);
+	$s=preg_replace("%(define\('DB_PASS',')([^']*)('\))%s","\${1}$pass\${3}",$s);
 
-	$s=preg_replace("%(define\('KC_CACHE_PATH',')([A-Za-z0-9\_]*)('\))%s","\${1}$cache\${3}",$s);
-	$s=preg_replace("%(define\('KC_CONFIG_DEBUG',)(True|False)(\))%s","\${1}$debug\${3}",$s);
+	$s=preg_replace("%(define\('PATH_CACHE',')([A-Za-z0-9\_]*)('\))%s","\${1}$cache\${3}",$s);
+	$s=preg_replace("%(define\('DEBUG',)(True|False)(\))%s","\${1}$debug\${3}",$s);
 
 	if(kc_f_put_contents('config.php',$s)){//写入成功
 		$js="\$.kc_ajax('{CMD:\'install\',adminname:\'$adminname\',adminpass:\'$adminpass\',timediff:\'$timediff\',inst:\'$inst\',isdelete:\'$isdelete\'}')";
-		$array=array(
-			'JS'	=>	$js
-		);
-		kc_ajax($array);
+		kc_ajax('OK',"<p class=\"k_ok\">".$king->lang->get('system/install/crtdb')."</p>","<a href=\"javascript:;\">".$king->lang->get('system/common/cancel')."</a>",$js);
 	}else{
 		kc_error($king->lang->get('system/install/puterror'));
 	}
-*/
-	//写config.php,并输出ajax执行程序,进入下一步install
 
+	//写config.php,并输出ajax执行程序,进入下一步install
 }
 
 function king_ajax_install(){
@@ -607,7 +527,7 @@ function king_ajax_install(){
 
 		$cid=$king->db->insert('%s_system_caption',array('kmodule'=>'system','kpath'=>'cache'));
 		$array=array(
-			array(
+		array(
 				'cid'=>$cid,
 				'kname'=>'cachetime',
 				'kmodule'=>'system',
@@ -941,12 +861,7 @@ function king_ajax_install(){
 
 	if(kc_post('isdelete')&&file_exists('INSTALL.php')) unlink('INSTALL.php');
 
-	$array=array(
-		'TITLE'	=>	'OK',
-		'HTML'	=>	'<p class="k_ok">'.$king->lang->get('system/install/instok').'</p>',
-		'BUT'	=>	'<a href="system/login.php">'.$king->lang->get('system/common/login').'</a>'
-	);
-	kc_ajax($array);
+	kc_ajax('OK','<p class="k_ok">'.$king->lang->get('system/install/instok').'</p>',"<a href=\"system/login.php\">".$king->lang->get('system/common/login')."</a>");
 
 }
 
@@ -974,24 +889,13 @@ function king_ajax_repass(){
 	if($GLOBALS['ischeck']){//POST过程或新添加的过程
 
 		if(!$king->db->getRows_one("SELECT * FROM %a_admin where adminname='".kc_post('readminname')."';")){
-			$king->db->insert('%a_admin',array('adminname'=>kc_post('readminname'),'adminpass'=>md5(kc_post('readminpass')),'adminlevel'=>'admin','adminlanguage'=>'zh-cn','admineditor'=>'fckeditor','admindate'=>time(),'adminlogin'=>'../system/manage.php'));
+				$king->db->insert('%a_admin',array('adminname'=>kc_post('readminname'),'adminpass'=>md5(kc_post('readminpass')),'adminlevel'=>'admin','adminlanguage'=>'zh-cn','admineditor'=>'fckeditor','admindate'=>time(),'adminlogin'=>'../system/manage.php'));
 		}else{
 			$king->db->update('%a_admin',array("adminpass"=>md5(kc_post('readminpass')),'adminlevel'=>'admin'),"adminname='".kc_post('readminname')."'");
 		}
-		$array=array(
-			'TITLE'	=>	'OK',
-			'HTML'	=>	'<p class="k_ok">'.$king->lang->get('system/ok/save').'</p>',
-		);
-		kc_ajax($array);
+		kc_ajax('OK','<p class="k_ok">'.$king->lang->get('system/ok/save').'</p>');
 	}
-	$array=array(
-		'TITLE'	=>	$king->lang->get('system/install/repwd'),
-		'HTML'	=>	$s,
-		'BUT'	=>	$but,
-		'WIDTH'	=>	250,
-		'HEIGHT'=>	120 + $GLOBALS['check_num']*15
-	);
-	kc_ajax($array);
+	kc_ajax($king->lang->get('system/install/repwd'),$s,$but,null,250,120+$GLOBALS['check_num']*15);
 }
 
 /* ------>>> actions <<<----------------------------- */
@@ -1011,7 +915,7 @@ function king_def(){
 	$array_dirs=array('config.php','system/js');
 	$array_func=array('mysql_connect','file_get_contents','file_put_contents','simplexml_load_file');//,'fsockopen'
 
-	$s="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
+$s="<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">
 <html xmlns=\"http://www.w3.org/1999/xhtml\">
 <head>
 <meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />
@@ -1039,7 +943,7 @@ jQuery(function(\$){
 		}else{
 			\$('.sqlite').show();
 			\$('.mysql').hide();
-
+		
 		}
 	}
 
@@ -1065,7 +969,7 @@ jQuery(function(\$){
 	foreach($array as $val){
 		$s.='<li><a href="javascript:;" class="k_ajax" rel="{CMD:\'language\',lang:\''.$val.'\'}">';
 		if($_language==$val)
-		$s.='&bull;&nbsp;';
+			$s.='&bull;&nbsp;';
 		$s.=kc_getlang($val).'</a></li>';
 	}
 
@@ -1124,16 +1028,10 @@ jQuery(function(\$){
 
 	<p class=\"k_submit\">
 
-		<input value=\"".$king->lang->get('system/common/install')."[S]\" class=\"k_ajax big\" rel=\"{CMD:'config',ID:'k_ajax',FORM:'form_install'}\" type=\"button\" accesskey=\"s\"/>
+		<input value=\"".$king->lang->get('system/common/install')."[S]\" class=\"k_ajax big\" rel=\"{CMD:'config',FORM:'form_install'}\" type=\"button\" accesskey=\"s\"/>
 
 	</p>
 	</form>
-
-
-
-
-
-
 </td><td class=\"w1\" style=\"vertical-align:top;\"></td><td>
 
 	<h3 class=\"caption\">".$king->lang->get('system/skin/sys')."</h3>
@@ -1141,6 +1039,8 @@ jQuery(function(\$){
 	<tr><th class=\"w10\">".$king->lang->get('system/skin/obj')."</th><th class=\"w5\">".$king->lang->get('system/skin/required')."</th><th class=\"w5\">".$king->lang->get('system/skin/this')."</th></tr>";
 	$s.='<tr><td>'.$king->lang->get('system/skin/os').'</td><td>ALL</td><td>'.PHP_OS.'</td></tr>';
 	$s.='<tr><td>'.$king->lang->get('system/skin/phpver').'</td><td>5.1.0+</td><td>'.PHP_VERSION.'</td></tr>';
+	if(function_exists('disk_free_space'))
+		$s.='<tr><td>'.$king->lang->get('system/skin/diskspace').'</td><td>＞2 Mb</td><td>'.kc_f_size(disk_free_space('./')).'</td></tr>';
 
 	$s.="</table>
 	<h3 class=\"caption\">".$king->lang->get('system/skin/writeinfo')."</h3>
@@ -1148,7 +1048,7 @@ jQuery(function(\$){
 	<tr><th class=\"w10\">".$king->lang->get('system/skin/filedir')."</th><th class=\"w5\">".$king->lang->get('system/skin/required')."</th><th class=\"w5wgfv -k07-87;[yu'pbv9io/h9;'99999\">".$king->lang->get('system/skin/this')."</td></tr>";
 
 	foreach($array_dirs as $val){
-		$s.='<tr><td>'.$val.'</td><td>'.$king->lang->get('system/skin/write/w1').'</td><td>'.$king->lang->get('system/skin/write/w'.(is_writable(KC_ROOT.$val)?1:0)).'</td></tr>';
+		$s.='<tr><td>'.$val.'</td><td>'.$king->lang->get('system/skin/write/w1').'</td><td>'.$king->lang->get('system/skin/write/w'.(is_writable(ROOT.$val)?1:0)).'</td></tr>';
 	}
 
 	$s.="</table>

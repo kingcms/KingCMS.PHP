@@ -18,10 +18,10 @@ function __autoload($class_name){
 
 	$clsname=strtolower(substr($class_name,0,strlen($class_name)-6));
 
-	if(file_exists($fpath=KC_ROOT.'system/lib/'.strtolower($class_name).'.php')){
+	if(file_exists($fpath=ROOT.'system/lib/'.strtolower($class_name).'.php')){
 		require($fpath);
 	}else{
-		if(file_exists($fpath=KC_ROOT.strtolower($clsname).'/core.class.php')){
+		if(file_exists($fpath=ROOT.strtolower($clsname).'/core.class.php')){
 			require($fpath);
 		}else{
 			kc_error("The file <strong>{$fpath}</strong> does not exist.");
@@ -191,8 +191,8 @@ function kc_error_handler($type,$msg,$file,$line){
 		}
 */
 		//读取数据库链接，当数据库链接可用的时候，写系统错误记录
-		$file=substr($file,strlen(KC_ROOT));
-		$msg=strip_tags(str_replace(KC_ROOT,'',$msg));
+		$file=substr($file,strlen(ROOT));
+		$msg=strip_tags(str_replace(ROOT,'',$msg));
 		$array=array(
 			'ntype'=>$type,
 			'kmsg'=>$msg,
@@ -503,9 +503,9 @@ function kc_image($s,$attrib){
 	$height=kc_val($attrib,'height');
 	$position=kc_val($attrib,'position');
 
-	if(!is_file(KC_ROOT.$s))//确定文件存在
+	if(!is_file(ROOT.$s))//确定文件存在
 		return $s;
-	list($_width, $_height)=getimagesize(KC_ROOT.$s);
+	list($_width, $_height)=getimagesize(ROOT.$s);
 
 	if($_width && $_height){
 		$width=kc_validate($width,2)?$width:120;
@@ -519,7 +519,7 @@ function kc_image($s,$attrib){
 
 /**/
 	//如果缩略图文件存在，则直接返回缩略图文件地址
-	if(is_file(KC_ROOT.$newimg)){
+	if(is_file(ROOT.$newimg)){
 		return $king->config('inst').$newimg;
 	}
 /**
@@ -572,7 +572,7 @@ function kc_image($s,$attrib){
 	}
 
 	$func='imagecreatefrom'.$fext;
-	$source=$func(KC_ROOT.$s);
+	$source=$func(ROOT.$s);
 	$im=imagecreatetruecolor($width, $height);
 
 	//拷贝图像新建
@@ -732,8 +732,8 @@ function kc_image($s,$attrib){
 	$watermark=kc_val($attrib,'watermark');
 	if(isset($watermark{0})){
 		//先判断文件是否存在
-		if(is_file(KC_ROOT.$watermark)){
-			list($_width_water,$_height_water)=getimagesize(KC_ROOT.$watermark);
+		if(is_file(ROOT.$watermark)){
+			list($_width_water,$_height_water)=getimagesize(ROOT.$watermark);
 
 			if(kc_validate($_width_water,2)&&kc_validate($_height_water,2)){
 
@@ -749,7 +749,7 @@ function kc_image($s,$attrib){
 				}
 
 				$func_water='imagecreatefrom'.$fext_water;
-				$water=$func_water(KC_ROOT.$watermark);//装载水印图片
+				$water=$func_water(ROOT.$watermark);//装载水印图片
 
 				$color=kc_hex2rgb($water,$water_color);//转换颜色
 				imagecolortransparent($water,$color);
@@ -766,12 +766,12 @@ function kc_image($s,$attrib){
 		$ty=kc_validate(kc_val($attrib,'text-y'),2)?$attrib['text-y']:20;
 		$s1=kc_validate(kc_val($attrib,'text-size'),2)?$attrib['text-size']:12;
 		$a1=kc_validate(kc_val($attrib,'text-angle'),2)?$attrib['text-angle']:0;
-		$f1=is_file(KC_ROOT.kc_val($attrib,'text-font'))?$attrib['text-font']:'system/verify_font/MilkCocoa.TTF';
+		$f1=is_file(ROOT.kc_val($attrib,'text-font'))?$attrib['text-font']:'system/verify_font/MilkCocoa.TTF';
 		$c1=kc_validate(kc_val($attrib,'text-color'),13)?$attrib['text-color']:'000000';//颜色
 
 		$color=kc_hex2rgb($im,$c1);//转换颜色
 
-		imagettftext($im,$s1,$a1, $tx,$ty,$color,KC_ROOT.$f1,$text);
+		imagettftext($im,$s1,$a1, $tx,$ty,$color,ROOT.$f1,$text);
 
 	}
 
@@ -781,7 +781,7 @@ function kc_image($s,$attrib){
 	$func='image'.$fext;
 	kc_f_md($newdir);//创建目录
 
-	if($func($im,KC_ROOT.$newimg)){//保存缩略图
+	if($func($im,ROOT.$newimg)){//保存缩略图
 		$s=$newimg;
 	}
 
@@ -1396,7 +1396,7 @@ function kc_htm_editor($name,$content,$width=780,$height=360,$def='nicEdit',$cod
 		case 'fckeditor':
 
 			if(empty($GLOBALS['htm_editor_isread']))
-				require_once(KC_ROOT."system/editor/fckeditor/fckeditor_php5.php");
+				require_once(ROOT."system/editor/fckeditor/fckeditor_php5.php");
 
 			$oFCKeditor = new FCKeditor($name) ;
 			$oFCKeditor->BasePath = $king->config('inst')."system/editor/fckeditor/" ;
@@ -1601,12 +1601,12 @@ function kc_f_getdir($_path='',$_type='*',$_ignore=array('.','..','.svn')){
 	$_array=array();
 
 
-	if($_handle=opendir(KC_ROOT.$_path)){
+	if($_handle=opendir(ROOT.$_path)){
 		while (false !== ($_file=@readdir($_handle))){
 			$_file=kc_f_iconv($_file);
 			if(!in_array($_file,$_ignore)){
 
-				if(is_dir(KC_ROOT.$_path.$_file)){//如果是dir
+				if(is_dir(ROOT.$_path.$_file)){//如果是dir
 					if($_type=='*'||$_type=='dir')
 						$_array[]=$_file;
 				}else{//文件
@@ -1648,8 +1648,8 @@ function kc_f_size($_size) {
 */
 function kc_f_filesize($filepath){
 	$filepath=kc_f_iconv($filepath,1);
-	if(is_file(KC_ROOT.$filepath)){
-		return filesize(KC_ROOT.$filepath);
+	if(is_file(ROOT.$filepath)){
+		return filesize(ROOT.$filepath);
 	}
 }
 
@@ -1750,7 +1750,7 @@ function kc_f_brow($id,$path,$filetype=0,$is=0,$jsfun='',$file=''){
 
 	$s='';
 	//模板类型的时候，增加一个快速插入
-	if($filetype==2&&is_dir(KC_ROOT.$path)){
+	if($filetype==2&&is_dir(ROOT.$path)){
 		if($array=kc_f_getdir($path,$king->config('templateext'))){
 			$array_setvalue=array();
 			foreach($array as $val){
@@ -1805,8 +1805,8 @@ function kc_f_md($path){
 	foreach($array as $val){
 		$new.=$val.'/';
 		if(isset($val{0})){
-			if(!file_exists(KC_ROOT.$new)){
-				if(!@mkdir(KC_ROOT.$new))
+			if(!file_exists(ROOT.$new)){
+				if(!@mkdir(ROOT.$new))
 					$is=False;
 			}
 		}
@@ -1823,23 +1823,23 @@ function kc_f_rd($path,$is=0){
 
 	$path=kc_f_iconv($path,1);
 
-	if(!is_dir(KC_ROOT.$path)) return;
+	if(!is_dir(ROOT.$path)) return;
 
 	$array=kc_f_getdir($path);
 	foreach($array as $val){
 		$file=$path.'/'.$val;
 		if($val!=''){
-			if(is_dir(KC_ROOT.$file)){//目录
+			if(is_dir(ROOT.$file)){//目录
 				kc_f_rd($file,1);
-				rmdir(KC_ROOT.$file);
+				rmdir(ROOT.$file);
 			}else{
 				kc_f_delete($file);
 			}
 
 		}
 	}
-	if(!$is&&is_dir(KC_ROOT.$path)){
-		rmdir(KC_ROOT.$path);
+	if(!$is&&is_dir(ROOT.$path)){
+		rmdir(ROOT.$path);
 	}
 }
 
@@ -1865,13 +1865,13 @@ function kc_f_get_contents($filename){
 		kc_runtime('getContent');
 
 
-		if(is_file(KC_ROOT.$filename)){//如果存在则读取
+		if(is_file(ROOT.$filename)){//如果存在则读取
 /*
-			$s=file_get_contents(KC_ROOT.$filename);
+			$s=file_get_contents(ROOT.$filename);
 
 */
 			$s='';
-			$fh = fopen(KC_ROOT.$filename,"r");
+			$fh = fopen(ROOT.$filename,"r");
 				while (!feof($fh)) {
 				$s.=fgets($fh);
 			}
@@ -1916,7 +1916,7 @@ function kc_f_put_contents($filename,$s,$is=false){
 
 	kc_runtime('putContent');
 
-	$strlen=@file_put_contents(KC_ROOT.$filename,$s,LOCK_EX);
+	$strlen=@file_put_contents(ROOT.$filename,$s,LOCK_EX);
 
 	kc_runtime('putContent',1);
 
@@ -1937,7 +1937,7 @@ function kc_f_put_contents($filename,$s,$is=false){
 function kc_f_isfile($path){
 	$path=kc_f_iconv($path,1);
 
-	return is_file(KC_ROOT.$path);
+	return is_file(ROOT.$path);
 }
 /**
 	删除文件
@@ -1948,8 +1948,8 @@ function kc_f_delete($path){
 
 	$path=kc_f_iconv($path,1);
 
-	if(is_file(KC_ROOT.$path)){
-		return unlink(KC_ROOT.$path);
+	if(is_file(ROOT.$path)){
+		return unlink(ROOT.$path);
 	}
 	return False;
 }
@@ -1963,7 +1963,7 @@ function kc_f_rename($old,$new){
 	if($old===$new) return True;
 	$old=kc_f_iconv($old,1);
 	$new=kc_f_iconv($new,1);
-	return rename(KC_ROOT.$old,KC_ROOT.$new);
+	return rename(ROOT.$old,ROOT.$new);
 }
 /**
 	获得修改时间
@@ -1972,7 +1972,7 @@ function kc_f_rename($old,$new){
 */
 function kc_f_mtime($file){
 	$file=kc_f_iconv($file,1);
-	return filemtime(KC_ROOT.$file);
+	return filemtime(ROOT.$file);
 }
 /**
 	文件操作编码转换
