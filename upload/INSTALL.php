@@ -910,7 +910,7 @@ function king_def(){
 
 	$phpself=$_SERVER['PHP_SELF'];
 	$inst=substr($phpself,0,strlen($phpself)-11);//安装目录
-	$select_type=kc_htm_radio('dbtype',$sel_array,'mysql');//数据库类型
+	$select_type=kc_htm_radio('dbtype',$sel_array,'sqlite');//数据库类型
 
 	$array_dirs=array('config.php','system/js');
 	$array_func=array('mysql_connect','file_get_contents','file_put_contents','simplexml_load_file');//,'fsockopen'
@@ -988,12 +988,12 @@ jQuery(function(\$){
 		<tr><th>".$king->lang->get('system/install/pre')."</th><td><input id=\"pre\" name=\"pre\" class=\"k_in w200\" value=\"king\"/></td></tr>
 		<tr><th>".$king->lang->get('system/install/preadmin')."</th><td><input id=\"preadmin\" name=\"preadmin\" class=\"k_in w200\" value=\"kc\"/></td></tr>
 
-		<tr class=\"mysql\"><th>".$king->lang->get('system/install/dbhost')."</th><td><input id=\"host\" name=\"host\" class=\"k_in w200\" value=\"localhost\"/></td></tr>
-		<tr class=\"mysql\"><th>".$king->lang->get('system/install/dbdata')."</th><td><input id=\"data\" name=\"data\" class=\"k_in w200\" value=\"test\"/></td></tr>
-		<tr class=\"mysql\"><th>".$king->lang->get('system/install/dbuser')."</th><td><input id=\"user\" name=\"user\" class=\"k_in w200\" value=\"root\"/></td></tr>
-		<tr class=\"mysql\"><th>".$king->lang->get('system/install/dbpass')."</th><td><input id=\"pass\" name=\"pass\" class=\"k_in w200\" value=\"\"/></td></tr>
+		<tr class=\"mysql none\"><th>".$king->lang->get('system/install/dbhost')."</th><td><input id=\"host\" name=\"host\" class=\"k_in w200\" value=\"localhost\"/></td></tr>
+		<tr class=\"mysql none\"><th>".$king->lang->get('system/install/dbdata')."</th><td><input id=\"data\" name=\"data\" class=\"k_in w200\" value=\"test\"/></td></tr>
+		<tr class=\"mysql none\"><th>".$king->lang->get('system/install/dbuser')."</th><td><input id=\"user\" name=\"user\" class=\"k_in w200\" value=\"root\"/></td></tr>
+		<tr class=\"mysql none\"><th>".$king->lang->get('system/install/dbpass')."</th><td><input id=\"pass\" name=\"pass\" class=\"k_in w200\" value=\"\"/></td></tr>
 
-		<tr class=\"sqlite none\"><th>".$king->lang->get('system/install/dbfile')."</th><td><input id=\"sqlitedata\" name=\"sqlitedata\" class=\"k_in w200\" value=\"".kc_random(12).".db3\"/></td></tr>
+		<tr class=\"sqlite\"><th>".$king->lang->get('system/install/dbfile')."</th><td><input id=\"sqlitedata\" name=\"sqlitedata\" class=\"k_in w200\" value=\"".kc_random(12).".db3\"/></td></tr>
 	</table>
 
 	<h3 class=\"caption\">".$king->lang->get('system/install/admin')."</h3>

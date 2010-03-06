@@ -483,7 +483,7 @@ function king_ajax_msg(){
 			$rs['klink']
 				? $s.='<a target="_blank" href="'.$rs['klink'].'">'.htmlspecialchars($rs['kmsg']).'</a>'
 				: $s.=htmlspecialchars($rs['kmsg']);
-			$s.='<i>['.kc_formatdate($rs['ndate'],'n-j, g:i A').']</i></span></td></tr>';
+			$s.='<i>['.kc_formatdate($rs['ndate'],'n/j/Y, G:i').']</i></span></td></tr>';
 		}
 		$s.='</table>';
 		$king->cache->put($cachepath,$s);

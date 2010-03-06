@@ -2193,7 +2193,7 @@ function kc_goto($_lang,$_url_ok='',$_url_cancel=''){
 
 */
 function kc_icon($_fname='',$_alt='',$onclick=''){
-	return '<img class="'.$_fname.' os"'.(empty($_alt) ? '' : 'alt="'.addslashes($_alt).'"').' src="../system/images/white.gif"'.($onclick?" onclick=\"{$onclick}\"":'').'/>';
+	return '<img class="'.$_fname.' os"'.(empty($_alt) ? '' : 'title="'.addslashes($_alt).'" alt="'.addslashes($_alt).'"').' src="../system/images/white.gif"'.($onclick?" onclick=\"{$onclick}\"":'').'/>';
 }
 /**
 

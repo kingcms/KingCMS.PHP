@@ -272,7 +272,7 @@ function king_def(){
 		"'{King:Portal.'+K[2]+'}<span class=\"i green\">&lt;-- INNER --&gt;</span>{/King:Portal.'+K[2]+'}'",
 		"'<i>'+K[3]+'</i>'",
 	);
-	$s=$king->openList($_cmd,$_js,$king->db->pagelist('model.php?pid=PID&rn=RN',$king->db->getRows_number('%s_model')));
+	$s=$king->openList($_cmd,'',$_js,$king->db->pagelist('model.php?pid=PID&rn=RN',$king->db->getRows_number('%s_model')));
 
 	$s.="ll('".$king->lang->get('portal/list/modelname')."','manage','".$king->lang->get('portal/list/table')."','".$king->lang->get('portal/list/tag')."','".$king->lang->get('portal/list/klanguage')."',1);";
 
