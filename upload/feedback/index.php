@@ -72,8 +72,8 @@ function king_def(){
 	$s.=$king->htmForm(null,kc_htm_button($king->lang->get('system/common/add'),"\$.kc_ajax({CMD:'add',FORM:'feedback_add'});",1));
 	$s.=$king->closeForm('none');
 
-	$tmp=new KC_Template_class($king->config('templatepath').'/default.htm',$king->config('templatepath').'feedback/default.htm');
-	$tmp->assign('inside',$s);
+	$tmp=new KC_Template_class($king->config('templatepath').'/default.htm',$king->config('templatepath').'/inside/feedback/default.htm');
+	$tmp->assign('content',$s);
 	$tmp->assign('title',$king->lang->get('feedback/name'));
 	$tmp->assign('type','add');
 
