@@ -1382,7 +1382,7 @@ function kc_htm_iframe($src,$width=0,$height=0,$class=''){
 	@return string
 
 */
-function kc_htm_editor($name,$content,$width=780,$height=360,$def='nicEdit',$code='html'){
+function kc_htm_editor($name,$content,$width=780,$height=360,$def='xheditor',$code='html'){
 	global $king;
 
 	if(isset($king->admin['admineditor'])){
@@ -1469,16 +1469,39 @@ function kc_htm_editor($name,$content,$width=780,$height=360,$def='nicEdit',$cod
 			$s.="<textarea id=\"$name\" name=\"$name\" rows=\"15\" cols=\"80\" style=\"width:{$width}px;height:{$height}px\">".htmlspecialchars($content)."</textarea>";
 		break;
 
-		default:
+		case 'nicedit':
 			if(empty($GLOBALS['htm_editor_isread']))
 				$s='<script src="../system/editor/nicEdit/nicEdit.js" type="text/javascript"></script>';
 			$s.='<textarea cols="100" rows="10" style="width:'.$width.'px;height:'.$height.'px;" id="'.$name.'" name="'.$name.'">'.htmlspecialchars($content).'</textarea>';
 			$s.='<script type="text/javascript">new nicEditor({fullPanel : true,iconsPath : \'../system/editor/nicEdit/nicEditorIcons.gif\'}).panelInstance(\''.$name.'\');</script>';
+		break;
+		
+		default:
+			//默认调用xheditor编辑器
+			if(empty($GLOBALS['htm_editor_isread']))
+				$s='<script src="../system/editor/xheditor/xheditor-zh-cn.js" type="text/javascript"></script>';
+			$s.="<script type=\"text/javascript\">
+			\$(pageInit);
+			function pageInit()
+			{
+				var jdata={
+					skin:'vista',
+					upLinkUrl:\"!../system/editor/xheditor/xheditor_plugins/multiupload/multiupload.html?uploadurl=/demos/upload.php&ext=附件文件(*.zip;*.rar;*.txt)\",
+					upImgUrl:'!../system/editor/xheditor/xheditor_plugins/multiupload/multiupload.html?uploadurl=/demos/upload.php&ext=图片文件(*.jpg;*.jpeg;*.gif;*.png)',
+					upFlashUrl:'!../system/editor/xheditor/xheditor_plugins/multiupload/multiupload.html?uploadurl=/demos/upload.php&ext=Flash动画(*.swf)',
+					upMediaUrl:'!../system/editor/xheditor/xheditor_plugins/multiupload/multiupload.html?uploadurl=/demos/upload.php&ext=多媒体文件(*.wmv;*.avi;*.wma;*.mp3;*.mid)',
+					shortcuts:{'ctrl+enter':submitForm}
+				};
+				\$('#$name').xheditor(true,jdata);
+			}
+			function submitForm(){\$('#k_formlist').submit();}
+			</script>";
+
 	}
 
 	$GLOBALS['htm_editor_isread']=True;
 
-	return "<div class=\"k_editor\">$s</div>";
+	return '<div class="k_editor">'.$s.'</div>';
 }
 /**
 	OL选项
