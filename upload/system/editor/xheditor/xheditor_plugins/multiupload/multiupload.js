@@ -88,15 +88,19 @@ function uploadProgress(file, bytesLoaded, bytesTotal)//单文件上传进度
 function uploadSuccess(file, serverData)//单文件上传成功
 {
 	var data;
-	try{eval("data=" + serverData);}catch(ex){};
-	if(data.err!=undefined&&data.msg!=undefined)
-	{
-		uploadSize+=file.size;
-		var url=(typeof data.msg=='string')?data.msg:data.msg.url;
-		setFileState(file.id,'上传成功');
-		arrSuccessUrl.push(url);
-	}
-	else setFileState(file.id,'上传失败！');
+	try{eval("data=" + serverData);
+
+		if(data.err!=undefined&&data.msg!=undefined)
+		{
+			uploadSize+=file.size;
+			var url=(typeof data.msg=='string')?data.msg:data.msg.url;
+			setFileState(file.id,'上传成功');
+			arrSuccessUrl.push(url);
+		}
+		else setFileState(file.id,'上传失败！');
+	}catch(ex){
+		alert(serverData);
+	};
 }
 function uploadError(file, errorCode, message)//单文件上传错误
 {

@@ -4,14 +4,14 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>MultiUpload Demo</title>
 <link href="multiupload.css" rel="stylesheet" type="text/css" />
-<script type="text/javascript" src="../../jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="../../../../js/jquery.js"></script>
 <script type="text/javascript" src="swfupload/swfupload.js"></script>
 <script type="text/javascript" src="multiupload.js"></script>
 <script type="text/javascript">
 $(window).load(pageInit);
 function pageInit()
 {
-	var uploadurl='../upload.php',ext='所有文件 (*.*)',size='2 MB',count=5,useget=0,params={}//默认值 
+	var uploadurl='../../../../upload.php',ext='所有文件 (*.*)',size='20 MB',count=5,useget=0,params={}//默认值
 
 	uploadurl=getQuery('uploadurl')||uploadurl;ext=getQuery('ext')||ext;size=getQuery('size')||size;count=getQuery('count')||count;useget=getQuery('useget')||useget;
 	var tmpParams=getQuery('params');

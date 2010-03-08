@@ -736,7 +736,7 @@ function king_ajax_install(){
 			'adminpass'=>md5(kc_post('adminpass')),
 			'adminlevel'=>'admin',
 			'adminlanguage'=>'zh-cn',
-			'admineditor'=>'nicEdit',
+			'admineditor'=>'xheditor',
 			'adminmode'=>2,
 			'admindate'=>time(),
 			'adminlogin'=>'manage.php',
