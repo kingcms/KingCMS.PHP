@@ -105,6 +105,11 @@ function king_view(){
 		if(!$rs=$king->db->getRows_one("select $sql from %s_feedback where kid=$kid order by norder asc"))
 			kc_error($king->lang->get('system/error/notrecord'));
 
+		foreach ($rs as &$r) {
+			$r=htmlspecialchars($r);
+		}
+		$rs['kcontent']=nl2br($rs['kcontent']);
+
 		$s=$king->openForm($king->lang->get('feedback/name'),'','feedback_edt');
 		$s.=$king->htmForm($king->lang->get('feedback/label/title'),$rs['ktitle']);
 		$s.=$king->htmForm($king->lang->get('feedback/label/name'),$rs['kname']);
@@ -118,6 +123,9 @@ function king_view(){
 		$s.=$king->closeForm('none');
 	}
 
+
+	//设置为已读状态
+	$king->db->update('%s_feedback',array('nread'=>1),'kid='.$kid);
 
 	list($left,$right)=inc_menu();
 	$king->skin->output($king->lang->get('feedback/title/center'),$left,$right,$s);

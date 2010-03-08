@@ -31,7 +31,7 @@ function king_ajax_add(){
 	}
 
 	if($fbtime>time()-3600){
-		kc_ajax($king->lang->get('system/common/tip'),$king->lang->get('feedback/error/name',5),0,$js);
+		kc_ajax($king->lang->get('system/common/tip'),$king->lang->get('feedback/error/name',5),0);
 	}else{
 		//记录本次发布时间
 		setcookie("fbtime",time(),time()+3600,'/');	
