@@ -1013,7 +1013,7 @@ jQuery(function(\$){
 
 	<script type=\"text/javascript\">
 	var dateObj = new Date();
-	var timediff=Math.round((dateObj.getTime()/1000 - ".time().")/3600);
+	var timediff=".date('G',0).";
 	$('#timediff').val(timediff);
 	</script>
 

@@ -652,7 +652,7 @@
 		<adminpass>管理员密码</adminpass>
 
 		<think>感谢您选择使用KingCMS!</think>
-		<update>config.php已升级到正式版!</update>
+		<update>系统已成功升级为正式版!</update>
 
 		<readlicense>我已认真阅读并接受许可协议</readlicense>
 		<license>KingCMS许可协议</license>
