@@ -53,8 +53,8 @@ private $isMng=0;//前后台判断默认0为前台
 public  $holdmodule=array('system','nav','pagelist','list',
 	'menu','menu1','menu2','menu3','menu4','menu5',
 	'const','skin','home','login','default','data');//需要保护的模块目录
-public  $devname='2009 BETA';//版本名称
-public  $version='0.9.158';//内部版本名称
+public  $devname='2010 Released';//版本名称
+public  $version='6.0.808';//内部版本名称
 
 private $dbver=104;//当前系统数据库版本
 
@@ -156,7 +156,7 @@ public function pageEngine(){
 	}
 
 
-	if(!defined('INCDEX')){
+	if(!defined('KC_INDEX')){
 		$path=basename(dirname($_SERVER['PHP_SELF']));
 
 		if(!in_array($path,array('system'))){

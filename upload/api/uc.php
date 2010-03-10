@@ -22,7 +22,7 @@ define('API_RETURN_SUCCEED', '1');
 define('API_RETURN_FAILED', '-1');
 define('API_RETURN_FORBIDDEN', '-2');
 
-define('INCDEX',True);
+define('KC_INDEX',True);
 define('KC_CALL_FUNC',True);
 
 require_once '../global.php';//加载KingCMS

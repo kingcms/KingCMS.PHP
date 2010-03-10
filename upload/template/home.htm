@@ -12,14 +12,14 @@
 <div id="top">
 
 	<span class="block fl w500 left">
-		<a href="{const:system.siteurl/}{const:system.inst/}"><img src="../images/logo.png"/></a>
+		<a href="{config:system.siteurl/}{config:system.inst/}"><img src="../images/logo.png"/></a>
 	</span>
 
 	<span class="block fl w500 right">
 		<strong>
-			<a href="{const:system.siteurl/}en/">English</a>
+			<a href="{config:system.siteurl/}en/">English</a>
 			|
-			<a href="{const:system.siteurl/}">Chinese</a>
+			<a href="{config:system.siteurl/}">Chinese</a>
 		</strong>
 	</span>
 </div>
@@ -51,7 +51,7 @@
 		<a href="#" class="k_user_register">注册</a>
 	{?king:user.state}
 		当前用户：{king:username/},用户ID：{king:userid/}<br/>
-		<a href="{const:system.inst/}user/index.php">用户中心</a>
+		<a href="{config:system.inst/}user/index.php">用户中心</a>
 		<a href="#" class="k_user_logout">退出</a>
 	{/king:user.state}
 

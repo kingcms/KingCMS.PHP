@@ -117,7 +117,18 @@ function uploadfile($inputname)
 				move_uploaded_file($upfile['tmp_name'],ROOT.$target);
 				if($immediate=='1')$target='!'.$target;
 				if($msgtype==1)$msg=$target;
-				else $msg=array('url'=>$king->config('inst').$target,'localname'=>$upfile['name'],'id'=>'1');//id参数固定不变，仅供演示，实际项目中可以是数据库ID
+				else{
+					//写入上传文件记录到数据库
+					$array=array(
+						'kpath'=>$target,
+						'ndate'=>time(),
+						'adminid'=>$king->admin['adminid'],
+						'ntype'=>$extension,
+					);
+					$kid=$king->db->insert('%s_upfile',$array);
+					$msg=array('url'=>$king->config('inst').$target,'localname'=>$upfile['name'],'id'=>$kid);//id参数固定不变，仅供演示，实际项目中可以是数据库ID
+					
+				}
 			}
 		}
 		else $err='上传文件扩展名必需为：'.$upext;
