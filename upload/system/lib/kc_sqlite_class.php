@@ -62,7 +62,7 @@ public function query($sql,$is=0){
 	kc_runtime('DataQuery');//查询计时开始
 
 	$num=stripos($sql,'where');
-	if(isset($num{0})){
+	if(!empty($num)){
 		$sql_left=substr($sql,0,$num);
 		$sql_right=substr($sql,$num);
 		$sql=str_replace(array('%s','%a'),array(DB_PRE,KC_DB_ADMIN),$sql_left).$sql_right;

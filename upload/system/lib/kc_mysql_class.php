@@ -88,7 +88,7 @@ public function query($_str,$is=0){
 	kc_runtime('DataQuery');
 
 	$num=stripos($_str,'where');
-	if(isset($num{0})){
+	if(!empty($num)){
 		$_str_left=substr($sql,0,$num);
 		$_str_right=substr($sql,$num);
 		$_str=str_replace(array('%s','%a'),array(DB_PREFIX,KC_DB_ADMIN),$_str_left).$_str_right;
