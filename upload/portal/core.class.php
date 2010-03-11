@@ -2984,6 +2984,10 @@ public function install_update($ver){
 		$king->db->alterTable('%s_model',$sql);
 		$sql='ncommentnumber int not null default 20';
 		$king->db->alterTable('%s_model',$sql);
+		$_array=array(
+					  'ktemplatecomment'=>$king->config('templatepath').'/default.htm',
+					  );
+		$king->db->update('%s_model',$_array);
 	}
 	
 	return True;

@@ -10,7 +10,6 @@
 
 	<CHANNEL>
 		<center access="feedback" href="../feedback/manage.php" img="p7">留言管理</center>
-		<add access="feedback_edt" href="../feedback/manage.php?action=del" img="p8">删除留言</add>
 	</CHANNEL>
 
 	<const>

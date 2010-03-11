@@ -81,6 +81,12 @@
 		<portal_express_delete>删除</portal_express_delete>
 		<close9>]</close9>
 
+		<br9>|</br9>
+		
+		<open10>评论管理[</open10>
+		<portal_comment>查看</portal_comment>
+		<portal_comment_delete>删除</portal_comment_delete>
+		<close10>]</close10>
 	</ACCESS>
 
 	<CHANNEL>
@@ -88,6 +94,7 @@
 		<add access="portal_list_edt" href="../portal/manage.php?action=edt">添加栏目</add>
 		<model access="portal_model" href="../portal/manage.model.php" class="hr" img="a2">模型管理</model>
 		<tag access="portal_tag" href="../portal/manage.tag.php" img="i5">标签管理</tag>
+		<comment access="portal_comment" href="../portal/manage.comment.php" img="r2">评论管理</comment>
 		<site access="portal_site" href="../portal/manage.php?action=site">域名绑定</site>
 		<rewriterule access="portal_rewriterule" href="javascript:;" class="k_ajax" rel="{URL:'../portal/manage.php',CMD:'rewriterule'}">伪静态规则</rewriterule>
 		<orders access="portal_orders" href="../portal/manage.orders.php" class="hr" img="p1">订单管理</orders>
@@ -146,6 +153,7 @@
 		<relate>搜索插入相关内容</relate>
 		<site>域名绑定</site>
 		<tag>标签管理</tag>
+		<comment>评论管理</comment>
 		<tagedt>编辑标签</tagedt>
 		<tagadd>添加标签</tagadd>
 		<create>生成进度</create>
@@ -485,6 +493,9 @@
 		<pub2>草稿(验证后发布)</pub2>
 		<listid1>上级栏目</listid1>
 		<rule>伪静态规则</rule>
+		<author>作者</author>
+		<content>内容</content>
+		<date>日期</date>
 
 		<listeditor>栏目编辑员</listeditor>
 		<issub>从属</issub>

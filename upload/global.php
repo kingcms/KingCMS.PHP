@@ -94,7 +94,6 @@ kc_pageLoad();
 $king=new KingCMS_class;
 
 if(!empty($isupdate)){//检测是否Beta版更新为正式版
-	$cachepath='system/message';
 	$_array=array(
 		'kmsg'=>$king->lang->get('system/install/update'),
 		'adminname'=>'CiBill',
@@ -103,6 +102,7 @@ if(!empty($isupdate)){//检测是否Beta版更新为正式版
 		'klink'=>'',
 	);
 	$king->db->insert('%s_message',$_array);
+	$cachepath='system/message';
 	$king->cache->rd($cachepath);
 	
 	$_array=array(
