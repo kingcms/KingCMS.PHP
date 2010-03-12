@@ -89,8 +89,8 @@ public function query($_str,$is=0){
 
 	$num=stripos($_str,'where');
 	if(!empty($num)){
-		$_str_left=substr($sql,0,$num);
-		$_str_right=substr($sql,$num);
+		$_str_left=substr($_str,0,$num);
+		$_str_right=substr($_str,$num);
 		$_str=str_replace(array('%s','%a'),array(DB_PREFIX,KC_DB_ADMIN),$_str_left).$_str_right;
 	}else{
 		$_str=str_replace(array('%s','%a'),array(DB_PREFIX,KC_DB_ADMIN),$_str);
@@ -187,6 +187,7 @@ public function getRows($_sql,$_is=0,$_pid=0,$_rn=0){
 
 	$this->query($_sql);
 	$this->getRows_number();
+	
 	for($i=0;$i<$this->Rows;$i++){
 		if(!mysql_data_seek($this->mQuery,$i)){
 
