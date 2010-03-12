@@ -110,6 +110,12 @@ if(!empty($isupdate)){//检测是否Beta版更新为正式版
 	);
 	$_where='admineditor=\'nicedit\'';
 	$king->db->update('%s_admin',$_array,$_where);
+	
+	$_array=array(
+		'kvalue'=>'/',
+	);
+	$_where='kname=\'inst\' and kvalue=\'\'';
+	$king->db->update('%s_system',$_array,$_where);
 }
 
 DEBUG && set_error_handler('kc_error_handler');
