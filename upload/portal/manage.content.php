@@ -810,10 +810,10 @@ listid  当前正在生成中的列表id
 								list($msecSta,$secSta)=explode(' ',microtime());//计算 开始生成用时
 								if($create=='not'){//生成未生成内容
 									if($i==1){//第一个为主题页
-										$filepath=$id['kfilepath'];
+										$filepath=$id['kpath'];
 									}else{
 										$id1=$king->portal->infoID($listid,$subkids[$i-1]);
-										$filepath=$id1['kfilepath'];
+										$filepath=$id1['kpath'];
 									}
 
 									if(is_file(ROOT.$filepath)){//如果文件存在，则跳出这次循环

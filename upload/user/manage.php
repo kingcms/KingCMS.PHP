@@ -256,9 +256,9 @@ function king_def(){
 	$s='<p class="k_table_title">&nbsp;</p>';
 
 	$s=$king->openForm('',$king->lang->get('user/caption/info'),'block_add');
-	$s.='<tr><th>'.$king->lang->get('portal/user/count').'</th><td class="w200">'.$king->db->getRows_number('%s_user').'</td>';
+	$s.='<tr><th>'.$king->lang->get('portal/user/count').'</th><td class="w200">'.$king->db->getRows_number('%s_user','isdelete=0').'</td>';
 	//今日注册用户
-	$todaycount=$king->db->getRows_number('%s_user','regdate>'.(ceil(time()/86400-1)*86400));
+	$todaycount=$king->db->getRows_number('%s_user','isdelete=0 and regdate>'.(ceil((time()+$king->config('timediff')*3600)/86400-1)*86400));
 	$s.='<th>'.$king->lang->get('user/list/todaycount').'</th><td class="w200">'.$todaycount.'</td>';
 	$s.='<td><img src="../system/images/white.gif" class="os c6"/><a href="javascript:;" class="k_ajax" rel="{CMD:\'adduser\',METHOD:\'GET\'}">'.$king->lang->get('user/common/adduser').'</a></td></tr>';
 	$s.=$king->closeForm('none');

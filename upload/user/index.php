@@ -54,7 +54,7 @@ function king_ajax_login(){
 						$userid=$res['userid'];
 						if(md5($res['ksalt'].$data['userpass'])==$res['userpass']){//检测密码
 							$uid=uc_user_register($username,$data['userpass'],$res['usermail']);//注册用户到uc
-							$king->db->update('%s_user',array('lastlogindate'=>time(),'uid'=>($uid>0?$uid:0)),'username=\''.$king->db->escape($username.'\''));
+							$king->db->update('%s_user',array('lastlogindate'=>time(),'uid'=>($uid>0?$uid:0),'isdelete'=>'0'),'username=\''.$king->db->escape($username).'\'');
 							uc_user_login($data['username'],$data['userpass']);
 						}else{
 							$is=True;
@@ -68,17 +68,16 @@ function king_ajax_login(){
 
 					$uid=$array_uc[0];//UC中的UID
 
-					if($res=$king->db->getRows_one("select userpass,ksalt,userid from %s_user where username='".$king->db->escape($username)."'")){//如果有这么个账号
+					if($res=$king->db->getRows_one("select userpass,ksalt,userid,isdelete from %s_user where username='".$king->db->escape($username)."'")){//如果有这么个账号
 						$userid=$res['userid'];
 						if(md5($res['ksalt'].$data['userpass'])!=$res['userpass']){//若不一致，则进行更新
 							$userpass=md5($res['ksalt'].$data['userpass']);
-							$king->db->update('%s_user',array('userpass'=>$userpass,'lastlogindate'=>time()),'username=\''.$king->db->escape($username.'\''));
+							$king->db->update('%s_user',array('userpass'=>$userpass,'lastlogindate'=>time(),'isdelete'=>'0'),'username=\''.$king->db->escape($username).'\'');
 						}else{
-							$king->db->update('%s_user',array('lastlogindate'=>time()),'username=\''.$king->db->escape($username.'\''));
+							$king->db->update('%s_user',array('lastlogindate'=>time(),'isdelete'=>'0'),'username=\''.$king->db->escape($username).'\'');
 						}
 					}else{//如果本地没有这个账号，则添加
 						$usermail=$array_uc[3];
-
 						$ksalt=kc_random(6);
 						$array=array(
 							'username'=>$username,
@@ -87,9 +86,8 @@ function king_ajax_login(){
 							'ksalt'=>$ksalt,
 							'uid'=>$uid,
 							'regdate'=>time(),
-							'lastlogindate'=>kc_now(),
+							'lastlogindate'=>time(),
 						);
-
 						$king->db->insert('%s_user',$array);
 						$res=$king->db->getRows_one("select userid from %s_user where uid='".$uid."' and isdelete=0");
 						$userid=$res['userid'];
@@ -199,7 +197,7 @@ function king_ajax_register(){
 		);
 		if($king->user->isuc && $GLOBALS['ismethod']){//有提交操作的时候才做验证
 			$ucheck=uc_user_checkname(kc_post('username'));
-			$_array[]=array('username',12,$king->lang->get('system/check/reg/u'.$ucheck),$ucheck!=1);
+			$_array[]=array('username',12,$king->lang->get('portal/check/reg/u'.$ucheck),$ucheck!=1);
 		}
 		$s=$king->htmForm($king->lang->get('portal/user/name').' (3-15)','<input class="k_in w150" type="text" name="username" value="'.htmlspecialchars(kc_post('username')).'" maxlength="15" />',$_array);
 		//pass
@@ -219,7 +217,7 @@ function king_ajax_register(){
 		);
 		if($king->user->isuc && $GLOBALS['ismethod']){//有提交操作的时候才做验证
 			$ucheck=uc_user_checkemail(kc_post('usermail'));
-			$_array[]=array('usermail',12,$king->lang->get('system/check/reg/u'.$ucheck),$ucheck!=1);
+			$_array[]=array('usermail',12,$king->lang->get('portal/check/reg/u'.$ucheck),$ucheck!=1);
 
 		}
 		$s.=$king->htmForm($king->lang->get('portal/user/mail'),'<input class="k_in w250" type="text" name="usermail" value="'.htmlspecialchars($data['usermail']).'" maxlength="32" />',$_array);

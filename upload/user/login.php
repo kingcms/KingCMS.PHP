@@ -61,7 +61,7 @@ function king_def(){
 						$userid=$res['userid'];
 						if(md5($res['ksalt'].$data['userpass'])==$res['userpass']){//检测密码
 							$uid=uc_user_register($username,$data['userpass'],$res['usermail']);//注册用户到uc
-							$king->db->update('%s_user',array('lastlogindate'=>time(),'uid'=>($uid>0?$uid:0)),'username=\''.$king->db->escape($username.'\''));
+							$king->db->update('%s_user',array('lastlogindate'=>time(),'uid'=>($uid>0?$uid:0),'isdelete'=>'0'),'username=\''.$king->db->escape($username).'\'');
 							uc_user_login($data['username'],$data['userpass']);
 						}else{
 							$is=True;
@@ -78,9 +78,9 @@ function king_def(){
 						$userid=$res['userid'];
 						if(md5($res['ksalt'].$data['userpass'])!=$res['userpass']){//若不一致，则进行更新
 							$userpass=md5($res['ksalt'].$data['userpass']);
-							$king->db->update('%s_user',array('userpass'=>$userpass,'lastlogindate'=>time()),'username=\''.$king->db->escape($username.'\''));
+							$king->db->update('%s_user',array('userpass'=>$userpass,'lastlogindate'=>time(),'isdelete'=>'0'),'username=\''.$king->db->escape($username.'\''));
 						}else{
-							$king->db->update('%s_user',array('lastlogindate'=>time()),'username=\''.$king->db->escape($username.'\''));
+							$king->db->update('%s_user',array('lastlogindate'=>time(),'isdelete'=>'0'),'username=\''.$king->db->escape($username).'\'');
 						}
 					}else{//如果本地没有这个账号，则添加
 						$usermail=$array_uc[3];
