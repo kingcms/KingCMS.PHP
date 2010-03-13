@@ -3547,7 +3547,6 @@ modelid
 
 	}else{//普通的调用
 		$modelid=array_search($modeltable,$modeltables);
-
 		$model=$this->infoModel($modelid);
 
 		//关联字段
@@ -3601,9 +3600,9 @@ modelid
 	}
 
 	//判断是否有图片，需要对$inner进行预搜索
-	if(stripos($inner,'{king:image')!==False && !in_array($type,array('list','page','pagelist','relate','search'))){
-		$where.=" and kimage<>''";
-	}
+	//if(stripos($inner,'{king:image')!==False && !in_array($type,array('list','page','pagelist','relate','search'))){
+	//	$where.=" and kimage<>''";
+	//}
 
 	//SQL扩展属性where,这个功能是标签解析不稳定的隐患功能。
 	if(isset($attrib['where'])){
@@ -3680,7 +3679,6 @@ modelid
 		}
 
 	}
-
 	$tmp=new KC_Template_class;
 
 	$s='';
