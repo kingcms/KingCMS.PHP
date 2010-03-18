@@ -2522,7 +2522,11 @@ function kc_formatPath($path,$pid=1,$is=0){
 		}
 
 	}else{//有PID
-		$path=str_replace($king->config('pidline').'PID',$pid==1?'':$king->config('pidline').$pid,$path);
+		if(strpos($path,'manage.')===False){//后台列表页面
+			$path=str_replace($king->config('pidline').'PID',$pid==1?'':$king->config('pidline').$pid,$path);
+		}else{//后台列表页面
+			$path=str_replace('PID',$pid,$path);
+		}
 		if($is && substr($path,-1,1)=='/'){//输出生成地址
 			$path.=$king->config('file');
 		}
