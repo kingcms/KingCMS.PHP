@@ -1095,8 +1095,21 @@ public function enModelCode($modelid){
 	if(!$resModel=$king->db->getRows("select * from %s_model where modelid={$modelid}"))
 		kc_error($king->lang->get('system/error/param').kc_clew(__FILE__,__LINE__));
 
+	//kc_error(print_r($resModel,1));
+	foreach ($resModel as $key => $arr) {
+		foreach ($arr as $k =>$v) {
+			if(is_int($k)) unset($resModel[$key][$k]);
+		}
+	}
+
 	if(!$resField=$king->db->getRows("select * from %s_field where modelid={$modelid} order by kid"))
 		$resField=array();
+
+	foreach ($resField as $key => $arr) {
+		foreach ($arr as $k =>$v) {
+			if(is_int($k)) unset($resField[$key][$k]);
+		}
+	}
 
 	$array=array(
 		'model'=>$resModel,
