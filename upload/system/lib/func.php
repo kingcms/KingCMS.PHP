@@ -2303,12 +2303,13 @@ function kc_likey($query,$field='ktitle',$is='and'){
 	日期格式化
 	@param int    $time
 	@param string $mode 输出模式，这个属性有点多余，完全可以用gmdate来实现
+	@param bool $is 模式
 	@return string
 */
-function kc_formatdate($time,$mode='Y-m-d'){
+function kc_formatdate($time,$mode='Y-m-d',$is=false){
 	global $king;
 
-	if($mode!='Y-m-d'){
+	if(($mode!='Y-m-d')||$is==true ){
 		$time+=$king->config('timediff')*3600;
 		$s=gmdate($mode,$time);
 	}else{

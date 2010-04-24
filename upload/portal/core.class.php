@@ -757,7 +757,7 @@ $sql='ktitle,kfield,ntype,nvalidate,nsizemin,nsizemax,kdefault,koption,nstylewid
 			if($rs['nvalidate']!=0)
 				$c[]=array($f,$rs['nvalidate']);
 
-			$date=$data[$f]=='TODAY'?kc_formatdate(time(),"Y-m-d"):$data[$f];
+			$date=$data[$f]=='TODAY'?kc_formatdate(time(),"Y-m-d",1):$data[$f];
 			$s=kc_htm_input($f,$date,30,100);
 			$s.="<a href=\"javascript:;\" class=\"k_calendar\" rel=\"{id:'{$f}'}\"><img src=\"../system/images/white.gif\" class=\"os k9\"/></a>";
 			/*
@@ -1838,7 +1838,7 @@ public function getTag($str,$key=''){
 		files
 	@return
 */
-private function tab2array($kid,$s,$type){
+public function tab2array($listid,$kid,$s,$type){
 	if(empty($s)) return false;
 
 	global $king;
@@ -1852,11 +1852,11 @@ private function tab2array($kid,$s,$type){
 		list($value,$title)=kc_explode("\t",$val,2);
 		switch($type){
 			case 'images':
-				$array[]=array('kid'=>$kid,'title'=>$title,'image'=>$value);
+				$array[]=array('listid'=>$listid,'kid'=>$kid,'title'=>$title,'image'=>$value);
 			break;
 		
 			case 'files':
-				$array[]=array('kid'=>$kid,'title'=>$title,'file'=>(kc_validate($value,6) ? $value : $king->config('inst').$value));
+				$array[]=array('listid'=>$listid,'kid'=>$kid,'title'=>$title,'file'=>(kc_validate($value,6) ? $value : $king->config('inst').$value));
 			break;
 		
 		}
@@ -3125,12 +3125,12 @@ public function createPage($listid,$kid,$pid=1,$is=null){
 	}
 
 	foreach($model['field']['images'] as $key => $val){//图片组类型
-		$array=$this->tab2array($kid,kc_val($id,$key),'images');
+		$array=$this->tab2array($listid,$kid,kc_val($id,$key),'images');
 		$tmp->assign(substr($key,1),$array);//替换已经提交过的字符串值
 	}
 
 	foreach($model['field']['files'] as $key => $val){//文件组类型
-		$array=$this->tab2array($kid,kc_val($id,$key),'files');
+		$array=$this->tab2array($listid,$kid,kc_val($id,$key),'files');
 		$tmp->assign(substr($key,1),$array);
 	}
 
@@ -3719,12 +3719,12 @@ modelid
 		}
 
 		foreach($model['field']['images'] as $key => $val){//图片类型
-			$array=$this->tab2array($kid,kc_val($id,$key),'images');
+			$array=$this->tab2array($listid,$kid,kc_val($id,$key),'images');
 			$tmp->assign(substr($key,1),$array);//替换已经提交过的字符串值
 		}
 
 		foreach($model['field']['files'] as $key => $val){//文件
-			$array=$this->tab2array($kid,kc_val($id,$key),'files');
+			$array=$this->tab2array($listid,$kid,kc_val($id,$key),'files');
 			$tmp->assign(substr($key,1),$array);
 		}
 

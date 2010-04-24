@@ -497,6 +497,7 @@ $.kc_formatdate=function(timec){
 	return(s);
 }
 
+*/
 $.kc_double=function(s){
 	var I1,ss;
 	ss=s.toString(10);
@@ -509,7 +510,6 @@ $.kc_double=function(s){
 	}
 	return I1;
 }
-*/
 
 
 /**
@@ -760,13 +760,13 @@ $.kc_calendar_show=function(d,id){
 
 	$('#k_calendar_Fly a').attr('href','javascript:;').click(function(){
 		if(this.rel==''){//判断是否有rel值，若没有rel值，则直接插入对应的值
-			$('#'+id).val(dd[0]+'-'+dd[1]+'-'+$(this).text());
+			$('#'+id).val(dd[0]+'-'+$.kc_double(dd[1])+'-'+$.kc_double($(this).text()));
 			$('#k_calendar_Fly').fadeOut(300);
 		}else{//若有rel值，则读取并进行判断
 			var r=eval('('+this.rel+')');
 			if(r.month!=undefined){//<<>>来调整上下月份及年份
 				var ndd=new Date(dd[0],dd[1]-1+r.month,1);
-				var nd=ndd.getFullYear()+'-'+(ndd.getMonth()+1)+'-'+dd[2];
+				var nd=ndd.getFullYear()+'-'+$.kc_double(ndd.getMonth()+1)+'-'+$.kc_double(dd[2]);
 				$.kc_calendar_show(nd,id);
 			}else{//这边还可以继续扩展展开显示,先不写了
 
