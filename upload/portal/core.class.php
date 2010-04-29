@@ -3611,6 +3611,21 @@ modelid
 			$where.=" and listid in (".implode(',',$lists).")";
 		}
 	}
+	//listid1属性
+	$listid1=isset($attrib['listid1']) ? $attrib['listid1'] : '';
+	if (kc_validate($listid1,2) || kc_validate($listid1,3)) {
+		$lists=array();
+		$list1s=$king->db->getRows("select listid from %s_list where ".(kc_validate($listid1,2) ? 'listid1='.$listid1 : 'listid1 in ('.$listid1.')'));
+		if (!empty($list1s)) {
+			foreach ($list1s as $rs) {
+				$lists[]=$rs['listid'];
+			}
+		}
+		exit($listid1);
+		if (!empty($lists)) {
+			$where.=" and listid in (".implode(',',$lists).")";
+		}
+	}
 
 	//判断是否有图片，需要对$inner进行预搜索
 	//if(stripos($inner,'{king:image')!==False && !in_array($type,array('list','page','pagelist','relate','search'))){
