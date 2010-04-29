@@ -36,6 +36,8 @@ function king_def(){
 	$tmp->assign('modelid',$modelid);//传递模型id
 	$tmp->assign('listid',$listid);//传递列表id
 	$tmp->assign('kid',$kid);//传递文章id
+	$tmp->assign('kid1',empty($id['kid1'])?0:$id['kid1']);
+	$tmp->assign('type','page');
 	$tmp->assign('comment',$id['ncomment']);//评论统计
 	echo $tmp->output();
 }
