@@ -453,7 +453,8 @@ private function str_format($s,$attrib){
 	//默认填充
 	if(array_key_exists('none',$attrib)){
 		$none=$attrib['none'];
-		if(!isset($s{0})){
+		if(empty($s)){
+	//	exit('<pre>'.print_r($attrib,1));
 			$s=$none;
 		}
 	}
@@ -520,6 +521,34 @@ private function attribBack($m){
 		case 'king':
 			$s=kc_val($this->tempArray,$m[3]);//值
 			if(false!==($ret=$this->sysinfo($m[3]))) return $ret;
+		//exit(print_r($m,1));
+			$clsName=kc_f_name($m[3]);
+			global $king;
+			if($king->isModule($clsName)){
+				$classname=$clsName.'_class';
+				$cls=new $classname;
+				$s=$cls->tag($name,'',$ass,$attrib);
+			}
+			return $s;
+
+/*
+			//获得ClassName
+			$clsName=kc_f_name($name);
+
+			if(in_array($clsName,array('skin'))){//,'db'
+				$s=$king->$clsName->tag($name,'',$ass,$attrib);
+			//判断这个class是否已经被安装
+			}elseif($king->isModule($clsName)){
+				$classname=$clsName.'_class';
+				$cls=new $classname;
+				$s=$cls->tag($name,'',$ass,$attrib);
+			}elseif(in_array($clsName,array('keywords','description'))){
+				$s=$ass['title'];
+			}else{
+				$s="";
+			}
+			*/
+
 		/*
 			if(in_array($m[3],array('root','version','cms'))){
 				global $king;
@@ -530,6 +559,9 @@ private function attribBack($m){
 				}
 				return $s;
 			}
+
+
+
 		*/
 		break;
 
