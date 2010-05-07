@@ -3316,7 +3316,7 @@ public function tag($name,$inner,$ass,$attrib){
 
 			case 'tag':return $this->tag_tag($inner,$attrib);
 			
-			case 'comment':return $this->tag_comment($inner,$attrib);
+			case 'comment':return $this->tag_comment($inner,$attrib,$ass);
 
 			default:return;
 		}
@@ -3425,7 +3425,7 @@ public function tag($name,$inner,$ass,$attrib){
 				return False;
 
 			$order='norder asc';
-			if($ass['type']=='page'){
+			if($ass['type']=='page' || $ass['type']=='comment'){
 				if($ass['kid1']==0){
 					$where=" and (kid={$ass['kid']} or kid1={$ass['kid']})";
 				}else{
@@ -3608,21 +3608,6 @@ modelid
 		if(count($lists)===1){
 			$where.=" and listid={$lists[0]}";
 		}elseif(count($lists)>1){
-			$where.=" and listid in (".implode(',',$lists).")";
-		}
-	}
-	//listid1属性
-	$listid1=isset($attrib['listid1']) ? $attrib['listid1'] : '';
-	if (kc_validate($listid1,2) || kc_validate($listid1,3)) {
-		$lists=array();
-		$list1s=$king->db->getRows("select listid from %s_list where ".(kc_validate($listid1,2) ? 'listid1='.$listid1 : 'listid1 in ('.$listid1.')'));
-		if (!empty($list1s)) {
-			foreach ($list1s as $rs) {
-				$lists[]=$rs['listid'];
-			}
-		}
-		exit($listid1);
-		if (!empty($lists)) {
 			$where.=" and listid in (".implode(',',$lists).")";
 		}
 	}
@@ -4069,6 +4054,18 @@ public function tag_pagelist($inner,$ass,$attrib){
 		return $pagelist;
 	}
 
+	//评论分页
+	if ($type=='comment') {
+		$count=$ass['count'];
+		$listid=kc_val($ass,'listid');
+		$kid=kc_val($ass,'kid');
+		$pid=kc_val($ass,'pid');
+		$rn=kc_val($ass,'rn');
+		$url="comment.php?modelid=$modelid&listid=$listid&kid=$kid&pid=PID&rn=RN";
+		$pagelist=kc_pagelist($url,$count,$pid,$rn,$inner);
+		return $pagelist;
+	}
+
 	//搜索
 	if($type=='search' && $modelid>0){
 		$model=$this->infoModel($modelid);
@@ -4347,14 +4344,16 @@ private function tag_tag($inner,$attrib){
 	@param
 	@return
 */
-private function tag_comment($inner,$attrib){
+private function tag_comment($inner,$attrib,$ass){
 	global $king;
 	//读取数量
-	$number=kc_val($attrib,'number',30);
-	$number=kc_validate($number,2) ? $number : 30;
+	//exit('<pre>'.print_r($ass,1));
+	$number=isset($attrib['number']) ? $attrib['number'] : $ass['rn'];
+	//$number=kc_validate($number,2) ? $number : 10;
 	//跳过条数
 	$skip=kc_val($attrib,'skip',0);
 	$skip=kc_validate($skip,2) ? $skip : 0;
+	//exit($number);
 	//查询条件
 	$whereArray=array();
 	$modelid=kc_val($attrib,'modelid');//modelid

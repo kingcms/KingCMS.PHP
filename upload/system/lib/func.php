@@ -2469,7 +2469,8 @@ function kc_pagelist($_url='',$_per,$_pid=1,$_rn=20,$_inner=null){
 	$_pid==$_count
 		? $last='<strong>Last &gt;&gt;</strong>'
 		: $last='<a href="'.kc_formatpath($_url,$_count).'">Last &gt;&gt;</a>';
-
+//exit($_inner);
+//exit($_url);
 	//jump
 	$jump='<input type="text" size="3" onkeydown="if(event.keyCode==13) {window.location=\''.kc_formatpath($_url,"'+this.value+'").'\'; return false;}" />';//sprintf(str_replace('pid=PID','pid=%s',$_url),"'+this.value+'",$_rn)
 
@@ -2524,13 +2525,20 @@ function kc_formatPath($path,$pid=1,$is=0){
 
 	}else{//有PID
 		if(strpos($path,'manage.')===False){//后台列表页面
-			$path=str_replace($king->config('pidline').'PID',$pid==1?'':$king->config('pidline').$pid,$path);
+			if (strpos($king->config('pidline').'PID',$path)===False) {
+				$path=str_replace('PID',$pid,$path);
+	//echo $path.'<br/>';
+			}else{
+				$path=str_replace($king->config('pidline').'PID',$pid==1?'':$king->config('pidline').$pid,$path);
+			}
 		}else{//后台列表页面
 			$path=str_replace('PID',$pid,$path);
+
 		}
 		if($is && substr($path,-1,1)=='/'){//输出生成地址
 			$path.=$king->config('file');
 		}
+		//exit($path);
 	}
 	return $path;
 }
