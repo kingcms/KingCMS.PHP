@@ -432,6 +432,7 @@ function kc_check($_array){
 					$_is=True;break;
 				}
 			}
+			break;
 		case 33 :$_is=(!kc_validate($post,33));break;
 		break;
 
