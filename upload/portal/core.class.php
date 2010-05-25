@@ -748,7 +748,7 @@ $sql='ktitle,kfield,ntype,nvalidate,nsizemin,nsizemax,kdefault,koption,nstylewid
 			$c[]=array($f,20,null,array('',1));
 			$checked=$data[$f]?' checked="checked"':'';
 			$s='<input'.$checked.' type="checkbox" id="'.$f.'" name="'.$f.'" value="1" />';
-			$s.='<label for="'.$f.'">'.($group?$king->lang->get('system/common/selectyes'):htmlspecialchars($rs['ktitle'])).'</label>';
+			$s.='<label for="'.$f.'">'.($group==1?$king->lang->get('system/common/selectyes'):htmlspecialchars($rs['ktitle'])).'</label>';
 		break;
 
 		case 14://日期
@@ -801,7 +801,7 @@ $sql='ktitle,kfield,ntype,nvalidate,nsizemin,nsizemax,kdefault,koption,nstylewid
 	if($group==1){
 		if($is==1){//后台调用
 			if(($rs['ntype']==0&&$f=='nattrib')||$rs['ntype']==99){//组输出,不需要标签
-				return $king->htmForm($rs['ktitle'],$s,$c,'',$h);
+				return $king->htmForm($rs['ktitle'],$s,$c,'',$h,0);
 			}else{
 				return $king->htmForm($rs['ktitle'],$s,$c,substr($f,1),$h);
 			}
