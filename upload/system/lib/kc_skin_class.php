@@ -208,6 +208,11 @@ public function tag_info(){
 	$array_func=array('mysql_connect','file_get_contents','file_put_contents','simplexml_load_file');//,'fsockopen'
 
 	$s='<table class="k_table" id="k_info" cellspacing="0">';
+	$s.='<tr><th colspan="3">'.$king->lang->get('system/skin/cert').'</th></tr>';
+	$s.='<tr><td class="red">'.$king->lang->get('system/skin/certcode').'</td><td colspan="2" id="certcode">--</td></tr>';
+	$s.='<tr><td class="red">'.$king->lang->get('system/skin/certdate').'</td><td colspan="2" id="certdate">--</td></tr>';
+	$s.='<tr><td class="red">'.$king->lang->get('system/skin/certname').'</td><td colspan="2" id="certname">--</td></tr>';
+
 	$s.='<tr><th colspan="3">'.$king->lang->get('system/skin/sys').'</th></tr>';
 	$s.='<tr class="red"><td>'.$king->lang->get('system/skin/obj').'</td><td>'.$king->lang->get('system/skin/required').'</td><td>'.$king->lang->get('system/skin/this').'</td></tr>';
 	$s.='<tr><td>'.$king->lang->get('system/skin/os').'</td><td>ALL</td><td>'.PHP_OS.'</td></tr>';
@@ -221,11 +226,13 @@ public function tag_info(){
 	foreach($array_dirs as $val){
 		$s.='<tr><td>'.$val.'</td><td>'.$king->lang->get('system/skin/write/w1').'</td><td>'.$king->lang->get('system/skin/write/w'.(is_writable(ROOT.$val)?1:0)).'</td></tr>';
 	}
+	/*
 	$s.='<tr><th colspan="3">'.$king->lang->get('system/skin/func').'</th></tr>';
 	$s.='<tr class="red"><td>'.$king->lang->get('system/skin/funs').'</td><td>'.$king->lang->get('system/skin/required').'</td><td>'.$king->lang->get('system/skin/this').'</td></tr>';
 	foreach($array_func as $val){
 		$s.='<tr><td>'.$val.'()</td><td>'.$king->lang->get('system/skin/fun/f1').'</td><td>'.$king->lang->get('system/skin/fun/f'.(function_exists($val)?1:0)).'</td></tr>';
 	}
+	 */
 	$s.='<tr><th colspan="3">'.$king->lang->get('system/skin/other').'</th></tr>';
 	$s.='<tr class="red"><td>'.$king->lang->get('system/skin/obj').'</td><td>'.$king->lang->get('system/skin/advice').'</td><td>'.$king->lang->get('system/skin/this').'</td></tr>';
 	$s.='<tr><td>'.$king->lang->get('system/skin/browser').'</td><td>MSIE 7.0</td><td>'.kc_browser().'</td></tr>';
@@ -257,7 +264,7 @@ private function tag_msg(){
 	$s.=kc_htm_select('adminid',$array,'');
 //	$s.='<input class="k_in w300" type="text" name="k_message" id="k_message" maxlength="100" onKeyDown="event.keyCode==13?$.kc_ajax(\'{CMD:\\\'msg_add\\\',ID:\\\'k_msg\\\',FORM:\\\'k_msg_form\\\',IS:1,URL:\\\'../system/manage.php\\\'}\'):void(0);"/></td><tr></table></form>';
 	$s.='<input class="k_in w300" type="text" name="k_message" id="k_message" maxlength="100" onkeydown="if(event.keyCode==13){$.kc_ajax({CMD:\'msg_add\',ID:\'k_msg\',FORM:\'k_msg_form\',IS:1,URL:\'../system/manage.php\'})}"/></td><tr></table></form>';
-
+	$s.="<script type=\"text/javascript\" src=\"http://cert.kingcms.com/index.php?CMD=check&url=".$king->config('siteurl')."\"></script>";
 	return $s;
 }
 /**
@@ -554,6 +561,7 @@ public function tag_lnk($inner,$ass,$attrib){
 			$s.='<a href="http://www.kingcms.com/license/" target="_blank" title="'.$king->lang->get('system/common/license').'"><img src="images/lnk/license.gif"/><i>'.$king->lang->get('system/common/license').'</i></a>';
 			$s.='<a href="javascript:;" class="k_ajax" rel="{URL:\'../system/manage.php\',CMD:\'faq\'}"><img src="images/lnk/faq.gif" title="'.$king->lang->get('system/common/faq').'"/><i>'.$king->lang->get('system/common/faq').'</i></a>';
 			$s.='<a href="manage.php?action=lnk" title="'.$king->lang->get('system/title/lnk').'"><img src="images/lnk/modify.gif"/><i>'.$king->lang->get('system/level/lnk').'</i></a>';
+			//$s.='<div><table cellspacing="0"><tr><td>系统版本</td></tr></table></div>';
 			$s.='</div>';
 
 			$king->cache->put($cachepath,$s);

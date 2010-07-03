@@ -191,6 +191,10 @@
 		<funs>函数</funs>
 		<maxetime>脚本最大执行时间</maxetime>
 		<safemode>安全模式</safemode>
+		<cert>授权信息</cert>
+		<certcode>授权编号</certcode>
+		<certdate>授权时间</certdate>
+		<certname>授权持有人</certname>
 		<open>
 			<o1>开启</o1>
 			<o0>关闭</o0>
