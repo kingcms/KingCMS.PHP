@@ -195,6 +195,7 @@
 		<certcode>授权编号</certcode>
 		<certdate>授权时间</certdate>
 		<certname>授权持有人</certname>
+		<certurl>授权域名</certurl>
 		<open>
 			<o1>开启</o1>
 			<o0>关闭</o0>

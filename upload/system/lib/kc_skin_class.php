@@ -210,8 +210,9 @@ public function tag_info(){
 	$s='<table class="k_table" id="k_info" cellspacing="0">';
 	$s.='<tr><th colspan="3">'.$king->lang->get('system/skin/cert').'</th></tr>';
 	$s.='<tr><td class="red">'.$king->lang->get('system/skin/certcode').'</td><td colspan="2" id="certcode">--</td></tr>';
-	$s.='<tr><td class="red">'.$king->lang->get('system/skin/certdate').'</td><td colspan="2" id="certdate">--</td></tr>';
+	$s.='<tr><td class="red">'.$king->lang->get('system/skin/certurl').'</td><td colspan="2" id="certurl">--</td></tr>';
 	$s.='<tr><td class="red">'.$king->lang->get('system/skin/certname').'</td><td colspan="2" id="certname">--</td></tr>';
+	$s.='<tr><td class="red">'.$king->lang->get('system/skin/certdate').'</td><td colspan="2" id="certdate">--</td></tr>';
 
 	$s.='<tr><th colspan="3">'.$king->lang->get('system/skin/sys').'</th></tr>';
 	$s.='<tr class="red"><td>'.$king->lang->get('system/skin/obj').'</td><td>'.$king->lang->get('system/skin/required').'</td><td>'.$king->lang->get('system/skin/this').'</td></tr>';
@@ -264,7 +265,7 @@ private function tag_msg(){
 	$s.=kc_htm_select('adminid',$array,'');
 //	$s.='<input class="k_in w300" type="text" name="k_message" id="k_message" maxlength="100" onKeyDown="event.keyCode==13?$.kc_ajax(\'{CMD:\\\'msg_add\\\',ID:\\\'k_msg\\\',FORM:\\\'k_msg_form\\\',IS:1,URL:\\\'../system/manage.php\\\'}\'):void(0);"/></td><tr></table></form>';
 	$s.='<input class="k_in w300" type="text" name="k_message" id="k_message" maxlength="100" onkeydown="if(event.keyCode==13){$.kc_ajax({CMD:\'msg_add\',ID:\'k_msg\',FORM:\'k_msg_form\',IS:1,URL:\'../system/manage.php\'})}"/></td><tr></table></form>';
-	$s.="<script type=\"text/javascript\" src=\"http://cert.kingcms.com/index.php?CMD=check&url=".$king->config('siteurl')."\"></script>";
+	$s.="<script type=\"text/javascript\" src=\"http://cert.kingcms.com/index.php?CMD=check&instdate=".$king->config('instdate')."\"></script>";
 	return $s;
 }
 /**
