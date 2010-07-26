@@ -118,12 +118,17 @@ function uploadfile($inputname)
 				if($immediate=='1')$target='!'.$target;
 				if($msgtype==1)$msg=$target;
 				else{
+					switch ($typepath) {
+						case 'image':$ntype=0;break;
+						case 'movie':$ntype=3;break;
+						default:$ntype=1;break;
+					}
 					//写入上传文件记录到数据库
 					$array=array(
 						'kpath'=>$target,
 						'ndate'=>time(),
 						'adminid'=>$king->admin['adminid'],
-						'ntype'=>$extension,
+						'ntype'=>$ntype,
 					);
 					$kid=$king->db->insert('%s_upfile',$array);
 					$msg=array('url'=>$king->config('inst').$target,'localname'=>$upfile['name'],'id'=>$kid);//id参数固定不变，仅供演示，实际项目中可以是数据库ID
