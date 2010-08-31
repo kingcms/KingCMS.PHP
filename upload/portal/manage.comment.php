@@ -27,6 +27,22 @@ function king_ajax_delete(){
 	kc_ajax('OK',"<p class=\"k_ok\">".$king->lang->get('system/ok/delete')."</p>",1);
 }
 
+ //显示隐藏
+//king_ajax_show
+function king_ajax_show(){
+	global $king;
+	$king->access('portal_comment');
+	$id=kc_get('list',2,1);
+	$is=kc_get('value',2,1);
+	$ico= $is ? 'n1':'n2';
+
+	$king->db->update('%s_comment',array('isshow'=>$is),"cid=$id");
+
+	kc_ajax('',kc_icon($ico),'',"$('#nshow_{$id}').attr('rel','{CMD:\'commend\',ID:\'nshow_{$id}\',value:".(1-$is).",list:{$id},IS:2}')");
+
+//{CMD:\show\',value:'+is+',ID:\'nshow_'+id+'\',list:'+id+',IS:2}
+}
+
 /**
 菜单调用
 */
@@ -67,21 +83,22 @@ function king_def(){
 	$_js=array(
 		"\$.kc_list(K[0],K[1],'manage.comment.php?action=view&cid='+K[0])",
 		$manage,
-		"'<i>'+isshow('manage.comment.php',K[0],K[4])+'</i>'",//状态
+		"'<i>'+isshow(K[0],K[4])+'</i>'",//状态
 		"'<b>'+K[2]+'</b>'",
-		"K[3]",
+		"'<b>'+K[3]+'</b>'",
 	);
 
 	$s=$king->openList($_cmd,'',$_js,$king->db->pagelist('manage.comment.php?pid=PID&rn=RN',$king->db->getRows_number('%s_comment')));
 	$status=array();
-	$s.="function isshow(url,id,is){var I1,ico;is?ico='n2':ico='n1';";
-	$s.="I1='<a id=\"nshow_'+id+'\" class=\"k_ajax\" rel=\"{CMD:\'show\',value:'+ (1-is) +',ID:\'nshow_'+id+'\',list:'+id+',IS:2}\" >'+$.kc_icon(ico)+'</a>';return I1;};";
-	
-	
+
+	$s.="function isshow(id,is){var I1,ico;is?ico='n1':ico='n2';";
+	$s.="I1='<a id=\"nshow_'+id+'\" class=\"k_ajax\" rel=\"{CMD:\'show\',value:'+(1-is)+',ID:\'nshow_'+id+'\',list:'+id+',IS:2}\" >'+$.kc_icon(ico)+'</a>';return I1;};";
+
 	$s.="ll('".$king->lang->get('portal/label/content')."','manage','<i>".$king->lang->get('portal/common/show1')."</i>','<b>".$king->lang->get('portal/label/author')."</b>','<b>".$king->lang->get('portal/label/date')."</b>',1);";
 
+
 	foreach($res as $rs){//td
-		$s.='ll('.$rs['cid'].',\''.addslashes(substr($rs['kcontent'],0,20)).'\',\''.addslashes($rs['username']).'\',\''.kc_formatdate($rs['ndate']).'\','.$rs['isshow'].',0);';
+		$s.='ll('.$rs['cid'].',\''.addslashes(str_replace("\n",' ',substr($rs['kcontent'],0,60))).'\',\''.addslashes(empty($rs['username'])?'&nbsp;':$rs['username']).'\',\''.kc_formatdate($rs['ndate']).'\','.$rs['isshow'].',0);';
 	}
 
 	//结束列表
