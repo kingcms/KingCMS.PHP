@@ -54,7 +54,7 @@ public  $holdmodule=array('system','nav','pagelist','list',
 	'menu','menu1','menu2','menu3','menu4','menu5',
 	'const','skin','home','login','default','data');//需要保护的模块目录
 public  $devname='KingCMS 6.0 SP1';//版本名称
-public  $version='6.0.826';//内部版本名称
+public  $version='6.0.933';//内部版本名称
 
 private $dbver=104;//当前系统数据库版本
 
@@ -657,14 +657,15 @@ public function getUrl(){
 
 	if( isset($path_info{0}) && False!==strpos($_SERVER['SERVER_SOFTWARE'],'IIS') ) $path_info=iconv('GBK','UTF-8',$path_info);
 
-	if(substr($path_info,0,10)=='/index.php'){
-		$path_info=substr($path_info,10);
+	//修复非根目录安装的问题
+	if(substr($path_info,0,9+strlen($this->config('inst')))==$this->config('inst').'index.php'){
+		$path_info=substr($path_info,9+strlen($this->config('inst')));
 	}
 
 	if($path_info==''||$path_info=='/'){
 
 		$array=array(
-			'url'=>$_SERVER['SERVER_NAME'],
+			'url'=>$_SERVER['SERVER_NAME'].$this->config('inst'),//修复非根目录安装的问题
 			'classname'=>'portal_class',
 			'path_info'=>'',
 		);
