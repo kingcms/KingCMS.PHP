@@ -760,7 +760,7 @@ function king_def(){
 			$s.=$king->tdList(array(
 				$info['listid'],
 				$info['modelid'],
-				$info['klistname'],
+				addslashes($info['klistname']),
 				kc_getlang($info['klanguage']),
 				1,//nspace
 				$info['isexist'],
