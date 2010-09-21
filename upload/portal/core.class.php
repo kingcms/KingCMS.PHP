@@ -3920,7 +3920,9 @@ public function tag_list($inner,$ass,$attrib){
 	}
 
 	/* 属性设置 结束 */
-
+	if(isset($attrib['where'])){
+		$whereArray[]=$attrib['where'];
+	}
 	$where=($whereArray) ? 'where '.implode(' and ',$whereArray):'';
 	$orderby=isset($attrib['orderby']) ? ' ORDER BY '.$attrib['orderby'] : ' ORDER BY norder asc,listid desc';
 	$limit=isset($attrib['number']) ? "limit {$attrib['number']}" : '';
