@@ -323,7 +323,7 @@ function king_def(){
 		}else{
 			var fext=file.substring(file.lastIndexOf('.') + 1);
 
-			var ss={php:'',html:'',htm:''};
+			var ss={php:'',html:'',htm:'',css:'',js:''};
 
 			if(ss[fext]!=undefined){
 				s='{CMD:\'edit\',path:\''+path+file+'\'}';
