@@ -3907,10 +3907,11 @@ public function tag_list($inner,$ass,$attrib){
 
 	}
 
+	/*
 	if(stripos($inner,'{king:image')!==False ){
 		$whereArray[]="kimage<>''";
 	}
-
+	*/
 
 	$array=array('ispublish1','ispublish2','isexist','ismenu1','ismenu2','ismenu3','ismenu4','ismenu5','ismap');
 	foreach($array as $val){
