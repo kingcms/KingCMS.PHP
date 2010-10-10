@@ -1490,7 +1490,7 @@ function kc_htm_editor($name,$content,$width=780,$height=360,$def='xheditor',$co
 					width:'$width',
 					height:'$height',
 					internalStyle:false,
-					forcePtag:false,
+					forcePtag:true,
 					inlineStyle:true,
 					html5Upload:true,
 					upLinkUrl:'{$inst}system/upload.php',
