@@ -1,0 +1,44 @@
+<div class="w_700 fr mb10">
+
+<div class="nav mb10">
+<strong>当前位置</strong> | <a href="{config:system.inst/}">首页</a>  |   <a href="{king:ListPath/}">{king:ListTitle/}</a>
+</div>
+
+
+<div class="pt10 pb10" style="background: url(images/temp_4.jpg) no-repeat right top;">
+
+<a href="{king:add/}" class="bbs_url_1">添加主题</a><br />
+
+<div class="page">
+{king:pagelist/}
+</div>
+</div>
+
+<a href="{king:ListPath/}" class="bbs_t_1"><h2>{king:ListTitle/}</h2></a><br />
+
+<table width="100%" border="0" cellpadding="0" cellspacing="0" class="bbs_lb mb10">
+  <tr>
+    <th colspan="2" align="left">主题 </th>
+    <th>回/看</th>
+    <th>作者</th>
+    <th>时间</th>
+  </tr>
+{king:portal.bbs type="list"}
+  <tr>
+    <td><img src="images/bbs_ico_old.gif" width="17" height="17" /></td>
+    <td><a href="{king:path/}" class="f12 h25 c_333">{king:title/}</a></td>
+    <td align="center" class="f12 c_999"><span class="c_blue_1">{king:reply/}</span>/{king:hit/}</td>
+    <td align="center"><a href="#" class="f12 c_999">{king:user.info userid="(king:userid/)"}{king:username/}{/king:user.info}</a></td>
+    <td align="center">{king:DATE formatdate="Y-m-d H:i:s"/}</td>
+  </tr>
+{/king:portal.bbs}
+</table>
+<div>
+<div class="page">
+{king:pagelist/}
+</div>
+
+
+<a href="{king:add/}" class="bbs_url_1">添加主题</a>
+
+</div>
