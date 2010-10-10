@@ -13,6 +13,7 @@
 【目录介绍】
 
 	upload	KingCMS安装文件目录
+	_demo   KingCMS演示模板
 
 【完整的帮助】
 
@@ -24,4 +25,4 @@
 
 【需要获得更多的帮助？】
 
-	http://vip.kingcms.com/
+	http://www.kingcms.com/
