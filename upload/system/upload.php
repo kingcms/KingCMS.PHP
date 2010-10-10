@@ -150,7 +150,7 @@ function uploadfile($inputname)
 						'kpath'=>$target,
 						'ndate'=>time(),
 						'adminid'=>$king->admin['adminid'],
-						//'ntype'=>$ntype,
+						'ntype'=>$ntype,
 					);
 					$kid=$king->db->insert('%s_upfile',$array);
 					$msg=array('url'=>$king->config('inst').$target,'localname'=>$upfile['name'],'id'=>$kid);//id参数固定不变，仅供演示，实际项目中可以是数据库ID
