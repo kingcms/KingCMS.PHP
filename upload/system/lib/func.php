@@ -1480,26 +1480,35 @@ function kc_htm_editor($name,$content,$width=780,$height=360,$def='xheditor',$co
 		default:
 			//默认调用xheditor编辑器
 			if(empty($GLOBALS['htm_editor_isread']))
-				$s='<script src="../system/editor/xheditor/xheditor-zh-cn.js" type="text/javascript"></script>';
+				$s='<script src="../system/editor/xheditor/xheditor-zh-cn.min.js" type="text/javascript"></script>';
 			$inst=$king->config('inst');
 			$s.="<script type=\"text/javascript\">
 			\$(pageInit);
 			function pageInit()
 			{
 				var jdata={
-					emots:{'qq':{'name':'QQ','count':55,'width':25,'height':25,'line':11}},
-					upLinkUrl:\"!../system/editor/xheditor/xheditor_plugins/multiupload/multiupload.html?uploadurl={$inst}system/upload.php&ext=附件文件(*.zip;*.rar;*.pdf;*.doc;*.xls;*.docx;*.xlsx;*.txt)\",
-					upImgUrl:'!../system/editor/xheditor/xheditor_plugins/multiupload/multiupload.html?uploadurl={$inst}system/upload.php&ext=图片文件(*.jpg;*.jpeg;*.gif;*.png)',
-					upFlashUrl:'!../system/editor/xheditor/xheditor_plugins/multiupload/multiupload.html?uploadurl={$inst}system/upload.php&ext=Flash动画(*.swf)',
-					upMediaUrl:'!../system/editor/xheditor/xheditor_plugins/multiupload/multiupload.html?uploadurl={$inst}system/upload.php&ext=多媒体文件(*.wmv;*.avi;*.wma;*.mp3;*.mid)',
+					width:'$width',
+					height:'$height',
+					internalStyle:false,
+					forcePtag:false,
+					inlineStyle:true,
+					html5Upload:true,
+					upLinkUrl:'{$inst}system/upload.php',
+					upLinkExt:'zip,rar,pdf,doc,xls,docx,xlsx,txt',
+					upImgUrl:'{$inst}system/upload.php',
+					upImgExt:'jpg,jpeg,gif,png',
+					upFlashUrl:'{$inst}system/upload.php',
+					upFlashExt:'swf',
+					upMediaUrl:'{$inst}system/upload.php',
+					upMediaExt:'wmv,avi,wma,mp3,mid',
 					shortcuts:{'ctrl+enter':submitForm}
 				};
-				\$('#$name').xheditor(true,jdata);
+				\$('#$name').xheditor(jdata);
 			}
 			function submitForm(){\$('#k_formlist').submit();}
 			</script>
 			";
-			$s.='<textarea cols="100" rows="10" style="width:'.$width.'px;height:'.$height.'px;" id="'.$name.'" name="'.$name.'">'.htmlspecialchars($content).'</textarea>';
+			$s.='<textarea cols="60" rows="10" style="width:'.$width.'px;height:'.$height.'px;" id="'.$name.'" name="'.$name.'">'.htmlspecialchars($content).'</textarea>';
 
 	}
 

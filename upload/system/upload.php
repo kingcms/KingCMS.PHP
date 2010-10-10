@@ -28,11 +28,32 @@ function uploadfile($inputname)
 	$maxattachsize=20971520;//最大上传大小，默认是20M
 	$upext='txt,rar,zip,jpg,jpeg,gif,png,swf,wmv,avi,wma,mp3,mid,doc,docx,xls,xlsx,pdf';//上传扩展名
 	$msgtype=2;//返回上传参数的格式：1，只返回url，2，返回参数数组
-	
+
+	if(isset($_SERVER['HTTP_CONTENT_DISPOSITION']))//HTML5上传
+	{
+		if(preg_match('/attachment;\s+name="(.+?)";\s+filename="(.+?)"/i',$_SERVER['HTTP_CONTENT_DISPOSITION'],$info))
+		{
+			//$temp_name=ini_get("upload_tmp_dir").'\\'.gmdate("YmdHis").mt_rand(1000,9999).'.tmp';
+			$temp_dir=ROOT.$attachdir.'/temp';
+			if(!is_dir($temp_dir))
+			{
+				@mkdir($temp_dir, 0777);
+				@fclose(fopen($temp_dir.'/index.html', 'w'));
+			}
+			$temp_name=ROOT.$attachdir.'/temp/'.gmdate("YmdHis").mt_rand(1000,9999).'.tmp';
+			file_put_contents($temp_name,file_get_contents("php://input"));
+			$size=filesize($temp_name);
+			$_FILES[$info[1]]=array('name'=>$info[2],'tmp_name'=>$temp_name,'size'=>$size,'type'=>'','error'=>0);
+		}
+		//exit(print_r($_FILES,1));
+	}
+
+
 	$err = "";
 	$msg = "";
-	$upfile=$_FILES[$inputname];
-	if(!empty($upfile['error']))
+	$upfile=@$_FILES[$inputname];
+	if(!isset($upfile))$err='文件域的name错误';
+	elseif(!empty($upfile['error']))
 	{
 		switch($upfile['error'])
 		{
@@ -114,7 +135,8 @@ function uploadfile($inputname)
 				$filename=date("YmdHis").mt_rand(1000,9999).'.'.$extension;
 				$target = $attach_dir.'/'.$filename;
 
-				move_uploaded_file($upfile['tmp_name'],ROOT.$target);
+				//move_uploaded_file($upfile['tmp_name'],ROOT.$target);
+				rename($upfile['tmp_name'],ROOT.$target);
 				if($immediate=='1')$target='!'.$target;
 				if($msgtype==1)$msg=$target;
 				else{
@@ -128,7 +150,7 @@ function uploadfile($inputname)
 						'kpath'=>$target,
 						'ndate'=>time(),
 						'adminid'=>$king->admin['adminid'],
-						'ntype'=>$ntype,
+						//'ntype'=>$ntype,
 					);
 					$kid=$king->db->insert('%s_upfile',$array);
 					$msg=array('url'=>$king->config('inst').$target,'localname'=>$upfile['name'],'id'=>$kid);//id参数固定不变，仅供演示，实际项目中可以是数据库ID
