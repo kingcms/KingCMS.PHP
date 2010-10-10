@@ -1,0 +1,32 @@
+<div class="w_700 fr">
+
+<div class="nav mb10">
+<strong>当前位置:</strong><a href="/">首页</a>>{king:nav line=">" /}
+</div>
+
+
+
+<div class="t_1"><div><h3>搜索结果</h3></div></div>
+<div class="f_1 pa10">
+
+<ul class="list_page">
+{king:portal.article type="search"}
+	<li><a href="{king:path/}">{king:kid/}.{king:title/}</a><i>{king:DATE formatdate="Y-m-d H:i:s"/}</i>
+    <p>{king:description/}</p>
+    </li>
+{/king:portal.article}
+</ul>
+
+
+<div class="page">
+  {king:portal.pagelist}
+   {king:Previous replace='Previous|上一页'/}
+   {king:standard/}
+   {king:Next replace='Next|下一页'/}
+   {king:jump/} 
+  {/king:portal.pagelist}
+</div>
+
+
+
+</div>

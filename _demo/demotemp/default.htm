@@ -1,0 +1,101 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>{king:title/}-轻骑士(KingCMS)PHP企业版演示</title>
+<meta name="keywords" content="{king:keywords/}" />
+<meta name="description" content="{king:description/}" />
+<link href="/demotemp/images/base.css" rel="stylesheet" type="text/css" />
+<link href="/demotemp/images/style.css" rel="stylesheet" type="text/css" />
+<link href="/demotemp/images/content.css" rel="stylesheet" type="text/css" />
+<link href="/demotemp/images/system.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript" src="/demotemp/js/easySlider.packed.js"></script>
+<script src="/demotemp/js/jquery.soChange.js" type="text/javascript"></script>
+{king:block name='控制Tab的JS代码' /}
+</head>
+<body>
+<!--导航菜单开始-->
+<div class="header">
+<a href="{config:system.siteurl/}{config:system.inst/}" class="logo" title="{config:system.sitename/}"><h3>{config:system.sitename/}</h3></a>
+<div class="topnav">
+欢迎您来到<span style="color:#FE0000">{config:system.sitename/}</span>，填充的内容仅供完成演示效果，不做任何意思的表达作用。| <a href="/statement/"><span style="color:#FE0000">本模板使用声明</span></a> | <a href="{config:system.siteurl/}{config:system.inst/}contact/">联系我们</a>
+<strong>电话：<h3>{king:block name='电话' /}</h3></strong>
+</div>
+</div>
+
+<div class="topmenu">
+<ul>{king:portal.list listid1='0'}
+<li><a <?php if ('{king:this/}') {echo "class=\"on\" ";} else {echo "";}?>href="{king:listpath/}">{king:listname/}</a></li>{/king:portal.list}
+</ul>
+<form action="{const:system.siteurl/}/search.php" method="get" class="search">
+<input type="hidden" name="modelid" value="6"/>
+<input name="query" type="text" class="search_input" />
+<input type="submit" value="搜索" class="search_btn" />
+</form>
+</div>
+{king:block name='页面banner' /}
+<!--导航菜单结束-->
+
+<div class="w_960">
+<div class="w_240 fl">
+
+<!--左侧开始-->
+<div class="contact_home mb10">
+电话：<span>{king:block name='电话' /}</span><br />
+传真：<span>{king:block name='传真' /}</span><br />
+邮箱：<span>{king:block name='邮箱' /}</span>
+</div>
+
+<div class="t_1"><div><h3>产品分类</h3><span>Products</span><a href="/products/" title="了解更多" class="t_1_more">更多</a></div></div>
+<dl class="leftmenu mb10">
+{king:portal.listlistid1='3'}
+<dt><a href="{king:listpath/}">{king:listname/}</a></dt>
+<dd>{king:portal.productlistid='(king:listid/)' number="3"}
+<a <?php if ('{king:this/}') {echo "class=\"leftmenu_on\" ";} else {echo "";}?>href="{king:path/}">{king:title/}</a>{/king:portal.product}
+</dd>
+{/king:portal.list}
+</dl>
+
+<div class="t_1"><div><h3>常见问题</h3><span>Industry News</span><a href="/faq/" title="了解更多" class="t_1_more">更多</a></div></div>
+<div class="f_1 pa10 mb10">
+<ul class="list_1 list_ico_1">{king:portal.article type="new" number="3" listid="5"}
+<li><a href="{king:path /}">{king:title size="24" /}</a><span>{king:DATE formatdate="Y/m/d"/}</span></li>{/king:portal.article}
+</ul>
+</div>
+
+
+<div class="t_1"><div><h3>客户案例</h3><span>HELP</span><a href="/cases/" title="了解更多" class="t_1_more">更多</a></div></div>
+<div class="f_1 pa10 mb10">
+<ul class="list_1 list_ico_1">{king:portal.article type="new" number="3" listid="4"}
+<li><a href="{king:path /}">{king:title size="24" /}</a><span>{king:DATE formatdate="Y/m/d"/}</span></li>{/king:portal.article}
+</ul>
+</div>
+
+</div>
+<!--左侧结束-->
+
+{king:inside/}
+</div>
+</div>
+
+<!--尾部开始-->
+<div class="foot">
+<a href="/" class="logo_b" title="{config:system.sitename/}"><h3>{config:system.sitename/}</h3></a>
+<div>
+<p>
+Copyright © 2004-2099 {config:system.sitename/}<br />
+{config:system.beian/} Powered by <a href="http://www.kingcms.com/">KingCMS</a>
+</p>
+<p>
+电话：{king:block name='电话' /}<br />
+传真：{king:block name='传真' /}
+</p>
+<p style="border:none;">
+E-MAIL：{king:block name='邮箱' /}<br />
+业务QQ：{king:block name='QQ' /}
+</p>
+</div>
+</div>
+<!--尾部结束-->
+</body>
+</html>

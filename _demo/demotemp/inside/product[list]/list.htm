@@ -1,0 +1,33 @@
+<div class="w_700 fr mb10">
+
+<div class="nav mb10">
+<strong>当前位置:</strong><a href="/">首页</a>>{king:nav line=">" /}
+</div>
+
+
+
+<div class="t_1"><div><h3>{king:ListTitle/}</h3></div></div>
+<div class="f_1 pa10 mb10">{king:portal.product type='list'}
+<ul class="list_img_2">
+<li>
+<a href="{king:path/}"><img src="{king:image width='140' height='100'/}" class="img_1" /></a>
+<h3><a href="{king:path/}">{king:title/}</a></h3>
+<strong>型号：{king:_Serial/}</strong>
+<p>
+{king:description/}
+</p>
+</li>
+</ul>
+{/king:portal.product}
+
+<div class="page">
+  {king:pagelist}
+   {king:Previous replace='Previous|上一页'/}
+   {king:standard/}
+   {king:Next replace='Next|下一页'/}
+   {king:jump/} 
+  {/king:pagelist} 
+</div>
+
+</div>
+</div>
