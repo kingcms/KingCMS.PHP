@@ -7,5 +7,7 @@
 1、安装好KingCMS企业版(PHP) v6.0.970，数据库为MySQL
 2、把demotemp和demoupfiles两个文件夹复制到网站的根目录
 3、把demoSql.sql导入已经安装好的数据库当中
-4、使用amdin和admin888登陆后台即可
+4、使用amdin和admin888登陆后台，更新缓存，然后生成全站
 
+注意，导入以上数据库时候会把之前的数据库覆盖的，请自己备份好原有数据。
+另外，也可以直接把demoSql.sql导入空白数据库，然后修改config.php登陆即可。
