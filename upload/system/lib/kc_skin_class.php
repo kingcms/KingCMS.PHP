@@ -393,9 +393,9 @@ private function tag_mainMenu(){
 					<li><a href="http://help.kingcms.com/" target="_blank"><img src="../system/images/white.gif" class="os q9"/>'.$king->lang->get('system/common/kchelp').'</a></li>
 					<li><a href="javascript:;" class="k_ajax" rel="{URL:\'../system/manage.php\',CMD:\'faq\'}"><img src="../system/images/white.gif" class="os g6"/>'.$king->lang->get('system/common/faq').'</a></li>
 					<li class="hr"><a href="http://www.kingcms.com/" target="_blank"><img src="../system/images/white.gif" class="os b9"/>'.$king->lang->get('system/menu/official').'</a></li>
-					<li><a href="http://bbs.kingcms.com/" target="_blank"><img src="../system/images/white.gif" class="os r2"/>'.$king->lang->get('system/menu/club').'</a></li>
-					<li><a href="http://bbs.kingcms.com/forum-17-1.html" target="_blank"><img src="../system/images/white.gif" class="os r3"/>'.$king->lang->get('system/menu/bug').'</a></li>
-					<li class="hr"><a href="http://www.kingcms.com/license/" target="_blank"><img src="../system/images/white.gif" class="os r4"/>'.$king->lang->get('system/menu/license').'</a></li>';
+					<li><a href="http://www.kingcms.com/forums/" target="_blank"><img src="../system/images/white.gif" class="os r2"/>'.$king->lang->get('system/menu/club').'</a></li>
+					<li><a href="http://www.kingcms.com/forums/phpBug/" target="_blank"><img src="../system/images/white.gif" class="os r3"/>'.$king->lang->get('system/menu/bug').'</a></li>
+					<li class="hr"><a href="http://www.kingcms.com/download/php/free/" target="_blank"><img src="../system/images/white.gif" class="os r4"/>'.$king->lang->get('system/menu/license').'</a></li>';
 /*
 					<li class="hr"><a class="k_ajax" rel="{CMD:\'about\',URL:\'../system/login.php\'}"><img src="../system/images/white.gif" class="os"/>'.$king->lang->get('system/menu/checknew').'</a></li>';
 */
