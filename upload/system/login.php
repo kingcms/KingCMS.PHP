@@ -82,7 +82,7 @@ function king_ajax_login_check($_name,$_pass){
 			//写管理员登陆信息
 			$_array=array(
 				'admindate' =>time(),
-				'admincount'=>'[[admincount+1]]',
+				'[admincount]'=>'admincount+1',
 				);
 			$king->db->update('%a_admin',$_array,"adminname='".$king->db->escape($_name)."'");
 

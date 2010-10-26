@@ -96,8 +96,8 @@ function king_ajax_hit(){
 				$model=$king->portal->infoModel($modelid);
 				
 				$_array=array(
-					'nhit'=>"[[nhit+{$val['count']}]]",
-					'nhitlate'=>"[[(nhitlate*nhit+".(time()*$val['count']).")/(nhit+{$val['count']})]]",
+					'[nhit]'=>"nhit+{$val['count']}",
+					'nhitlate'=>"(nhitlate*nhit+".(time()*$val['count']).")/(nhit+{$val['count']})",
 				);
 				$king->db->update('%s__'.$model['modeltable'],$_array,"kid=$kid");
 				kc_f_delete($king->config('xmlpath','portal').'/portal/'.$modelid.'/'.wordwrap($kid,1,'/',1).'.xml');

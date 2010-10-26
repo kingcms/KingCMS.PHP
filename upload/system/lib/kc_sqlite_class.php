@@ -113,8 +113,8 @@ public function update($table,$array,$where=null){
 	$table=str_replace(array('%s','%a'),array(DB_PRE,KC_DB_ADMIN),$table);
 	foreach($array as $key=>$val){
 
-		$values[]=preg_match("/^\[\[.+\]\]$/",$val)//[[hit=hit+1]]
-			? $key.'='.substr($val,2,-2)
+		$values[]=preg_match("/^\[.+\]$/",$key)//[hit]=hit+1
+			? substr($key,1,-1).'='.$val
 			: $key.'=\''.$this->escape($val).'\'';
 	}
 
