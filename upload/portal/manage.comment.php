@@ -35,11 +35,10 @@ function king_ajax_show(){
 	$id=kc_get('list',2,1);
 	$is=kc_get('value',2,1);
 	$ico= $is ? 'n1':'n2';
-
+	
 	$king->db->update('%s_comment',array('isshow'=>$is),"cid=$id");
-
-	kc_ajax('',kc_icon($ico),'',"$('#nshow_{$id}').attr('rel','{CMD:\'commend\',ID:\'nshow_{$id}\',value:".(1-$is).",list:{$id},IS:2}')");
-
+	kc_ajax('',kc_icon($ico),'',"$('#nshow_{$id}').attr('rel','{CMD:\'show\',ID:\'nshow_{$id}\',value:".(1-$is).",list:{$id},IS:2}')");
+	
 //{CMD:\show\',value:'+is+',ID:\'nshow_'+id+'\',list:'+id+',IS:2}
 }
 

@@ -23,14 +23,15 @@ function king_ajax_delete(){
 	$info=$king->portal->infoList($listid);
 	$model=$king->portal->infoModel($info['modelid']);
 
-	if(!$_res=$king->db->getRows("select kid,kpath,ktitle from %s__{$model['modeltable']} where kid in ($_list) and listid=$listid;"))
+	if(!$_res=$king->db->getRows("select kid,kid1,kpath,ktitle from %s__{$model['modeltable']} where kid in ($_list) and listid=$listid;"))
 		$_res=array();
 
 	foreach($_res as $rs){
 
 		$kid=$rs['kid'];
-
+		$kid1=$rs['kid1'];
 		kc_f_delete($king->config('xmlpath','portal').'/portal/'.$info['modelid'].'/'.wordwrap($kid,1,'/',1).'.xml');
+		if(!empty($kid1)) kc_f_delete($king->config('xmlpath','portal').'/portal/'.$info['modelid'].'/'.wordwrap($kid1,1,'/',1).'.xml');
 		kc_f_delete($king->getfpath($rs['kpath']));
 
 		//写log

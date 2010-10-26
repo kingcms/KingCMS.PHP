@@ -56,7 +56,7 @@ function king_ajax_add(){
 
 
 /**
-	添加/编辑碎片
+	添加留言
 */
 function king_def(){
 	
