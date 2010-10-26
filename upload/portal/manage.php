@@ -929,9 +929,7 @@ function king_edt(){
 	  $_array_select+=array($rs['siteid']=>htmlspecialchars($rs['sitename']));
 	}
 	if($modelid!=-1){
-		if($king->acc('portal_site_edt')){
-			$manage='<a class="k_ajax" rel="{CMD:\'site\',is:1,METHOD:\'GET\'}">'.kc_icon('f7',$king->lang->get('portal/common/addsite')).'</a>';
-		}
+		$manage=$king->acc('portal_site_edt')?'<a class="k_ajax" rel="{CMD:\'site\',is:1,METHOD:\'GET\'}">'.kc_icon('f7',$king->lang->get('portal/common/addsite')).'</a>':'';
 		$s.=$king->htmForm($king->lang->get('portal/label/siteid'),kc_htm_select('siteid',$_array_select,$data['siteid']).$manage,null,'Siteid',kc_help('portal/help/site',320,150));
 	}else{
 		$s.=kc_htm_hidden(array('siteid'=>$res[0]['siteid']));
