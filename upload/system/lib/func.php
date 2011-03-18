@@ -1452,6 +1452,26 @@ function kc_htm_editor($name,$content,$width=780,$height=360,$def='xheditor',$co
 
 		break;
 
+		case'kindeditor':
+
+			if(empty($GLOBALS['htm_editor_isread']))
+				$s='<script type="text/javascript" src="../system/editor/kindeditor/kindeditor-min.js"></script>';
+
+			$s.='<script type="text/javascript">
+				// Default skin
+				KE.show({
+					id : "'.$name.'",
+					width : "'.$width.'px",
+					height : "'.$height.'px",
+					filterMode : true,
+					resizeMode : 1,
+					allowFileManager : true
+				});
+			</script>
+			<textarea id="'.$name.'" name="'.$name.'" rows="15" cols="80" style="width:'.$width.'px;height:'.$height.'px">'.htmlspecialchars($content).'</textarea>';
+
+		break;
+
 		case 'ewebeditor':
 			$s="<input id=\"$name\" name=\"$name\" value=\"".htmlspecialchars($content)."\" type=\"hidden\" />";
 			$s.="<iframe ID=\"eWebEditor1\" src=\"../system/editor/eWebEditor/ewebeditor.htm?id=$name&style=light\" frameborder=\"0\" scrolling=\"no\" width=\"$width\" HEIGHT=\"$height\"></iframe>";

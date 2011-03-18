@@ -11,11 +11,11 @@
 @import "system.css";
 
 html{
-	background:#FFF;padding:0px;
+	background:#FFF;padding:0px;text-align: center;
 }
 body{
-	font-size:12px;margin:0px;font-family:微软雅黑,Verdana,宋体;padding:0px;
-	background:url(body_bg.gif) repeat-y top 1000px;display:table;
+	font-size:12px;margin:0px auto;font-family:微软雅黑,Verdana,宋体;padding:0px;
+	background:url(body_bg.gif) repeat-y top 1000px;display:table;text-align: left;
 }
 form{
 	margin:0px;padding:0px;

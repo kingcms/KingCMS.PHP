@@ -86,7 +86,7 @@ public function array2xml($array,$is=0){
 */
 public function xml2array($dom=null){
 	$dom= $dom==null ? $this->dom:$dom;
-	if(get_class($dom)=='SimpleXMLElement'){
+	if(@get_class($dom)=='SimpleXMLElement'){
 		$attributes=$dom->attributes();
 		foreach($attributes as $k=>$v){
 			if ($v) $a[$k]=(string) $v;
