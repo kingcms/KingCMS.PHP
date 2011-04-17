@@ -820,7 +820,7 @@ textarea{
 	border:none;
 }
 .k_table_form td span{
-	display:inline;
+	/*display:inline;*/
 	color:#000;
 	font-size:12px;
 	font-weight:normal;

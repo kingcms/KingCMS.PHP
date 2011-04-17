@@ -4403,9 +4403,11 @@ private function tag_comment($inner,$attrib,$ass){
 	}
 	$kid=kc_val($attrib,'kid');//文章id
 	if(kc_validate($kid,2)){
-		$whereArray[]="kid=$kid";
+		//$whereArray[]="kid=$kid";
+        $whereArray[]=" modelid=$modelid and kid=$kid and isshow=1";  // youjoy
 	}elseif(kc_validate($kid,3)){
-		$whereArray[]="kid in ($kid)";
+		//$whereArray[]="kid in ($kid)";
+        $whereArray[]="kid in ($kid) and modelid=$modelid and isshow=1";  // youjoy
 	}
 	
 	$orderby=isset($attrib['orderby']) ? ' ORDER BY '.$attrib['orderby'] : ' ORDER BY cid desc';

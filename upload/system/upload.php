@@ -137,6 +137,7 @@ function uploadfile($inputname)
 
 				//move_uploaded_file($upfile['tmp_name'],ROOT.$target);
 				rename($upfile['tmp_name'],ROOT.$target);
+				@chmod(ROOT.$target,0644);
 				if($immediate=='1')$target='!'.$target;
 				if($msgtype==1)$msg=$target;
 				else{

@@ -2553,7 +2553,7 @@ function kc_formatPath($path,$pid=1,$is=0){
 //			kc_error($path);
 		}
 
-	}else{//有PID
+	/*}else{//有PID
 		if(strpos($path,'manage.')===False){//后台列表页面
 			if (strpos($king->config('pidline').'PID',$path)===False) {
 				$path=str_replace('PID',$pid,$path);
@@ -2565,6 +2565,9 @@ function kc_formatPath($path,$pid=1,$is=0){
 			$path=str_replace('PID',$pid,$path);
 
 		}
+	*/
+	}else{//有PID
+		$path=str_replace('PID',$pid==1?'1':$pid,str_replace($king->config('pidline').'PID',$pid==1?'':$king->config('pidline').$pid,$path));
 		if($is && substr($path,-1,1)=='/'){//输出生成地址
 			$path.=$king->config('file');
 		}
@@ -2632,6 +2635,19 @@ function kc_FullPath($s){
 	global $king;
 	return ((kc_validate($s,6) || substr($s,0,1)=='/') ? $s : $king->config('inst').$s);
 }
-
+/**
+	输出指定变量的值
+	@param string $s 变量名称
+*/
+function debug($var) {
+	echo "<pre>\n";
+	if(!empty($var)){
+		print_r($var);
+	}else{
+		print_r($GLOBALS);
+	}
+	echo "</pre>\n";
+	exit();
+}
 
 ?>

@@ -9,13 +9,17 @@
 
 if(empty($_COOKIE["KingCMS_Admin"])) alert("对不起，你无权访问。");
 
+//define('KC_INDEX',True);
+//define('KC_CALL_FUNC',True);
 //require_once '../../../../global.php';
+//$king->access('#brow');
+
 require_once 'JSON.php';
 
 //文件保存目录路径
-$save_path = '../../../../upfiles/';
+$save_path = '../../../../upfiles/image/';
 //文件保存目录URL
-$save_url = '/upfiles/';
+$save_url = '/upfiles/image/';
 //定义允许上传的文件扩展名
 $ext_arr = array('gif', 'jpg', 'jpeg', 'png', 'bmp');
 //最大文件大小

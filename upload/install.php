@@ -19,8 +19,8 @@ require_once 'global.php';
 //king_ajax_del
 function king_ajax_delete(){
 	global $king;
-	if(file_exists('INSTALL.php')){
-		if(unlink('INSTALL.php')){
+	if(file_exists('install.php')){
+		if(unlink('install.php')){
 			kc_ajax('','',0,'parent.location=\'system/login.php\';');
 		}else{
 			kc_error($king->lang->get('system/error/unlink'));
@@ -33,7 +33,7 @@ function king_ajax_delete(){
 //king_ajax_language
 function king_ajax_language(){
 	setcookie('language',kc_post('lang'),time()+864000000,'/');
-	kc_ajax('','',0,'parent.location=\'INSTALL.php\';');
+	kc_ajax('','',0,'parent.location=\'install.php\';');
 }
 
 function king_ajax_config(){
@@ -859,7 +859,7 @@ function king_ajax_install(){
 
 	$king->db->createTable('%s_event',$sql,'kid');
 
-	if(kc_post('isdelete')&&file_exists('INSTALL.php')) unlink('INSTALL.php');
+	if(kc_post('isdelete')&&file_exists('install.php')) unlink('install.php');
 
 	kc_ajax('OK','<p class="k_ok">'.$king->lang->get('system/install/instok').'</p>',"<a href=\"system/login.php\">".$king->lang->get('system/common/login')."</a>");
 
@@ -956,7 +956,7 @@ jQuery(function(\$){
 <div id=\"top\">
 	<a id=\"logo\" href=\"http://www.kingcms.com\" target=\"_blank\"><img alt=\"KingCMS\" src=\"system/skins/default/logo.gif\"/></a>
 	<ul class=\"k_menu\">
-		<li><a href=\"INSTALL.php\">".$king->lang->get('system/common/install')."</a></li>
+		<li><a href=\"install.php\">".$king->lang->get('system/common/install')."</a></li>
 		<li><a href=\"javascript:;\">".$king->lang->get('system/common/language')."</a>
 
 				<ul>";

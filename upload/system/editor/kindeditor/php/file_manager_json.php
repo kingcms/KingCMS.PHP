@@ -9,7 +9,10 @@
 
 if(empty($_COOKIE["KingCMS_Admin"])) alert("对不起，你无权访问。");
 
+//define('KC_INDEX',True);
+//define('KC_CALL_FUNC',True);
 //require_once '../../../../global.php';
+//$king->access('#brow');
 
 require_once 'JSON.php';
  
@@ -17,9 +20,9 @@ $php_path = dirname(__FILE__) . '/';
 $php_url = dirname($_SERVER['PHP_SELF']) . '/';
 
 //根目录路径，可以指定绝对路径，比如 /var/www/attached/
-$root_path = '../../../../upfiles/';
+$root_path = '../../../../upfiles/image/';
 //根目录URL，可以指定绝对路径，比如 http://www.yoursite.com/attached/
-$root_url = '/upfiles/';
+$root_url = '/upfiles/image/';
 //图片扩展名
 $ext_arr = array('gif', 'jpg', 'jpeg', 'png', 'bmp');
 
