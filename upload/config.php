@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 /* ======= >>> 配置文件 <<<========================== *
 
  +   许可协议: http://www.KingCMS.com/license/        +
@@ -38,9 +38,9 @@
 	define('KC_DB_ADMIN','kc');
 
 	define('DB_HOST','localhost');
-	define('DB_DATA','test');
+	define('DB_DATA','uxiazai');
 	define('DB_USER','root');
-	define('DB_PASS','');
+	define('DB_PASS','root');
 
 	define('DB_SQLITE','iw8ap2wpxo64.db3');
 
