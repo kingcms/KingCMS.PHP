@@ -61,7 +61,16 @@ function king_ajax_edt(){
 
 
 }
-
+//删除碎片绑定关系
+function king_ajax_bind_del(){
+	global $king;
+	$king->access('block_delete');
+	$kid=kc_post('kid');
+	$kid1=kc_post('kid1',2,1);
+	
+	$king->db->query("delete from %s_block where kid ={$kid} and kid1 ={$kid1}");
+	kc_ajax('OK',"<p class=\"k_ok\">".$king->lang->get('system/ok/delete')."</p>",1);
+}
 function king_ajax_bind_edt(){
 	global $king;
 	$king->access('block_edt');
@@ -261,7 +270,8 @@ function king_edt(){
 			$b.=" <span><label>".$king->lang->get('block/label/bid')."</label></span>";
 			$b.=kc_htm_input('bid',$rs['bid'],10,50);
 			$b.=" <input type=\"button\" value=\"".$king->lang->get('system/common/up')."\" onClick=\"\$.kc_ajax({CMD:'bind_edt',kid:{$rs['kid']},kid1:$kid,FORM:'block_bind_$i'});\" />";
-
+			//增加删除按钮
+			$b.="<input type=\"button\" value=\"".$king->lang->get('system/common/del')."\" onClick=\"\$.kc_ajax({CMD:'bind_del',kid:{$rs['kid']},kid1:$kid,FORM:'block_bind_$i'});\" />";
 			$s.=$king->htmForm($king->lang->get('block/label/bind'),$b);
 			$s.=$king->htmForm($king->lang->get('block/label/content'),kc_htm_textarea('kcontent',$rs['kcontent']));
 			$s.=$king->closeForm('none');
