@@ -33,7 +33,10 @@ function king_ajax_login(){
 		$s.=kc_check(array(array('adminpass',12,$king->lang->get('system/login/check'),!king_ajax_login_check($adminname,$adminpass))));
 	}
 	$s.='</p></div>';
-
+	//增加验证码
+	//$s.='<div><label>'.$king->lang->get('system/common/verify').':</label><p><input type="text" class="k_in w50" name="verify" maxlength="8" /></p></div>';
+	$verify=new KC_Verify_class;
+	$s.=$verify->Show();
 	//expire
 	$array_select=array(
 		0=>$king->lang->get('system/time/cookie'),
@@ -44,7 +47,6 @@ function king_ajax_login(){
 	);
 
 	$s.='<div><label>'.$king->lang->get('portal/user/expire').':</label><p>'.kc_htm_select('expire',$array_select,86400).'</p></div></div>';
-
 
 	$but=kc_htm_a($king->lang->get('system/common/login'),"{CMD:'login',IS:1}");
 	$but.='<a href="javascript:;" title="'.$king->lang->get('system/common/close').'" class="k_close">'.$king->lang->get('system/common/close').'</a>';
@@ -59,7 +61,7 @@ function king_ajax_login(){
 		}
 		kc_ajax('','',0,"parent.location='{$_location}'");
 	}else{
-		kc_ajax($king->lang->get('system/login/title'),$s,$but,'',420,220);
+		kc_ajax($king->lang->get('system/login/title'),$s,$but,'',450,280);
 		kc_error($but);
 	}
 } //!king_ajax_login
