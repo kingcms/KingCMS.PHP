@@ -97,7 +97,7 @@ function king_def(){
 
 
 	foreach($res as $rs){//td
-		$s.='ll('.$rs['cid'].',\''.addslashes(str_replace("\n",' ',substr($rs['kcontent'],0,60))).'\',\''.addslashes(empty($rs['username'])?'&nbsp;':$rs['username']).'\',\''.kc_formatdate($rs['ndate']).'\','.$rs['isshow'].',0);';
+		$s.='ll('.$rs['cid'].',\''.addslashes(str_replace("\n",' ',safehtmlcode(substr($rs['kcontent'],0,60)))).'\',\''.addslashes(empty($rs['username'])?'&nbsp;':$rs['username']).'\',\''.kc_formatdate($rs['ndate']).'\','.$rs['isshow'].',0);';
 	}
 
 	//结束列表
@@ -127,7 +127,7 @@ function king_view(){
 
 		$s=$king->openForm($king->lang->get('portal/title/comment'),'','comment_view');
 		$s.=$king->htmForm($king->lang->get('portal/label/author'),$rs['username']);
-		$s.=$king->htmForm($king->lang->get('portal/label/content'),$rs['kcontent']);
+		$s.=$king->htmForm($king->lang->get('portal/label/content'),safehtmlcode($rs['kcontent']));
 		$s.=$king->htmForm($king->lang->get('portal/label/date'),kc_formatdate($rs['ndate']));
 		$but='<input type="button" onclick="javascript:history.back(-1)" value="'.$king->lang->get('system/common/back').'[B]" class="big" accesskey="b"/>';
 		$s.=$king->htmForm(null,$but);
