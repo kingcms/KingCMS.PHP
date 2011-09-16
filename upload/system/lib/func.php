@@ -2499,8 +2499,6 @@ function kc_pagelist($_url='',$_per,$_pid=1,$_rn=20,$_inner=null){
 	$_pid==$_count
 		? $last='<strong>Last &gt;&gt;</strong>'
 		: $last='<a href="'.kc_formatpath($_url,$_count).'">Last &gt;&gt;</a>';
-//exit($_inner);
-//exit($_url);
 	//jump
 	$jump='<input type="text" size="3" onkeydown="if(event.keyCode==13) {window.location=\''.kc_formatpath($_url,"'+this.value+'").'\'; return false;}" />';//sprintf(str_replace('pid=PID','pid=%s',$_url),"'+this.value+'",$_rn)
 
@@ -2520,7 +2518,6 @@ function kc_pagelist($_url='',$_per,$_pid=1,$_rn=20,$_inner=null){
 	$tmp->assign('pid',$_pid);
 	$tmp->assign('rn',$_rn);
 	$s=$tmp->output($_inner);
-
 	return $s;
 }
 /**
@@ -2649,5 +2646,22 @@ function debug($var) {
 	echo "</pre>\n";
 	exit();
 }
-
+/*
+ * 安全过滤非法HTML代码
+ * @param string $str 录入的html代码
+ */
+function safehtmlcode($str){
+	$farr = array(
+	    "/\s+/",
+	    "/<(\/?)(script|i?frame|style|html|body|title|link|meta|\?|\%)([^>]*?)>/isU",
+	    "/(<[^>]*)on[a-zA-Z]+\s*=([^>]*>)/isU",
+	);
+	$tarr = array(
+	    " ",
+	    " ",
+	    "\\1\\2",
+	);
+	$str = preg_replace( $farr,$tarr,$str);
+	return $str;
+}
 ?>
