@@ -182,7 +182,7 @@ function king_ajax_comment(){
 	$_array=array(
 		'kid'		=>$kid,
 		'modelid'	=>$modelid,
-		'kcontent'	=>$kcontent,
+		'kcontent'	=>safehtmlcode($kcontent),
 		'username'	=>$username,
 		'nip'		=>kc_getip(),
 		'ndate'		=>time(),
