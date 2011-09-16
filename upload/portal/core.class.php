@@ -4081,6 +4081,7 @@ public function tag_pagelist($inner,$ass,$attrib){
 		$pid=kc_val($ass,'pid');
 		$rn=kc_val($ass,'rn');
 		$url="comment.php?modelid=$modelid&listid=$listid&kid=$kid&pid=PID&rn=RN";
+		
 		$pagelist=kc_pagelist($url,$count,$pid,$rn,$inner);
 		return $pagelist;
 	}
@@ -4365,14 +4366,11 @@ private function tag_tag($inner,$attrib){
 */
 private function tag_comment($inner,$attrib,$ass){
 	global $king;
+	
 	//读取数量
-	//exit('<pre>'.print_r($ass,1));
 	$number=isset($attrib['number']) ? $attrib['number'] : $ass['rn'];
-	//$number=kc_validate($number,2) ? $number : 10;
 	//跳过条数
-	$skip=kc_val($attrib,'skip',0);
-	$skip=kc_validate($skip,2) ? $skip : 0;
-	//exit($number);
+	$skip= ($ass['pid']=='1')?0:(((int)$ass['pid'])-1) * $number;
 	//查询条件
 	$whereArray=array();
 	$modelid=kc_val($attrib,'modelid');//modelid
@@ -4403,11 +4401,9 @@ private function tag_comment($inner,$attrib,$ass){
 	}
 	$kid=kc_val($attrib,'kid');//文章id
 	if(kc_validate($kid,2)){
-		//$whereArray[]="kid=$kid";
-        $whereArray[]=" modelid=$modelid and kid=$kid and isshow=1";  // youjoy
+	    $whereArray[]=" modelid=$modelid and kid=$kid and isshow=1";  // youjoy
 	}elseif(kc_validate($kid,3)){
-		//$whereArray[]="kid in ($kid)";
-        $whereArray[]="kid in ($kid) and modelid=$modelid and isshow=1";  // youjoy
+	    $whereArray[]="kid in ($kid) and modelid=$modelid and isshow=1";  // youjoy
 	}
 	
 	$orderby=isset($attrib['orderby']) ? ' ORDER BY '.$attrib['orderby'] : ' ORDER BY cid desc';
@@ -4415,10 +4411,6 @@ private function tag_comment($inner,$attrib,$ass){
 	$limit='limit '.$skip.','.$number;
 
 	$tmp=new KC_Template_class();
-	/*if($skip==0 && $number==30 && kc_validate($kid,2) && kc_validate($modelid,2)){
-		$comment=$king->portal->infoComment($modelid,$kid);
-		if(!$comment)return false;
-	}else*/
 	if(!$comment=$king->db->getRows("select * from %s_comment {$where} {$orderby} {$limit}")){
 		return false;
 	}
