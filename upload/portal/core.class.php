@@ -4420,11 +4420,11 @@ private function tag_comment($inner,$attrib,$ass){
 		$tmp->assign('kid',$rs['kid']);
 		$tmp->assign('modelid',$rs['modelid']);
 		$tmp->assign('username',$rs['username']);
-		$content=$rs['kcontent'];
+		$content=safehtmlcode($rs['kcontent']);
 		if(substr($content,0,7)=='[quote]'){
 			$rid=intval(substr($content,7,10));
 			if($r=$king->db->getRows_One("select * from %s_comment where cid=$rid")){
-				$r['kcontent']=preg_replace("/\[quote].*\[\/quote]/siU",'',$r['kcontent']);
+				$r['kcontent']=safehtmlcode(preg_replace("/\[quote].*\[\/quote]/siU",'',$r['kcontent']));
 				$ypost="Originally posted by <i><b>".($r['username']!=''?$r['username']:'网友')."</b></i> at ".kc_formatdate($r['ndate'],'Y-m-d').":<br>";
 				$include="<table border=0 width='100%' cellspacing=1 cellpadding=10 bgcolor='#cccccc'><tr><td width='100%' bgcolor='#FFFFFF' style='word-break:break-all'>".$ypost.$r['kcontent']."</td></tr></table>";
 				$content=str_replace("[quote]".$rid."[/quote]",$include,$content);
