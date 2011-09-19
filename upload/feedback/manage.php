@@ -27,7 +27,16 @@ function king_ajax_updown(){
 	$kid=kc_get('kid',2,1);
 	$king->db->updown('%s_feedback',$kid);
 }
-
+//回复留言
+function king_ajax_reply(){
+	global $king;
+	$king->access('feedback_reply');
+	$kid=kc_get('kid',2,1);
+	$kreply=kc_post('reply');
+	
+	$king->db->update('%s_feedback',array('nreply'=>1,'kreply'=>$kreply),'kid='.$kid);
+	kc_ajax('OK',"<p class=\"k_ok\">".$king->lang->get('feedback/ok/reply')."</p>",1);
+}
 /**
 菜单调用
 */
@@ -94,7 +103,7 @@ function king_view(){
 	$king->access('feedback');
 	
 	$kid=kc_get('kid',2);
-	$sql="kid,ktitle,kname,kemail,kqq,kphone,kcontent,ndate";
+	$sql="kid,ktitle,kname,kemail,kqq,kphone,kcontent,ndate,kreply,nreply";
 
 	if(!$res=$king->db->getRows("select $sql from %s_feedback where kid=$kid"))
 		$res=array();
@@ -118,7 +127,12 @@ function king_view(){
 		$s.=$king->htmForm($king->lang->get('feedback/label/phone'),$rs['kphone']);
 		$s.=$king->htmForm($king->lang->get('feedback/label/content'),$rs['kcontent']);
 		$s.=$king->htmForm($king->lang->get('feedback/label/date'),kc_formatdate($rs['ndate']));
+		$s.=$king->htmForm($king->lang->get('feedback/list/reply'),kc_htm_textarea('reply', $rs['kreply']));
 		$but='<input type="button" onclick="javascript:history.back(-1)" value="'.$king->lang->get('system/common/back').'[B]" class="big" accesskey="b"/>';
+		//增加回复
+		if($rs['nreply']=='0'){
+		    $but.="<input type=\"button\" value=\"".$king->lang->get('feedback/ACCESS/feedback_reply')."\" onClick=\"\$.kc_ajax({CMD:'reply',kid:{$rs['kid']},FORM:'feedback_edt'});\" />";
+		}
 		$s.=$king->htmForm(null,$but);
 		$s.=$king->closeForm('none');
 	}
