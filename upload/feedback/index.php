@@ -2,7 +2,18 @@
 //添加留言
 function king_ajax_add(){
 	global $king;
-	
+	//过滤IP
+	$fip=kc_getip();
+	if($king->config('lockip')){
+		$array_filter=explode('|',$king->config('lockip'));
+		$array_filter=array_diff($array_filter,array(null));
+	}else{
+		$array_filter=array();
+	}
+	if(in_array(long2ip($fip), $array_filter)){
+		kc_ajax('OK','<p class="k_ok">'.$king->lang->get('feedback/ok/add').'</p>'
+		,"<a href=\"index.php\">".$king->lang->get('system/common/enter')."</a>");//添加成功后返回的地址
+	}
 	$fbtime=kc_cookie("fbtime");//获得上次操作时间
 
 	$ktitle=kc_post('ktitle');
@@ -71,12 +82,21 @@ function king_def(){
 	$s.=$king->htmForm($king->lang->get('feedback/label/content'),kc_htm_textarea('kcontent').'*');
 	$s.=$king->htmForm(null,kc_htm_button($king->lang->get('system/common/add'),"\$.kc_ajax({CMD:'add',FORM:'feedback_add'});",1));
 	$s.=$king->closeForm('none');
+	
+	$pid=isset($_GET['pid']) ? kc_get('pid',2,1) :1;
+	$rn=isset($_GET['rn']) ? kc_get('rn',2,1) :10;
+	$skip=($pid==1) ? 0 : ($pid-1)*$rn;
 
+	if($rn>100) $rn=100;
+	$count=$king->db->getRows_number('%s_feedback');
+	
 	$tmp=new KC_Template_class($king->config('templatepath').'/default.htm',$king->config('templatepath').'/inside/feedback/default.htm');
 	$tmp->assign('content',$s);
 	$tmp->assign('title',$king->lang->get('feedback/name'));
 	$tmp->assign('type','add');
-
+	$tmp->assign('pid',$pid);
+	$tmp->assign('rn',$rn);
+	$tmp->assign('pagelist',kc_pagelist('index.php?pid=PID&rn=RN',$count,$pid,$rn,null));
 	echo $tmp->output();
 
 }
