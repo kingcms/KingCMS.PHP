@@ -15,9 +15,8 @@
 class feedback_class{// implements KingCMS_module
 
 private $path='feedback';	//当前模块目录
-private $dbver=100;	//当前模块的数据库版本
+private $dbver=200;	//当前模块的数据库版本
 public  $lang;
-
 
 /**
 	构造函数，主要是用做版本判断
@@ -35,7 +34,6 @@ public function __construct(){
 		}
 	}
 }
-
 public function infofeedback($kid){
 	global $king;
 	$cachepath="feedback/info/$kid";
@@ -47,9 +45,7 @@ public function infofeedback($kid){
 	}
 	return $feedback;
 }
-
 /* ------>>> 安装部分 <<<---------------------------- */
-
 public function install(){
 	global $king;
 
@@ -86,47 +82,59 @@ public function install(){
 	}else{
 		return false;
 	}
-
-
-
 } //!install
 
 public function install_update($ver){
-	return true;
+    global $king;
+    //增加回复字段
+    $king->db->query('ALTER TABLE '.DB_PRE.'_feedback ADD (
+	kreply text NULL,
+	nreply tinyint(1) unsigned NOT NULL default 0);');
+    return true;
+}
+/* ------>>> 标签解析 <<<---------------------------- */
+public function tag($name,$inner,$ass,$attrib){
+	global $king;
+	return $this->tag_feedback($inner,$attrib,$ass);
 }
 
-
-
-
-
-
-
-/* ------>>> 标签解析 <<<---------------------------- */
-
 /**
-
-	@param string $name   标签名  feedback
+        对feedback解释
 	@param string $inner  循环体内的
 	@param array $ass     assign 内容
 	@param array $attrib  属性数组
-
 	@return string
-
 */
-
-public function tag($name,$inner,$ass,$attrib){
+public function tag_feedback($inner,$attrib,$ass){
 	global $king;
-
-
+	
+	//读取数量
+	$number=isset($attrib['number']) ? $attrib['number'] : $ass['rn'];
+	//跳过条数
+	$skip= ($ass['pid']=='1')?0:(((int)$ass['pid'])-1) * $number;
+	$tmp=new KC_Template_class();
+	$where='';
+	$orderby='ORDER BY kid desc';
+	$limit='limit '.$skip.','.$number;
+	if(!$feedbacks=$king->db->getRows("select * from %s_feedback {$orderby} {$limit}")){
+		return false;
+	}
+	$s='';
+	foreach($feedbacks as $rs){
+		$tmp->assign('id',$rs['kid']);
+		$tmp->assign('title',$rs['title']);
+		$tmp->assign('mail',$rs['kemail']);
+		$tmp->assign('username',$rs['kname']);
+		$content=safehtmlcode($rs['kcontent']);	
+		$tmp->assign('content',$content);
+		$tmp->assign('date',$rs['ndate']);
+		$tmp->assign('isreply',$rs['nreply']);
+		$tmp->assign('reply',($rs['nreply']!='0')?$rs['kreply']:'正在等待回复');
+		
+		$s.=$tmp->output($inner);
+	}
+	return $s;
 }
-
-
-
-
-
-
-
-
 }//!portal_class
 
 ?>
