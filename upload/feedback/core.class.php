@@ -88,6 +88,9 @@ public function install_update($ver){
     global $king;
     //增加回复字段
     $king->db->query('ALTER TABLE '.DB_PRE.'_feedback ADD (
+	username char(12) null,
+	nip int(10) NOT NULL default 0,
+	nshow TINYINT(1) NOT NULL DEFAULT 0,
 	kreply text NULL,
 	nreply tinyint(1) unsigned NOT NULL default 0);');
     return true;
@@ -113,10 +116,10 @@ public function tag_feedback($inner,$attrib,$ass){
 	//跳过条数
 	$skip= ($ass['pid']=='1')?0:(((int)$ass['pid'])-1) * $number;
 	$tmp=new KC_Template_class();
-	$where='';
+	$where='WHERE nshow=1';
 	$orderby='ORDER BY kid desc';
 	$limit='limit '.$skip.','.$number;
-	if(!$feedbacks=$king->db->getRows("select * from %s_feedback {$orderby} {$limit}")){
+	if(!$feedbacks=$king->db->getRows("select * from %s_feedback {$where} {$orderby} {$limit}")){
 		return false;
 	}
 	$s='';
