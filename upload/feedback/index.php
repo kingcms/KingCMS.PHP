@@ -45,8 +45,17 @@ function king_ajax_add(){
 		kc_ajax($king->lang->get('system/common/tip'),$king->lang->get('feedback/error/name',5),0);
 	}else{
 		//记录本次发布时间
-		setcookie("fbtime",time(),time()+3600,'/');	
-
+		setcookie("fbtime",time(),time()+3600,'/');
+		$king->load('user');
+		$user=$king->user->access();
+		if(!$data=$king->db->getRows_one("select username from %s_user where userid=".$user['userid'])){
+		    //拟名用户
+		    $data=array('username'=>'');
+		    $ishow=0; //不显示
+		}else{
+		    //用户名是否存在已显示的记录
+		    $ishow=($king->db->getRows("select kid from %s_feedback where nshow=1 and username='".$data['username']."'"))?1:0;
+		}
 		$array=array(
 			'ktitle'=>$ktitle,
 			'kname'=>$kname,
@@ -56,6 +65,9 @@ function king_ajax_add(){
 			'kcontent'=>$kcontent,
 			'norder'=>$king->db->neworder('%s_feedback'),
 			'ndate' =>time(),
+			'nip'=>$fip,
+			'username'=>$data['username'],
+			'nshow'=>$ishow,
 		);
 
 		$king->db->insert('%s_feedback',$array);
@@ -70,9 +82,8 @@ function king_ajax_add(){
 	添加留言
 */
 function king_def(){
-	
 	global $king;
-	$sql="ktitle,kname,kemail,kqq,kphone,kcontent";
+
 	$s=$king->openForm($king->lang->get('feedback/name'),'','feedback_add');
 	$s.=$king->htmForm($king->lang->get('feedback/label/title'),kc_htm_input('ktitle','',50,400).'*');
 	$s.=$king->htmForm($king->lang->get('feedback/label/name'),kc_htm_input('kname','',30,400).'*');
