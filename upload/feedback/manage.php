@@ -27,6 +27,19 @@ function king_ajax_updown(){
 	$kid=kc_get('kid',2,1);
 	$king->db->updown('%s_feedback',$kid);
 }
+//显示隐藏
+function king_ajax_show(){
+	global $king;
+	$king->access('feedback_edt');
+	$kid=kc_get('list',2,1);
+	$value=kc_get('value',2,1);
+	$king->db->query("update %s_feedback set nshow=$value where kid=$kid;");
+	$value ? $ico='n1':$ico='n2';
+	kc_ajax('',
+		kc_icon($ico,($value?$king->lang->get('feedback/list/unshow'):$king->lang->get('feedback/list/show'))),
+		0,
+		"$('#nshow_{$kid}').attr('rel','{CMD:\'show\',value:".(1-$value).",ID:\'nshow_{$kid}\',list:\'$kid\',IS:2}')");
+}
 //回复留言
 function king_ajax_reply(){
 	global $king;
@@ -74,22 +87,37 @@ function king_def(){
 		"\$.kc_list(K[0],K[1],'manage.php?action=view&kid='+K[0])",
 		$manage,
 		"'<i>'+isread('manage.php',K[0],K[2])+'</i>'",//状态
-		"K[3]",
+		"'<i>'+ishow('manage.php',K[0],K[3])+'</i>'",//显示
 		"K[4]",
 		"K[5]",
+		"K[6]",
 	);
 	$s=$king->openList($_cmd,'',$_js,$king->db->pagelist('manage.php?pid=PID&rn=RN',$king->db->getRows_number('%s_feedback','kid!=0')));
 
-	$_sql="select kid,ktitle,nread,kname,kemail,ndate from %s_feedback order by norder desc,kid desc";
+	$_sql="select kid,ktitle,nread,kname,kemail,ndate,nshow from %s_feedback order by norder desc,kid desc";
 	if(!$res=$king->db->getRows($_sql,1))
 		$res=array();
 
 	$s.="function isread(url,id,is){var I1,ico;is?ico='n2':ico='n1';";
 	$s.="I1='<a id=\"nread_'+id+'\" class=\"k_ajax\" rel=\"{CMD:\'read\',value:'+ (1-is) +',ID:\'nread_'+id+'\',list:'+id+',IS:2}\" >'+$.kc_icon(ico,(is?'".$king->lang->get('feedback/list/unread')."':'".$king->lang->get('feedback/list/read')."'))+'</a>';return I1;};";
-	$s.="ll('".$king->lang->get('feedback/list/title')."','manage','<i>".$king->lang->get('feedback/list/status')."<i>','".$king->lang->get('feedback/list/name')."','".$king->lang->get('feedback/list/email')."','".$king->lang->get('feedback/list/date')."',1);";
+	$s.="function ishow(url,id,is){var I1,ico;is?ico='n1':ico='n2';";
+	$s.="I1='<a id=\"nshow_'+id+'\" class=\"k_ajax\" rel=\"{CMD:\'show\',value:'+ (1-is) +',ID:\'nshow_'+id+'\',list:'+id+',IS:2}\" >'+$.kc_icon(ico,(is?'".$king->lang->get('feedback/list/unshow')."':'".$king->lang->get('feedback/list/show')."'))+'</a>';return I1;};";
+	$s.="ll('".$king->lang->get('feedback/list/title')."',
+	    'manage',
+	    '<i>".$king->lang->get('feedback/list/status')."<i>',
+	    '<i>".$king->lang->get('feedback/list/nshow')."</i>',
+	    '".$king->lang->get('feedback/list/name')."',
+	    '".$king->lang->get('feedback/list/email')."',
+	    '".$king->lang->get('feedback/list/date')."',1);";
 
 	foreach($res as $rs){
-		$s.="ll({$rs['kid']},'".addslashes($rs['ktitle'])."',".$rs['nread'].",'".addslashes($rs['kname'])."','".addslashes($rs['kemail'])."','".kc_formatdate($rs['ndate'])."',0);";
+		$s.="ll({$rs['kid']},
+		    '".addslashes($rs['ktitle'])."',
+		    ".$rs['nread'].",
+		    ".$rs['nshow'].",
+		    '".addslashes($rs['kname'])."',
+		    '".addslashes($rs['kemail'])."',
+		    '".kc_formatdate($rs['ndate'])."',0);";
 	}
 
 	$s.=$king->closeList();
