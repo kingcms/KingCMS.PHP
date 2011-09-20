@@ -1751,7 +1751,7 @@ public function getKey($str,$key=''){
 
 	if(isset($key{0})){//若有关键字列表，则进行更新操作
 
-		$key_array=preg_split("/[\s,]+/",$key);
+		$key_array=preg_split("/,/",$key);
 		if(isset($keywords{0})){//更新关键字组，并返回$key
 			$keywords_array=explode('|',$keywords);
 			foreach($key_array as $val){
@@ -1800,7 +1800,7 @@ public function getTag($str,$key=''){
 	global $king;
 
 	if($key!=''){//若有关键字列表，则进行更新操作
-		$array_key=preg_split("/[\s,]+/",$key);
+		$array_key=preg_split("/,/",$key);
 		foreach($array_key as $val){
 			if(!$_res=$king->db->getRows_one("select kid from %s_tag where ktag='".$king->db->escape($val)."'")){
 				$array=array(
