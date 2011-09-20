@@ -140,7 +140,17 @@ function king_ajax_commentcount(){
 */
 function king_ajax_comment(){
 	global $king;
-	
+	//过滤IP
+	$fip=kc_getip();
+	if($king->config('lockip')){
+		$array_filter=explode('|',$king->config('lockip'));
+		$array_filter=array_diff($array_filter,array(null));
+	}else{
+		$array_filter=array();
+	}
+	if(in_array(long2ip($fip), $array_filter)){
+		kc_ajax('OK','<p class="k_ok">'.$king->lang->get('portal/ok/submit').'</p>',0,"\$('#kcontent').html('');");
+	}
 	$kid=kc_get('kid',2,1);
 	$modelid=kc_get('modelid',22,1);
 	$kcontent=kc_get('kcontent',0,1);
@@ -176,17 +186,20 @@ function king_ajax_comment(){
 	if($user=$king->user->checkLogin()){//已登录
 		$username=$user['username'];
 		unset($user);
+		//用户名是否存在已显示的记录
+		$ishow=($king->db->getRows("select kid from %s_comment where nshow=1 and username='".$username."'"))?1:0;
 	}else{//未登录
 		$username='';
+		$ishow=0;
 	}
 	$_array=array(
 		'kid'		=>$kid,
 		'modelid'	=>$modelid,
 		'kcontent'	=>safehtmlcode($kcontent),
 		'username'	=>$username,
-		'nip'		=>kc_getip(),
+		'nip'		=>$fip,
 		'ndate'		=>time(),
-		'isshow'	=>1,
+		'isshow'	=>$ishow,
 	);
 	$king->db->insert("%s_comment",$_array);
 	$xmlpath=$king->config('xmlpath','portal').'/portal/'.$modelid.'/'.wordwrap($kid,1,'/',1).'.xml';
