@@ -249,7 +249,7 @@ private function tag_user_state($inner,$attrib){
 	return $s;
 }
 private function tag_user_info($inner,$attrib){
-
+	global $king;
 	if(!$userid=kc_val($attrib,'userid'))
 		return False;
 
@@ -258,6 +258,11 @@ private function tag_user_info($inner,$attrib){
 	$tmp=new KC_Template_class;
 	foreach($user as $key => $val){
 		if(!in_array($key,array('userask','userpass','useranswer','ksalt','kremark','authcookie'))){
+			
+			if($key=='userhead' && !empty($val)){
+			    $tmp->assign($key,'<img src="'.$king->config('inst').'images/headface/'.$val.'" />');
+			    continue;
+			}
 			$tmp->assign($key,$val);
 		}
 	}
