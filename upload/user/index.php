@@ -35,7 +35,11 @@ function king_ajax_login(){
 		//array('
 		array('username',14,$king->lang->get('portal/check/reg/u-2'),$array_black),
 	);
-	$s=$king->htmForm($king->lang->get('portal/user/name'),'<input class="k_in w150" type="text" name="username" value="'.htmlspecialchars($data['username']).'" maxlength="15" />',$_array,null,"<tt><a href=\"#\" class=\"k_user_register\">".$king->lang->get('portal/user/reg')."</a></tt>");
+	$s=$king->htmForm($king->lang->get('portal/user/name'),
+		'<input class="k_in w150" type="text" name="username" value="'.htmlspecialchars($data['username']).'" maxlength="15" />',
+		$_array,
+		null,
+		"<tt><a href=\"#\" class=\"k_user_register\">".$king->lang->get('portal/user/reg')."</a></tt>");
 
 	//pass
 	$_array=array(
@@ -338,7 +342,7 @@ function king_ajax_lostpwd(){
 
 	if($GLOBALS['ischeck']){
 
-		kc_ajax('','','',"$.kc_ajax('{URL:\'".$king->config('inst')."user/index.php\',CMD:\'lostpwd1\',username:\'".kc_post('username')."\',METHOD:\'GET\',IS:1,URL:\'".$king->config('inst')."user/index.php\'}')");
+		kc_ajax('','','',"$.kc_ajax('{URL:\'".$king->config('inst')."user/index.php\',CMD:\'lostpwd1\',username:\'".kc_post('username')."\',METHOD:\'GET\',IS:1}')");
 
 	}
 
@@ -409,7 +413,20 @@ function king_ajax_lostpwd1(){
 	kc_ajax($king->lang->get('portal/user/name'),$s,$but,'',420,$height + $GLOBALS['check_num']*15);
 }
 /* ------>>> KingCMS for PHP <<<--------------------- */
-
+function king_ajax_avter(){
+    global $king;
+    //获取images/headface下的图片
+    $faces=kc_f_getdir('images/headface');
+    $s='';
+    foreach($faces as $k=>$f){
+	$s.='<dl><dt><input name="face" value="'.$f.'" type="radio"></dt><dd><img src="'.$king->config('inst').'images/headface/'.$f.'" /></dd></dl>';
+    }
+    $js="$('#userhead').val($('input:checked').val());$.kc_close()";
+    $but=kc_htm_button('ok',$js,1);
+    $height=(count($faces)/5<1)?1:(count($faces))/5;
+    
+    kc_ajax($king->lang->get('user/title/head'),$s,$but,'',420,100+($height*36));
+}
 function king_def(){
 	global $king;
 
@@ -429,7 +446,7 @@ function king_edit(){
 
 	$user=$king->user->access();
 
-	$sql='nickname,realname,usertel,useraddress,userpost';
+	$sql='nickname,realname,usertel,useraddress,userpost,userhead';
 
 	if($GLOBALS['ismethod']){//POST过程
 		$data=$_POST;
@@ -441,6 +458,9 @@ function king_edit(){
 	$data=kc_data($fields,$data);
 
 	$s=$king->openForm('index.php?action=edit');
+	//userhead
+	$exp="$.kc_ajax('{URL:\'".$king->config('inst')."user/index.php\',CMD:\'avter\',METHOD:\'GET\',IS:1}')";
+	$s.=$king->htmForm($king->lang->get('user/common/avter'),kc_htm_input('userhead',$data['userhead'],15,200,"onfocus={$exp}"));
 	//nickname
 	$_array=array(
 		array('nickname',0,0,15),
@@ -566,9 +586,18 @@ function king_safe(){
 */
 function king_head(){
 	global $king;
-
-	$s.='编辑头像';
-
+	
+	$user=$king->user->access();
+	$s=$king->openForm('index.php?action=head');
+	//userhead
+	$exp="$.kc_ajax('{URL:\'".$king->config('inst')."user/index.php\',CMD:\'avter\',METHOD:\'GET\',IS:1}')";
+	$s.=$king->htmForm($king->lang->get('user/common/avter'),kc_htm_input('userhead',$data['userhead'],15,200,"onfocus={$exp}"));
+	$s.=$king->closeForm($king->lang->get('system/common/save'));
+	
+	if(isset($_POST['userhead'])){
+	    $king->db->update('%s_user',array('userhead'=>$_POST['userhead']),"userid={$user['userid']}");
+	    $s=kc_htm_ol($king->lang->get('system/ok/save'),'','index.php?action=head');
+	}
 	$tmp=new KC_Template_class($king->config('templateuser','user'),$king->config('templatepath').'/inside/user/head.htm');
 	$tmp->assign('main',$s);
 	$tmp->assign('userid',$king->user->userid);
