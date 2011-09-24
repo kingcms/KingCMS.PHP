@@ -425,7 +425,7 @@ function king_ajax_avter(){
     $but=kc_htm_button('ok',$js,1);
     $height=(count($faces)/5<1)?1:(count($faces))/5;
     
-    kc_ajax($king->lang->get('user/title/head'),$s,$but,'',420,100+($height*36));
+    kc_ajax($king->lang->get('user/title/head'),$s,$but,'',420,100+($height*48));
 }
 function king_def(){
 	global $king;
@@ -595,8 +595,11 @@ function king_head(){
 	$s.=$king->closeForm($king->lang->get('system/common/save'));
 	
 	if(isset($_POST['userhead'])){
+	    //删除用户信息
+	    $king->user->delUserInfo($king->user->userid);
+	    
 	    $king->db->update('%s_user',array('userhead'=>$_POST['userhead']),"userid={$user['userid']}");
-	    $s=kc_htm_ol($king->lang->get('system/ok/save'),'','index.php?action=head');
+	    $s=kc_htm_ol($king->lang->get('system/ok/save'),array(),'index.php?action=head');
 	}
 	$tmp=new KC_Template_class($king->config('templateuser','user'),$king->config('templatepath').'/inside/user/head.htm');
 	$tmp->assign('main',$s);
