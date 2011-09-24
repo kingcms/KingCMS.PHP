@@ -4420,6 +4420,14 @@ private function tag_comment($inner,$attrib,$ass){
 		$tmp->assign('kid',$rs['kid']);
 		$tmp->assign('modelid',$rs['modelid']);
 		$tmp->assign('username',$rs['username']);
+		if(kc_val($attrib,'userhead')){
+		    if(!empty($rs['username']) && $au=$king->db->getRows_one('select userhead from %s_user where username="'.$rs['username'].'"')){
+			$f=(empty($au['userhead']))?'default.gif':$au['userhead'];
+		    }else{
+			$f='default.gif';
+		    }
+		    $tmp->assign('avatar','<img src="'.$king->config('inst').'images/headface/'.$f.'"/>');
+		}
 		$content=safehtmlcode($rs['kcontent']);
 		if(substr($content,0,7)=='[quote]'){
 			$rid=intval(substr($content,7,10));
