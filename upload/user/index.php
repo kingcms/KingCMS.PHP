@@ -610,6 +610,13 @@ function king_head(){
 	echo $tmp->output();
 
 }
+function king_getAvatar(){
+	global $king;
+	$userid=kc_get('id', 2,1);
+	$f=($res=$king->db->getRows_one("select userhead from %s_user where userid={$userid};"))?$res['userhead']:'';
+	if($f=='') $f='default.gif';
+	echo "<img src=\"/images/headface/{$f}\" />";
+}
 /*
 我的订单
 */
