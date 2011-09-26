@@ -165,6 +165,12 @@ $.kc_userstate=function(id){
 	if(auth!==null){
 		var userid=RegExp.$1;
 		var username=decodeURIComponent(RegExp.$2);
+		var userhead= $.ajax({
+		    type: "GET",
+		    dataType:"html",
+		    url: "/user/index.php?action=getAvatar&id="+userid,
+		    async: false
+		}).responseText; 
 		var auth_obj=$('#'+id+'_hide');
 		var auth_htm=auth_obj.html();
 
@@ -172,6 +178,8 @@ $.kc_userstate=function(id){
 
 		auth_htm=auth_htm.replace('[USERID]',userid);
 		auth_htm=auth_htm.replace('[USERNAME]',username);
+		auth_htm=auth_htm.replace('[AVATAR]',userhead);
+		
 		auth_obj.html(auth_htm);
 		auth_obj.show();
 
@@ -832,6 +840,7 @@ $.kc_float=function(obj,e){//鼠标点击动作
 
 
 }
+
 /*number_format*/
 $.number_format=function(number, decimals, dec_point, thousands_sep){
 	
