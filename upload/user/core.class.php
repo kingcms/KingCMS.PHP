@@ -124,6 +124,7 @@ public function getGroup(){
 	}
 	return $array;
 }
+
 /* ------>>> Info信息 <<<---------------------------- */
 
 /**
@@ -241,6 +242,7 @@ private function tag_user_state($inner,$attrib){
 	$no=$tmp->output($no);
 	$tmp->assign('username','[USERNAME]');
 	$tmp->assign('userid','[USERID]');
+	$tmp->assign('avatar','[AVATAR]');
 	$yes=$tmp->output($yes);
 
 	$s="<span id=\"$id\">{$no}</span><span id=\"{$id}_hide\" class=\"none\">$yes</span><script type=\"text/javascript\">$.kc_userstate('$id')</script>";
