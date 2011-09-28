@@ -3147,6 +3147,7 @@ public function createPage($listid,$kid,$pid=1,$is=null){
 	$tmp->assign('hit',"<em id=\"k_hit\">". ($info['npage']==0 ? 'Loading...' : ($id['nhit']+1) ) ."</em><script type=\"text/javascript\" charset=\"UTF-8\"><!--\n\$.kc_ajax('{URL:\'".$king->config('inst')."portal/index.php\',CMD:\'hit\',kid:$kid,modelid:{$info['modelid']},IS:1}')\n--></script>");//访问统计
 	$tmp->assign('comment',"<em id=\"k_comment\">". 'Loading...'."</em><script type=\"text/javascript\" charset=\"UTF-8\"><!--\n\$.kc_ajax('{URL:\'".$king->config('inst')."portal/index.php\',CMD:\'commentcount\',kid:$kid,modelid:{$info['modelid']},IS:1}')\n--></script>");//评论统计
 	$tmp->assign('digg',"<div id=\"k_digg\"><p id=\"k_digg1\" onclick=\"\$.kc_ajax('{URL:\'".$king->config('inst')."portal/index.php\',CMD:\'digg\',kid:$kid,modelid:{$info['modelid']},type:1,IS:1}');\">Loading...</p><p id=\"k_digg0\" onclick=\"\$.kc_ajax('{URL:\'".$king->config('inst')."portal/index.php\',CMD:\'digg\',kid:$kid,modelid:{$info['modelid']},type:0,IS:1}');\">Loading...</p><script type=\"text/javascript\" charset=\"UTF-8\"><!--\n\$.kc_ajax('{URL:\'".$king->config('inst')."portal/index.php\',CMD:\'digg\',kid:$kid,modelid:{$info['modelid']},type:2,IS:1}')\n--></script></div>");//顶踩
+	
 	if($is||$info['npage']!=0){
 		return $tmp->output();
 	}else{
@@ -3309,7 +3310,7 @@ public function tag($name,$inner,$ass,$attrib){
 			case 'menu3':return $this->tag_menu($inner,$ass,$attrib,$modeltable);
 			case 'menu4':return $this->tag_menu($inner,$ass,$attrib,$modeltable);
 			case 'menu5':return $this->tag_menu($inner,$ass,$attrib,$modeltable);
-			case 'sitemap': return $this->tag_menu($inner,$ass,$attrib,$modeltable);
+			case 'sitemap': return $this->tag_sitemap($inner,$ass,$attrib);
 
 			case 'action':return $this->tag_action($names[2],$ass,$attrib);
 			case 'orders':return $this->tag_orders($inner,$ass,$attrib);
@@ -3712,7 +3713,7 @@ modelid
 
 	$s='';
 	$i=1;
-
+	
 	foreach($res as $rs){
 		$listid=$rs['listid'];
 		$kid=$rs['kid'];
@@ -4048,6 +4049,7 @@ public function tag_pagelist($inner,$ass,$attrib){
 	global $king;
 	$type=kc_val($ass,'type');
 	$modelid=kc_val($ass,'modelid');
+	
 	//列表分页
 	if($type=='list' && $modelid>0){//只有在列表页和modelid大于6的时候才调用
 
@@ -4063,7 +4065,7 @@ public function tag_pagelist($inner,$ass,$attrib){
 	if($type=='page' && $modelid>0){
 
 		$info=$this->infoList($ass['listid']);
-
+		
 		if($info['npagenumber']==1){
 			return;
 		}
@@ -4184,7 +4186,7 @@ public function tag_menu($inner,$ass,$attrib,$menu){
 	}else{
 		return;
 	}
-
+	
 	if(!$res=$king->db->getRows($sql))
 		$res=array();
 
@@ -4227,7 +4229,37 @@ public function tag_action($name2,$ass,$attrib){
 	global $king;
 	return $name2;
 }
+private function loopchild($parent,$outEle,$innerEle,&$maparray,&$s){
 
+    $s.="<$outEle>";
+    foreach($parent as $k=>$v){
+	$info=$this->infoList($k);
+	$listpath=$this->pathList($info);
+	$s.="<$innerEle><a href=\"$listpath\">$v</a>";
+	if(isset($maparray[$k])){
+	    $this->loopchild($maparray[$k],$outEle,$innerEle,$maparray,$s);
+	}
+	$s.="</$innerEle>";
+    }
+    $s.="</$outEle>";
+}
+public function tag_sitemap($inner,$ass,$attrib){
+    global $king;
+    $sql="select listid,listid1,klistname from %s_list where ismap=1";
+    $maparray=array();
+    if(!$res=$king->db->getRows($sql)){
+	$res=array();
+    }
+    foreach($res as $rs){
+	$maparray[$rs['listid1']][$rs['listid']]=$rs['klistname'];
+    }
+    $s='';
+    $outEle=(isset($attrib['outhtml']))?$attrib['outhtml']:'ol';
+    $innerEle=(isset($attrib['innerhtml']))?$attrib['innerhtml']:'li';
+    
+    $this->loopchild($maparray[0],$outEle,$innerEle,$maparray,$s);
+    return $s;
+}
 /*
 订单解析
 */
