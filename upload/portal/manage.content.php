@@ -23,15 +23,14 @@ function king_ajax_delete(){
 	$info=$king->portal->infoList($listid);
 	$model=$king->portal->infoModel($info['modelid']);
 
-	if(!$_res=$king->db->getRows("select kid,kid1,kpath,ktitle from %s__{$model['modeltable']} where kid in ($_list) and listid=$listid;"))
+	if(!$_res=$king->db->getRows("select kid,kpath,ktitle from %s__{$model['modeltable']} where kid in ($_list) and listid=$listid;"))
 		$_res=array();
 
 	foreach($_res as $rs){
 
 		$kid=$rs['kid'];
-		$kid1=$rs['kid1'];
+
 		kc_f_delete($king->config('xmlpath','portal').'/portal/'.$info['modelid'].'/'.wordwrap($kid,1,'/',1).'.xml');
-		if(!empty($kid1)) kc_f_delete($king->config('xmlpath','portal').'/portal/'.$info['modelid'].'/'.wordwrap($kid1,1,'/',1).'.xml');
 		kc_f_delete($king->getfpath($rs['kpath']));
 
 		//写log
@@ -57,11 +56,6 @@ function king_ajax_create_list(){
 
 	list($_msec,$_sec)=explode(' ',microtime());
 	$time=$_sec+$_msec;//当前时间
-
-//	整理要生成的内容
-//	生成一个javascript函数，用来记录要生成的对象
-//	当iframe中的内容生成完毕后激活.
-
 	$s=kc_progress('progress');
 	$s.='<div class="none" id="k_progress_iframe">'.kc_htm_iframe('manage.content.php?action=iframe&CMD=create&create=list&time='.$time.'&list='.$listid,502,200,'progress_iframe').'</div>';
 	$s.="<script>function moreinfo(){var obj=\$('#progress + div');var o=\$('#k_ajaxBox').offset();if(obj.css('display')=='none'){\$('#k_ajaxMain').height(320);\$('#k_ajaxBox').css('top',o.top-160);\$('#k_ajaxBox').height(320+\$('#k_ajaxTitle').height()+\$('#k_ajaxSubmit').height());obj.show()}else{obj.hide();\$('#k_ajaxMain').height(100);\$('#k_ajaxBox').height(100+\$('#k_ajaxTitle').height()+\$('#k_ajaxSubmit').height());\$('#k_ajaxBox').css('top',o.top+160)}}</script>";
@@ -138,8 +132,8 @@ function king_ajax_updown(){
 	$kid1=kc_get('kid1');
 
 	if($kid1){
-//		kc_error(preg_match('/norder +desc/i',$model['kpageorder']));
-		if(preg_match('/norder +desc/i',$model['kpageorder'])){//		if(NULL!==strpos(strtolower($model['kpageorder']),'norder')){
+
+		if(preg_match('/norder +desc/i',$model['kpageorder'])){
 			//文章分列列表的排序是倒序排序
 			$king->db->updown('%s__'.$model['modeltable'],$kid," listid={$info['listid']} and (kid1={$kid1} or kid={$kid1})",1);
 		}else{
@@ -378,157 +372,7 @@ function king_ajax_relatedel(){
 function king_ajax_relateload(){
 	call_user_func('king_ajax_relate');
 }
-/**
-图片列表
-king_ajax_images()
-*/
-/*
-function king_ajax_imagesload(){
-	global $king;
-	$king->access('portal_content_edt');
-	$info=$king->portal->infoList();
 
-	$label=kc_get('label',4,1);//获得标签
-	$value=kc_post($label);//获得标签对应的值
-	$value_temp=kc_post($label.'_temp');//临时变量的值
-
-	$js='';
-	switch(CMD){
-		case 'imagesload':
-			$array=isset($value{0}) ? unserialize(base64_decode($value)) : array();
-
-			if(isset($value_temp{0})){//如果有temp
-				$title=$value_temp;
-				//从%s_upfile中读取对应的title
-				if($res=$king->db->getRows_one("select ktitle from %s_upfile where kpath='".$king->db->escape($value_temp)."';")){
-					$title=$res['ktitle'];
-				}
-				$array[$value_temp]=array(
-					'title'=>$title,
-					'image'=>$value_temp,
-				);
-			}
-
-			if(empty($array)){
-				kc_ajax('',$king->lang->get('portal/tip/notpic'));
-
-			}
-
-		break;
-
-		case 'imagesdel':
-			$delfile=kc_post('delfile');//要删除的文件名
-			$array=isset($value{0}) ? unserialize(base64_decode($value)) : array();
-			$array=array_diff_key($array,array($delfile=>''));
-			if(!count($array)){//当删除最后一个图片的时候
-				$js="\$('#$label,#{$label}_temp').val('');\$('#k{$label}show').html('".addslashes($king->lang->get('portal/tip/notpic'))."');";
-				kc_ajax('','',0,$js);
-			}
-		break;
-
-		case 'imagestitle':
-			$file=kc_post('file');//要修改标题的图片文件名
-			$title=kc_post($label.'title');
-			$array=isset($value{0}) ? unserialize(base64_decode($value)) : array();
-			if(isset($title{0}) && $GLOBALS['ismethod']){//如果有标题并且是提交的时候，更新
-				$array[$file]=array(
-					'image'=>$file,
-					'title'=>$title,
-				);
-				$js="\$.kc_close();";
-			}else{
-				$title=kc_val($array[$file],'title');
-				$s=$king->htmForm($king->lang->get('system/upfile/title'),'<input type="text" name="'.$label.'title" class="k_in w400" value="'.$title.'" />');
-
-				$but=kc_htm_a($king->lang->get('system/common/save'),"{URL:'../portal/manage.content.php',CMD:'imagestitle',file:'$file',label:'$label',VAL:'$label,{$label}_temp,listid',IS:1}");
-				$js='';
-				kc_ajax('Title',$s,$but,$js,440,80);
-			}
-		break;
-
-	}
-
-	$js.="\$('#k{$label}show').html(''";
-	foreach($array as $arr){
-		$js.="+k{$label}js('{$arr['title']}','{$arr['image']}','$label')";
-	}
-	$js.=");\$.kc_ready('#k{$label}show');";
-
-	$js.="\$('#$label').val('".base64_encode(serialize($array))."');\$('#{$label}_temp').val('')";
-	kc_ajax('','',0,$js);
-}
-function king_ajax_imagesdel(){
-	call_user_func('king_ajax_imagesload');
-}
-function king_ajax_imagestitle(){
-	call_user_func('king_ajax_imagesload');
-}
-*/
-/**
-文件列表
-king_ajax_files()
-*/
-/*
-function king_ajax_filesload(){
-	global $king;
-	$king->access('portal_content_edt');
-	$info=$king->portal->infoList();
-
-	$label=kc_get('label',4,1);//获得标签
-	$value=kc_post($label);//获得标签对应的值
-	$value_temp=kc_post($label.'_temp');//临时变量的值
-
-	$js='';
-	switch(CMD){
-		case 'filesload':
-
-			$array=isset($value{0}) ? unserialize(base64_decode($value)) : array();
-
-			if(isset($value_temp{0})){//如果有temp
-				$title=$value_temp;
-				//从%s_upfile中读取对应的title
-				if($res=$king->db->getRows_one("select ktitle from %s_upfile where kpath='".$king->db->escape($value_temp)."';")){
-					$title=htmlspecialchars($res['ktitle']);
-				}
-				$array[$value_temp]=array(
-					'title'=>$title,
-					'file'=>$value_temp,
-				);
-			}
-
-			if(empty($array)){
-				kc_ajax('',$king->lang->get('portal/tip/notfile'));
-
-			}
-		break;
-
-		case 'filesdel':
-			$delfile=kc_post('delfile');//要删除的文件名
-			$array=isset($value{0}) ? unserialize(base64_decode($value)) : array();
-			$array=array_diff_key($array,array($delfile=>''));
-			if(!count($array)){//当删除最后一个图片的时候
-				$js="\$('#$label,#{$label}_temp').val('');\$('#k{$label}show').html('".addslashes($king->lang->get('portal/tip/notpic'))."');";
-				kc_ajax('','',0,$js);
-			}
-		break;
-
-	}
-
-
-	$js.="\$('#k{$label}show').html(''";
-	foreach($array as $arr){
-		$js.="+k{$label}js('{$arr['title']}','{$arr['file']}','$label')";
-	}
-	$js.=");\$.kc_ready('#k{$label}show');";
-
-	$js.="\$('#$label').val('".base64_encode(serialize($array))."');\$('#{$label}_temp').val('')";
-	kc_ajax('','',0,$js);
-
-}
-function king_ajax_filesdel(){
-	call_user_func('king_ajax_filesload');
-}
-*/
 /**
 手工指定相关文章
 */
@@ -563,13 +407,12 @@ function king_ajax_hrelate(){
 
 		$s='<div id="kqueryshow" class="k_in w400">';
 		if($res=$king->db->getRows($sql)){
-
 			foreach($res as $rs){
 				$id=isset($krelate{0})
 					? $krelate.','.$rs['kid']
 					: $rs['kid'];
 				$s.="<p>".kc_icon('c5')."<a href=\"javascript:;\" onclick=\"\$('#krelate').val('$id');krelateshow();\$.kc_ajax('{CMD:\'hrelate\',VAL:\'krelate,listid,kid,kquery\',IS:1}')\">".htmlspecialchars($rs['ktitle']).'</a></p>';
-			}//$kc_ajax(\'manage.content.php?action=ajax\',\'k_ajax\',\'cmd=hrelate&\'+kc_getvalue(\'krelate,listid,kid,kquery\'),1)"
+			}
 
 		}else{
 			$s.='<p>'.$king->lang->get('system/error/notre').'</p>';
@@ -578,7 +421,6 @@ function king_ajax_hrelate(){
 		$s.='</div>';
 
 	}
-//$.kc_ajax(\'manage.content.php?action=ajax\',\'k_ajax\',\'cmd=hrelate&\'+kc_getvalue(\'krelate,listid,kid,kquery\'),1)
 	$content='<input value="'.htmlspecialchars($kquery).'" id="kquery" type="text" class="k_in w350"/><a href="javascript:;" class="k_ajax" rel="{CMD:\'hrelate\',VAL:\'krelate,listid,kid,kquery\',IS:1}">'.kc_icon('m1').'</a>'.$s;
 
 	$s=$king->htmForm($king->lang->get('portal/label/find'),$content);
@@ -595,7 +437,6 @@ function king_ajax_keywords(){
 	$model=$king->portal->infoModel($info['modelid']);
 	$ktitle=kc_post('ktitle');
 	$kkeywords=kc_post('kkeywords');
-//kc_error($ktitle);
 	if(isset($ktitle{0})){//如果标题不为空,则读取关键字列表进行比较
 		if(isset($kkeywords{0})){
 			$js='alert(\''.$king->lang->get('portal/tip/kkey').'\');$.kc_close();';
@@ -624,7 +465,6 @@ function king_ajax_tag(){
 	$model=$king->portal->infoModel($info['modelid']);
 	$ktitle=kc_post('ktitle');
 	$ktag=kc_post('ktag');
-//	kc_error($ktitle);
 	if(isset($ktitle{0})){//如果标题不为空,则读取关键字列表进行比较
 		/**/
 		if(isset($ktag{0})){
@@ -665,28 +505,8 @@ function king_inc_location($safetime,$url){//,$stat
 */
 function king_iframe_create(){
 	global $king;
-
+        $king->log(5,"进入生成操作第三步:".time());
 	echo '<html><head><script type="text/javascript" charset="UTF-8" src="../system/js/jquery.js"></script><style type="text/css">p{font-size:12px;padding:0px;margin:0px;line-height:14px;width:450px;white-space:nowrap;}</style><meta http-equiv="Content-Type" content="text/html; charset='.PAGE_CHARSET.'" /></head><body></body></html>';
-
-/*
-
-生成方式分类
-page  只生成页面
-NULL  列表及页面
-list  只生成列表
-not   只生成未生成内容
-all   全部
-
-传递继续项目的时候URL参数
-action=iframe
-list=列表页的ID
-
-listid  当前正在生成中的列表id
-	pid  如果是正在生成列表页的时候，则带pid参数
-	kid pagid pid  列表生成完成，正在生成中的kid,pagid 分页id,pid 每页20条数据的时候所属的段
-
-*/
-
 	$max_execution_time=ini_get('max_execution_time');//安全的执行时间
 	if($max_execution_time>=20){
 		$safetime=$max_execution_time-10;//10秒的余地是比较保险的时间
@@ -710,7 +530,7 @@ listid  当前正在生成中的列表id
 	}
 	$lists_count=count($lists);
 
-
+	$king->log(5,"进入生成操作第四步:".time());
 	foreach($lists as $listid){
 		$info=$king->portal->infoList($listid);
 		//生成列表
@@ -772,7 +592,7 @@ listid  当前正在生成中的列表id
 				}
 			}
 		}
-
+		 $king->log(5,"进入生成操作第五步:".time());
 		//生成页面
 		if($info['npage']==0 && in_array($create,array('','page','all','not')) && (($Listid==$listid && isset($_GET['kid']))||$Listid!=$listid)){
 			$model=$king->portal->infoModel($info['modelid']);
@@ -871,11 +691,6 @@ listid  当前正在生成中的列表id
 
 								echo kc_progress('progress',$king->lang->get('portal/progress/create/page').' ('.$king->lang->get('portal/progress/remainder').':'.($lists_count-1).')',$k,$info['ncount'],"<p>".$king->lang->get('portal/progress/success')." ID:".$rs['kid'].'('.$i."/".$pcount.") ".$king->lang->get('portal/progress/when').":$timeDiff ".$king->lang->get('portal/progress/sleep').":$timeSleep ".htmlspecialchars($rs['ktitle'])."</p>");
 								flush();
-								/*
-									listid 当前生成中的listid
-									pid 生成到第pid页，这个pid分页和list里的pid不同，每次读取20条内容数据
-									kid 当前生成中的页面id，是否生成列表的区别在于这个kid，若没有kid值，则是生成列表
-								*/
 								king_inc_location(
 									$safetime,"manage.content.php?action=iframe&CMD=create&create="
 									.($create=='all' ? 'all' : $create."&list=".kc_get('list',3,1))
@@ -888,6 +703,7 @@ listid  当前正在生成中的列表id
 				}
 			}
 		}
+		$king->log(5,"进入生成操作第六步:".time());
 		$lists_count--;
 	}
 
@@ -1074,6 +890,7 @@ function king_def(){
 	$nattrib=array('nshow','nhead','ncommend','nup','nfocus','nhot');//默认的nattrib选项
 	$th='';
 	$i=6;
+	//以下生成操作状态:推荐,热门,显示
 	if($action==''){//首页
 		//属性
 		foreach($nattrib as $val){
@@ -1081,7 +898,6 @@ function king_def(){
 				$th.=',\'<i>'.$king->lang->get('portal/label/attrib/is'.substr($val,1)).'</i>\'';
 				$_js[]="'<i>'+isset('manage.content.php',K[0],'$val',K[$i])+'</i>'";
 				$i++;
-
 			}
 		}
 		//价格
@@ -1096,7 +912,6 @@ function king_def(){
 				$th.=',\'<i>'.$king->lang->get('portal/label/attrib/is'.substr($val,1)).'</i>\'';
 				$_js[]="'<i>'+isset('manage.content.php',K[0],'$val',K[$i])+'</i>'";
 				$i++;
-
 			}
 		}
 		//价格
@@ -1140,7 +955,6 @@ function king_def(){
 
 
 	$s=$king->openList($_cmd,$_right,$_js,$king->db->pagelist('manage.content.php?pid=PID&rn=RN&listid='.$listid,$sql_count),array('listid'=>$listid,'kid1'=>$kid1));//&kid1={$kid1}
-//	$s.="function ispath(){};";
 	$s.="function isset(url,id,attrib,is){var I1,ico;is?ico='n1':ico='n2';if(is==2) ico='n3';";
 	$s.="I1='<a id=\"'+attrib+'_'+id+'\" class=\"k_ajax\" rel=\"{CMD:\'attrib\',field:\''+attrib+'\',value:'+ (is==2 ? 0 : 1-is) +',ID:\''+attrib+'_'+id+'\',listid:$listid,list:'+id+',IS:2}\" >'+$.kc_icon(ico)+'</a>';return I1;};";
 
@@ -1191,8 +1005,14 @@ function king_def(){
 			$isexist=1;
 		}
 		$kpath=$king->portal->pathPage($info,$rs['kid'],$rs['kpath']);
-
-		$str='ll('.$rs['kid'].','.$rs['kid1'].','.$listid.',\''.addslashes(htmlspecialchars($rs['ktitle'])).'\',\''.addslashes($kpath).'\',\''.addslashes(htmlspecialchars($rs['kimage'])).'\','.$rs['nshow'].','.$rs['nhead'].','.$rs['ncommend'].','.$rs['nup'].','.$rs['nfocus'].','.$rs['nhot'].',\''.number_format($rs['nprice'],2,'.',',').'\','.$rs['ncount'].','.$isexist;
+		//依次打印数组中的字段
+		if($model['modelid']=='7'){
+		    $str='ll('.$rs['kid'].','.$rs['kid1'].','.$listid.',\''.addslashes(htmlspecialchars($rs['ktitle'])).'\',\''.addslashes($kpath).'\',\''.addslashes(htmlspecialchars($rs['kimage'])).'\','.$rs['nshow'].','.$rs['ncommend'].','.$rs['nhot'].','.$rs['nup'].','.$rs['nfocus'].','.$rs['nhead'].',\''.number_format($rs['nprice'],2,'.',',').'\','.$rs['ncount'].','.$isexist;
+		}else{
+		    $str='ll('.$rs['kid'].','.$rs['kid1'].','.$listid.',\''.addslashes(htmlspecialchars($rs['ktitle'])).'\',\''.addslashes($kpath).'\',\''.addslashes(htmlspecialchars($rs['kimage'])).'\','.$rs['nshow'].','.$rs['nhead'].','.$rs['ncommend'].','.$rs['nup'].','.$rs['nfocus'].','.$rs['nhot'].',\''.number_format($rs['nprice'],2,'.',',').'\','.$rs['ncount'].','.$isexist;
+		}
+		
+		
 		foreach($model['field']['islist'] as $key=>$val){
 			$str.=',\''.addslashes($rs[$key]).'\'';
 		}
@@ -1202,50 +1022,8 @@ function king_def(){
 
 	//结束列表
 	$s.=$king->closeList();
-
-
-/**
-//添加测试数据
-$str='';
-for($i=0;$i<39;$i++){
-	$str.=kc_random('120')."<br/>\n";//str_repeat("-/", 100);
-}
-$max=$king->db->neworder('%s__'.$model['modeltable']);
-
-$j=0;
-for($i=0;$i<787;$i++){
-	$n=$i+$max;
-	$_array=array(
-	'ktitle'=>"添加测试文章，标题是{$n}".kc_random('32'),
-	'kpath'=>"{$model['modeltable']}/$n.htm",
-	'kcontent'=>$str,
-	'norder'=>$n,
-	'listid'=>$listid,
-	'kid1'=>$kid1?$kid1:0,
-	'ndate'=>$i,
-	'nlastdate'=>$i,
-	);
-
-	$newkid=$king->db->insert('%s__'.$model['modeltable'],$_array);
-
-	if($j==15){
-		$kid1=0;
-		$j=0;
-	}
-	if($j==1){
-		$kid1=$newkid;
-	}
-	$j++;
-}
-$king->cache->del('portal/list/'.$listid);;
-
-/**/
-
-
 	list($left,$right)=king_inc_list();
 	$king->skin->output($info['klistname'],$left,$right,$s);
-
-
 }
 function king_pag(){
 	call_user_func('king_def');
@@ -1256,26 +1034,19 @@ function king_edtpag(){
 function king_edt(){
 	global $king;
 	$king->access('portal_content_edt');
-
 	//初始化
 	$listid=kc_get('listid',2,1);//$info['listid'];
 	$info=$king->portal->infoList($listid);
 	$model=$king->portal->infoModel($info['modelid']);
-
-//	kc_error('<pre>'.print_r($array_field,1));
 	$kid=kc_get('kid',2);
 	$kid1=kc_get('kid1',2);
 	$isadmin=$kid1 ? 'isadmin2' : 'isadmin1';//次页:首页
 	$array_field=array_keys($model['field'][$isadmin]);
 	$sql_field=implode(',',$array_field);//[tablemodel]字段调用
-//	$listid=kc_get('listid',2);
-
-
 	if($GLOBALS['ismethod']||$kid==''){//POST过程或新添加的过程
 		$data=$_POST;
 		if(!$GLOBALS['ismethod']){	//初始化新添加的数据
 			$data['kpath']=$king->portal->depathMode($info);
-
 			$data['nshow']=1;
 			$array_field_default=$model['field']['default'];
 			foreach($array_field_default as $key => $val){
@@ -1287,32 +1058,22 @@ function king_edt(){
 			kc_error($king->lang->get('system/error/param').'<br/>select '.$sql_field.' from %s__'.$model['modeltable'].' where kid='.$kid.' limit 1;'.'<br/>File:'.basename(__FILE__).';Line:'.__LINE__);
 	}
 	$data=kc_data($array_field,$data);
-
 	$data['kid']=$kid;
 	if(!$res=$king->db->getRows("select * from %s_field where modelid={$info['modelid']} and {$isadmin}=1 and kid1=0 order by norder,kid;"))//全部调用
 		$res=array();
-
 	$s=$king->openForm('manage.content.php?action=edt');
 	$s.=kc_htm_hidden(array('listid'=>$listid,'kid'=>$kid,'kid1'=>$kid1));//这个隐藏域不要放在下面
-//kc_error("select * from %s_field where modelid={$info['modelid']} and {$isshow}=1 and kid1=0 order by norder,kid;");
-//kc_error('<pre>'.print_r($res,1));
 	foreach($res as $rs){
 		$s.=$king->portal->formdecode($rs,$data,$info,1,($kid1?2:1));
 	}
-
 	$s.=$king->htmForm($king->lang->get('portal/common/exp'),kc_htm_checkbox('pag',array(1=>$king->lang->get('portal/goto/addpag')),kc_post('pag')));
-
 	$s.=$king->closeForm('save');
-
 	//数据处理
 	if($GLOBALS['ischeck']){
-
 		$_array=array();//设置为空数组
-
 		//收集字段的值
 		foreach($array_field as $val){
 			if(in_array($val,array('nshow','nhead','ncommend','nup','nfocus','nhot')) || array_key_exists($val,$model['field']['offon'])){
-
 				//增加判断offon
 				$_array[$val] = $data[$val] ? 1:0;
 			}else{
@@ -1326,7 +1087,6 @@ function king_edt(){
 					if(kc_post('isgrab')){//抓图
 						$_array[$val]=kc_grab($_array[$val]);
 					}
-
 					if(kc_post('isremovea')){//过滤链接
 						$_array[$val]=preg_replace('/<a ([^>]*)>|<\/a>/is','',$_array[$val]);
 					}
@@ -1345,7 +1105,6 @@ function king_edt(){
 				}
 			}
 		}
-
 		if(in_array('kimage',$_array) && in_array('kcontent',$_array)){//如果有选择第一个图作为缩略图 并 kimage在列表里
 			if(kc_post('isoneimage')){//抓第一张图为缩略图
 				if($oneimage=preg_match('/(<img([^>]*))( src=)(["\'])(.*?)\4(([^>]*)\/?>)/is',$_array['kcontent'],$oneimage_array)){
@@ -1362,58 +1121,23 @@ function king_edt(){
 				}
 			}
 		}
-
 		//listid & kid1
 		$_array['listid']=$data['listid'];
 		$_array['kid1']=($data['kid1']?$data['kid1']:0);
-
-
-/**
-		检查kpath是否在键名列表里，如果有则判断是否为空值
-		如果没有，则补充
-*/
 		if(empty($_array['kpath'])){
 			$_array['kpath']=$king->portal->depathMode($info);
 		}
-/**
-		检查kkeywords，如果没有，则自动补充其值
-		如果有，则更新列表
-*/
 		$_array['kkeywords']= !empty($data['kkeywords'])
 			? $king->portal->getKey($_array['ktitle'],$_array['kkeywords'])
 			: $king->portal->getKey($_array['ktitle']);
-
-/**
-	关键字替换功能的实现概论
-
-	从$_array['kkeywords']中获得关键字列表，从预置的[关键字链接页/待做的表]中查找相关关键字
-
-	kname 关键字
-	kkeywords 关键字相关关键字
-	kpath 关键字链接网址
-
-	preg_replace('',$rs['kpath'],$_array['kcontent'],1);
-
-*/
-
-
-/**
-		检查ktag，如果没有，则自动补充其值
-		如果有，则更新列表
-*/
 		$_array['ktag']= !empty($data['ktag']) ? $king->portal->getTag($_array['ktitle'],$_array['ktag']) : $king->portal->gettag($_array['ktitle']);
-/**
-		如果description值为空，则从content中获取
-*/
 		if(empty($data['kdescription']) && !empty($data['kcontent'])){
 			$kdescription=strip_tags($data['kcontent']);
 			$kdescription=preg_replace('/(\&[a-z]{1,6};)|\s/','',$kdescription);
 			$_array['kdescription']=kc_substr($kdescription,0,200);
 		}
-
 		//副标题长度
 		$_array['nsublength']=isset($data['ksubtitle']) ? kc_strlen($data['ksubtitle']) :0;
-
 		//更新时间
 		$_array['nlastdate']=time();
 		//如果有kid1值，则对kid1对应的nlastdate进行更新
@@ -1428,7 +1152,6 @@ function king_edt(){
 				}
 			}
 		}
-
 		//添加&更新数据
 		if($kid){//update
 			$king->db->update('%s__'.$model['modeltable'],$_array,'kid='.$kid);
@@ -1438,7 +1161,6 @@ function king_edt(){
 			$_array['adminid']=$king->admin['adminid'];
 			$_array['userid']=-1;
 			$_array['norder']=$king->db->neworder('%s__'.$model['modeltable']);
-
 			//不同的浏览器不同的分页标签,前台不支持
 			switch(strtolower($king->admin['admineditor'])){
 			case 'fckeditor':
@@ -1447,40 +1169,29 @@ function king_edt(){
 			case 'tiny_mce':$pagebreak='<!-- pagebreak -->';break;
 			case 'edit_area':$pagebreak='<!-- pagebreak -->';break;
 			}
-
 			if(isset($pagebreak) && isset($_array['kcontent'])){
 				$array=explode($pagebreak,$_array['kcontent']);
 				foreach($array as $key => $val){
-
 					$_array['kcontent']=$val;
 					$_array['norder']++;
-
 					if($key===0){//第一个
 						$kid=$king->db->insert('%s__'.$model['modeltable'],$_array);
 					}else{
-
 						$_array['kpath']=$king->portal->depathMode($info);
-
 						$_array['kid1']= $data['kid1'] ? $data['kid1'] : $kid;
 						$king->db->insert('%s__'.$model['modeltable'],$_array);
-
 					}
 				}
 			}else{
 				$kid=$king->db->insert('%s__'.$model['modeltable'],$_array);
 			}
-
 			$_nlog=5;
-
 			if($kid==0){
 				kc_error($king->lang->get('system/error/insert').kc_clew(__FILE__,__LINE__,nl2br(print_r($_array,1))));
 			}
-
 		}
-
 		//更新列表信息
 		$king->portal->lastUpdated($listid,'list');
-
 		//删除缓存重建缓存
 		$king->cache->del('portal/list/'.$listid);
 		kc_f_delete($king->config('xmlpath','portal').'/portal/'.$info['modelid'].'/'.wordwrap($kid,1,'/',1).'.xml');
@@ -1489,12 +1200,10 @@ function king_edt(){
 			kc_f_delete($king->config('xmlpath','portal').'/portal/'.$info['modelid'].'/'.wordwrap($kid1,1,'/',1).'.xml');
 			$id=$king->portal->infoID($listid,$kid1);
 		}
-
 		//生成操作
 		if($info['npage']==0){
 			if($info['npagenumber']==1){
 				$king->portal->createPage($listid,($kid1?$kid1:$kid));//$listid,$kid,$pid=1,$is=null
-
 				$subkid=$id['subkid'];
 				if($subkid){
 					$subid=explode(',',$subkid);
@@ -1509,10 +1218,8 @@ function king_edt(){
 				}
 			}
 		}
-
 		//写log
 		$king->log($_nlog,$model['modeltable'].':'.$data['ktitle']);
-//		if(kc_post('pag')[0]==1){
 		if(kc_post('pag')==1){
 			$s=kc_goto($king->lang->get('system/goto/saveok'),'manage.content.php?action=edtpag&listid='.$data['listid'].'&kid1='.($kid1?$kid1:$kid));
 		}else{
@@ -1523,17 +1230,8 @@ function king_edt(){
 			}
 		}
 	}
-
 	list($left,$right)=king_inc_list();
 	$king->skin->output($info['ktitle'],$left,$right,$s);
 
 }
-
-
-
-
-
-
-
-
 ?>
