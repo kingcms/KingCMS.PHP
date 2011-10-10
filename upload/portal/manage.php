@@ -306,54 +306,18 @@ function king_ajax_create(){
 	$cmd=substr(CMD,6);
 	switch($cmd){
 		case '':
-			/*
-			$list=kc_getlist();
-			$s =kc_progress('progresslist').kc_progress('progresslist1').kc_progress('progresspage');
-			$s.=kc_htm_iframe('manage.content.php?action=iframe&create=list&time='.$time.'&listids='.$list);
-			$s.=kc_htm_iframe('manage.content.php?action=iframe&create=page&time='.$time.'&listids='.$list);
-			kc_ajax($king->lang->get('portal/title/create'),$s,0,null,340,140);
-			*/
-//			$cmd='listpage';//生成列表和页面
-//			$
 		break;
 
 		case 'list'://只生成列表
-
-		/*
-			$list=kc_getlist();
-			$s=kc_progress('progresslist').kc_progress('progresslist1');
-			$s.=kc_htm_iframe('manage.content.php?action=iframe&create=list&time='.$time.'&listids='.$list);
-			kc_ajax($king->lang->get('portal/title/create'),$s,0,null,340,100);
-		*/
 		break;
 
 		case 'page'://只生成页面
-//			$cmd='onlypage';
-		/*
-			$list=kc_getlist();
-			$s=kc_progress('progresspage');
-			$s.=kc_htm_iframe('manage.content.php?action=iframe&create=page&time='.$time.'&listids='.$list);
-			kc_ajax($king->lang->get('portal/title/create'),$s,0,null,340,60);
-		*/
 		break;
 
 		case 'all';//全站生成
-		/*
-			$s =kc_progress('progresslist').kc_progress('progresslist1').kc_progress('progresspage');
-			$s.=kc_htm_iframe('manage.content.php?action=iframe&create=list&time='.$time.'&listids=0');
-			$s.=kc_htm_iframe('manage.content.php?action=iframe&create=page&time='.$time.'&listids=0');
-
-			kc_ajax($king->lang->get('portal/title/create'),$s,0,null,340,140);
-		*/
 		break;
 
 		case 'not'://生成未生成内容
-		/*
-			$list=kc_getlist();
-			$s=kc_progress('progresspage');
-			$s.=kc_htm_iframe('manage.content.php?action=iframe&create=not&time='.$time.'&listids='.$list);
-			kc_ajax($king->lang->get('portal/title/create'),$s,0,null,340,60);
-		*/
 		break;
 
 	}
@@ -364,7 +328,6 @@ function king_ajax_create(){
 
 	$but='<a href="javascript:;" onclick="moreinfo()">'.$king->lang->get('portal/common/moreinfo').'</a>';
 	$but.='<a href="javascript:;" class="k_close">'.$king->lang->get('system/common/close').'</a>';
-
 	kc_ajax($king->lang->get('portal/title/create'),$s,$but,null,546,100);
 
 
