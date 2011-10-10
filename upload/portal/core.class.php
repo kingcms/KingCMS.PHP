@@ -165,7 +165,6 @@ $sql='ktitle,kfield,ntype,nvalidate,nsizemin,nsizemax,kdefault,koption,nstylewid
 						$h.=kc_icon('a7',$king->lang->get('system/common/ckre')).'</a>';
 					}else{
 						return;
-//						$s=kc_htm_hidden(array($f=>htmlspecialchars($data[$f])));
 					}
 				break;
 
@@ -179,7 +178,7 @@ $sql='ktitle,kfield,ntype,nvalidate,nsizemin,nsizemax,kdefault,koption,nstylewid
 
 					$s='';
 					$c2=array();
-					$h2='';//($s,$c,$h)
+					$h2='';
 					foreach($res2 as $rs2){
 
 						list($s2,$c2,$h2)=$this->formdecode($rs2,$data,$info,$is,$at,0);
@@ -200,9 +199,6 @@ $sql='ktitle,kfield,ntype,nvalidate,nsizemin,nsizemax,kdefault,koption,nstylewid
 					if($is){
 						$s.='<span><input type="checkbox" id="isgrab" name="isgrab" '.(kc_post('isgrab')?'checked="true"':'').'/><label for="isgrab">'.$king->lang->get('system/common/grab').'</label>';
 						$s.='<input type="checkbox" id="isoneimage" name="isoneimage" '.(kc_post('isoneimage')?'checked="true"':'').'/><label for="isoneimage">'.$king->lang->get('portal/remove/oneimage').'</label></span>';
-						//$s.='<input type="checkbox" id="isreplacetag" name="isreplacetag" '.(kc_post('isreplacetag')?'checked="true"':'').'/><label for="isreplacetag">'.$king->lang->get('portal/remove/replacetag').'</label></span>';
-
-
 						$s.='<span><img src="../system/images/white.gif" class="os n4"/>'.$king->lang->get('system/common/filtercode').'[<input type="checkbox" id="isremovea" name="isremovea" '.(kc_post('isremovea')?'checked="true"':'').'/><label for="isremovea">'.$king->lang->get('portal/remove/a').'</label>';
 						$s.='<input type="checkbox" id="isremovetable" name="isremovetable" '.(kc_post('isremovetable')?'checked="true"':'').'/><label for="isremovetable">'.$king->lang->get('portal/remove/table').'</label>';
 						$s.='<input type="checkbox" id="isremovestyle" name="isremovestyle" '.(kc_post('isremovestyle')?'checked="true"':'').'/><label for="isremovestyle">'.$king->lang->get('portal/remove/style').'</label>';
@@ -264,9 +260,6 @@ $sql='ktitle,kfield,ntype,nvalidate,nsizemin,nsizemax,kdefault,koption,nstylewid
 
 		break;
 
-
-//value="'.htmlspecialchars($data[$f]).'"
-//$rs='ktitle,kfield,ntype,nvalidate,nsizemin,nsizemax,kdefault,koption,nstylewidth,nstyleheight,nupfile,issearch,isshow';
 		case 1://单行文本
 			$c[]=array($f,0,$rs['nsizemin'],$rs['nsizemax']);
 			if($rs['nvalidate']!=0)
@@ -713,23 +706,7 @@ $sql='ktitle,kfield,ntype,nvalidate,nsizemin,nsizemax,kdefault,koption,nstylewid
 				S$f();
 				\$('#B$f').click(function(){F$f()});
 				</script>";
-			/*
-			$s='<input type="hidden" id="'.$f.'" name="'.$f.'" value="'.htmlspecialchars($data[$f]).'"/><br/>';
-			$s.='<input type="hidden" id="'.$f.'_temp" name="'.$f.'_temp"/>';
-			$s.='<table class="k_side" cellspacing="0"><tr><td id="k'.$f.'show" class="k_in filelist" style="width:'.$rs['nstylewidth'].'px;height:'.$rs['nstyleheight'].'px;">';
-			$s.='Loading...';
-			$s.='</td></tr></table>';
-			$h=kc_f_brow($f.'_temp',$king->config('uppath').'/file/',1,1,$jsfun='k'.$f.'show();');
 
-			$s.="<script>function k{$f}js(title,file,label){var s='<span class=\"file\" title=\"'+title+'\">";
-			$s.="<a class=\"img k_ajax\" href=\"javascript:;\" rel=\"{CMD:\'filetitle\',file:\''+file+'\',label:\''+label+'\',VAL:\''+label+','+label+'_temp,listid\',METHOD:\'GET\'}\">";
-			$s.="<img class=\"file\" src=\"../'+file+'\"/></a>";
-			$s.="<em class=\"title\">";
-			$s.="<a class=\"k_ajax\" href=\"javascript:;\" rel=\"{CMD:\'filesdel\',delfile:\''+file+'\',label:\''+label+'\',VAL:\''+label+','+label+'_temp,listid\',IS:1}\">";
-			$s.="'+\$.kc_icon('j2')+'</a>'+title+'</em></span>';return s;};";
-
-			$s.="function k{$f}show(){\$.kc_ajax('{URL:\'manage.content.php\',ID:\'k{$f}show\',CMD:\'filesload\',label:\'{$f}\',VAL:\'{$f}_temp,{$f},listid\'}')};k{$f}show();</script>";
-			*/
 			$h=kc_f_brow("S$f",$king->config('uppath').'/file/',1,1,"F$f()");
 			$h.=$this->help($rs['kid'],$rs['khelp']);
 		break;
@@ -737,11 +714,9 @@ $sql='ktitle,kfield,ntype,nvalidate,nsizemin,nsizemax,kdefault,koption,nstylewid
 		case 12://颜色框
 			$c[]=array($f,0,7,7);
 			$c[]=array($f,13);
-//			$s='<table class="k_side" cellspacing="0"><tr><td><input class="k_in k_color" type="text" id="'.$f.'" name="'.$f.'" value="'.htmlspecialchars($data[$f]).'" '.(kc_validate($data[$f],13)?' style="background:'.$data[$f].'"':'').' maxlength="7" /></td>';
-//			$s.='<td>'.kc_f_color($f).'</td></tr></table>';
+
 			$s='<input class="k_in w50" type="text" id="'.$f.'" name="'.$f.'" value="'.htmlspecialchars($data[$f]).'" '.(kc_validate($data[$f],13)?' style="background:'.$data[$f].'"':'').' maxlength="7" />';
 			$s.=kc_f_color($f);
-			//"<a href=\"javascript:;\" class=\"k_color\" rel=\"{id:'{$f}'}\"><img src=\"../system/images/white.gif\" class=\"os a8\"/></a>";
 		break;
 
 		case 13://是/否
@@ -760,13 +735,6 @@ $sql='ktitle,kfield,ntype,nvalidate,nsizemin,nsizemax,kdefault,koption,nstylewid
 			$date=$data[$f]=='TODAY'?kc_formatdate(time(),"Y-m-d",1):$data[$f];
 			$s=kc_htm_input($f,$date,30,100);
 			$s.="<a href=\"javascript:;\" class=\"k_calendar\" rel=\"{id:'{$f}'}\"><img src=\"../system/images/white.gif\" class=\"os k9\"/></a>";
-			/*
-			$h="<script>";//<script type=\"text/javascript\" src=\"../system/js/calendar.js\"></script>
-			for($i=0;$i<7;$i++){
-				$h.="k_lang['week{$i}']='".$king->lang->get('system/time/week'.$i)."';";
-			}
-			$h.="$.kc_calendar('{$f}')</script>";
-			*/
 		break;
 
 		case 99:
@@ -830,7 +798,6 @@ $sql='ktitle,kfield,ntype,nvalidate,nsizemin,nsizemax,kdefault,koption,nstylewid
 	@return string
 */
 public function pathPage($info,$kid,$kpath,$is=0,$pid=1){
-//public function pathPage($listid,$kid,$pagepath,$pid,$is=0){
 	global $king;
 
 	$inst=$king->config('inst');
@@ -921,7 +888,6 @@ public function pathList($info,$is=0,$pid=1){
 						$path=substr($path,0,strlen($path)-strlen($king->config('file')));
 					}
 				}
-//				$path=$is ? $path : $siteurl.$inst.$path;
 			}
 		break;
 
@@ -1009,8 +975,6 @@ public function unModelCode($code,$modelname,$modeltable){
 	$modeltable=strtolower($modeltable);
 
 	$array=unserialize(base64_decode(trim($code)));
-
-//	kc_error($array['model'][0]);
 
 	if(is_array($array) && isset($modelname{0}) && isset($modeltable{0})){//判断是否为数组
 		if(is_array($array['model'][0])){//model
@@ -1134,13 +1098,6 @@ public function infoSite($siteid){
 
 		foreach($site as $rs){
 			$array[$rs['siteid']]=$rs;
-			/**
-			array(
-				'siteid'=>$rs['siteid'],
-				'siteurl'=>$rs['siteurl'],
-				'sitename'=>$rs['sitename'],
-			);
-			*/
 		}
 		$king->cache->put($cachepath,$array);
 	}
@@ -1194,32 +1151,13 @@ public function infoModel($modelid){
 	$array['field']['files']=array();//文件组组类型
 
 	//默认选项？特别是多选等项目，严格限制提交值是很有必要的。
-
-
-/**
-	//$model['nattrib']
-	$array_is=array('isshow','ishead','iscommend','isup','isfocus','ishot');
-	foreach($array_is as $val)
-		if($model[$val]) $array_nattrib[]=$val;
-	$array['nattrib']=$array_nattrib;
-*/
-
 	if(!($res=$king->db->getRows("select kfield,ktitle,isadmin1,isadmin2,isuser1,isuser2,islist,kdefault,ntype,isrelate,issearch from %s_field where modelid={$modelid} order by norder asc")))
 		return;
-//kc_error('<pre>'.(print_r($res,1)));
 
 	foreach($res as $rs){
 
 		$kfield=$rs['kfield'];
 		if($rs['ntype']==0){//系统字段
-		/*
-			if($rs['kfield']=='kcontent'){
-				$array['field']['html']['kcontent']=$rs['ktitle'];
-			}
-			if($rs['kfield']=='ktitle'){
-
-			}
-			*/
 			switch($kfield){
 				case 'ktitle':
 					$array['field']['issearch'][$kfield]=htmlspecialchars($rs['ktitle']);
@@ -1322,7 +1260,6 @@ public function infoList($listid=null){
 	$array=$king->cache->get($cachepath);//缓存中的listInfo
 	if(!$array){
 		$array=array();
-//kc_error($listid);
 		if($list=$king->db->getRows_one("select * from %s_list where listid={$listid}")){
 			foreach($list as $key => $val){
 				if(!kc_validate($key,2))
@@ -1394,7 +1331,6 @@ public function infoComment($modelid=null,$kid=null){
 	$array=$king->cache->get($cachepath);//缓存中的commentInfo
 	if(!$array){
 		$array=array();
-//kc_error($listid);
 		if($comment=$king->db->getRows_one("select * from %s_comment where $where and modelid={$modelid} order by cid desc;")){
 			foreach($comment as $key => $val){
 				if(!kc_validate($key,2))
@@ -1926,11 +1862,6 @@ public function installmodeltable($modeltable){
 
 	$king->db->createTable("%s__{$modeltable}",$sql,'kid');
 
-
-
-
-
-
 	//创建默认模板
 	$path=$king->config('templatepath')."/inside/{$modeltable}[page]/".$king->config('templatedefault');
 	if(!is_file(ROOT.$path)){
@@ -1974,9 +1905,6 @@ public function installmodeltable($modeltable){
 public function install(){
 	global $king;
 
-
-
-	//_site
 	$sql='sitename char(100) not null,
 	siteurl char(100) null';
 
@@ -2260,12 +2188,7 @@ public function install(){
 	INDEX(iscommend)';
 
 	$king->db->createTable('%s_tag',$sql,'kid');
-/*
 	// _portal_log
-	$sql.='kids char(255) null,
-	userid int not null default 0,
-	modelid int not null default 0';
-*/
 	$king->db->createTable('%s_portal_log',$sql,'kid');
 
 	// _Favorite
@@ -2982,7 +2905,6 @@ public function install_update($ver){
 	if($ver<101){//版本101或更小版本的时候升级
 		$sql='gidpublish int(10) NOT NULL default 0';
 		$king->db->alterTable('%s_list',$sql);
-//		$king->db->query("ALTER TABLE %s_list ADD ($sql);");
 	}
 
 	if($ver<102){
@@ -3147,7 +3069,7 @@ public function createPage($listid,$kid,$pid=1,$is=null){
 	$tmp->assign('hit',"<em id=\"k_hit\">". ($info['npage']==0 ? 'Loading...' : ($id['nhit']+1) ) ."</em><script type=\"text/javascript\" charset=\"UTF-8\"><!--\n\$.kc_ajax('{URL:\'".$king->config('inst')."portal/index.php\',CMD:\'hit\',kid:$kid,modelid:{$info['modelid']},IS:1}')\n--></script>");//访问统计
 	$tmp->assign('comment',"<em id=\"k_comment\">". 'Loading...'."</em><script type=\"text/javascript\" charset=\"UTF-8\"><!--\n\$.kc_ajax('{URL:\'".$king->config('inst')."portal/index.php\',CMD:\'commentcount\',kid:$kid,modelid:{$info['modelid']},IS:1}')\n--></script>");//评论统计
 	$tmp->assign('digg',"<div id=\"k_digg\"><p id=\"k_digg1\" onclick=\"\$.kc_ajax('{URL:\'".$king->config('inst')."portal/index.php\',CMD:\'digg\',kid:$kid,modelid:{$info['modelid']},type:1,IS:1}');\">Loading...</p><p id=\"k_digg0\" onclick=\"\$.kc_ajax('{URL:\'".$king->config('inst')."portal/index.php\',CMD:\'digg\',kid:$kid,modelid:{$info['modelid']},type:0,IS:1}');\">Loading...</p><script type=\"text/javascript\" charset=\"UTF-8\"><!--\n\$.kc_ajax('{URL:\'".$king->config('inst')."portal/index.php\',CMD:\'digg\',kid:$kid,modelid:{$info['modelid']},type:2,IS:1}')\n--></script></div>");//顶踩
-	
+
 	if($is||$info['npage']!=0){
 		return $tmp->output();
 	}else{
@@ -3218,7 +3140,6 @@ public function index($url){
 		break;
 
 		case 'list':
-//			kc_error('<pre>'.print_r($url,1));
 			$pid=empty($url[2])? 1 : $url[2];
 			$order=empty($url[3]) ? '' : $url[3];
 			$info=$this->infoList($listid);
@@ -3290,9 +3211,7 @@ public function tag($name,$inner,$ass,$attrib){
 
 
 	if(!in_array($modeltable,$modeltables)){//如果模型列表中没有这个类型，则单独进行判断
-//	kc_error($modeltable);
 		switch($modeltable){
-
 			case '':
 				$modelid=kc_val($attrib,'modelid');
 				if($modelid>0){
@@ -3318,7 +3237,7 @@ public function tag($name,$inner,$ass,$attrib){
 			case 'tag':return $this->tag_tag($inner,$attrib);
 			
 			case 'comment':return $this->tag_comment($inner,$attrib,$ass);
-
+			case 'relate':return $this->tag_relate($inner,$attrib,$ass);
 			default:return;
 		}
 	}
@@ -3445,15 +3364,6 @@ public function tag($name,$inner,$ass,$attrib){
 				$where=' and kid=0';
 			}
 		break;
-
-/**
-createPage页中需要获取的参数
-kid
-listid
-pid
-type=page
-modelid
-*/
 		case 'page':
 			//联合调用不支持分页列表
 			if($modeltable=='')
@@ -3481,8 +3391,6 @@ modelid
 			}else{
 				$where=' and kid=0';
 			}
-//kc_error("select listid,kid from %s__$modeltable where  nshow=1 {$where} {$order} {$limit}");
-
 		break;
 
 		case 'tag':
@@ -3630,10 +3538,6 @@ modelid
 	}
 
 	//判断是否有图片，需要对$inner进行预搜索
-	//if(stripos($inner,'{king:image')!==False && !in_array($type,array('list','page','pagelist','relate','search'))){
-	//	$where.=" and kimage<>''";
-	//}
-
 	//SQL扩展属性where,这个功能是标签解析不稳定的隐患功能。
 	if(isset($attrib['where'])){
 		$where.=" and ".$attrib['where'];
@@ -3862,7 +3766,7 @@ public function LinkAge($id,$listid,$is=1,$def='',$sub=NULL,$iss=0){
 		$s=$this->LinkAge($id,$info['listid1'],$is,$def,$listid,1).$s;
 	}
 
-	$s= $iss===0 ? '<span id="listid_select">'.$s.'</span>'.kc_htm_hidden(array($id=>$listid)) : $s;//."<input size=2 name=\"$id\" id=\"$id\" value=\"$listid\" />"
+	$s= $iss===0 ? '<span id="listid_select">'.$s.'</span>'.kc_htm_hidden(array($id=>$listid)) : $s;
 
 	return $s;
 
@@ -3907,12 +3811,6 @@ public function tag_list($inner,$ass,$attrib){
 		}
 
 	}
-
-	/*
-	if(stripos($inner,'{king:image')!==False ){
-		$whereArray[]="kimage<>''";
-	}
-	*/
 
 	$array=array('ispublish1','ispublish2','isexist','ismenu1','ismenu2','ismenu3','ismenu4','ismenu5','ismap');
 	foreach($array as $val){
@@ -4049,7 +3947,6 @@ public function tag_pagelist($inner,$ass,$attrib){
 	global $king;
 	$type=kc_val($ass,'type');
 	$modelid=kc_val($ass,'modelid');
-	
 	//列表分页
 	if($type=='list' && $modelid>0){//只有在列表页和modelid大于6的时候才调用
 
@@ -4087,7 +3984,10 @@ public function tag_pagelist($inner,$ass,$attrib){
 		$pagelist=kc_pagelist($url,$count,$pid,$rn,$inner);
 		return $pagelist;
 	}
-
+	//评论分页
+	if($type=='feedback'){
+	    return kc_pagelist("index.php?pid=PID&rn=RN",$ass['count'],$ass['pid'],$ass['rn'],$inner);
+	}
 	//搜索
 	if($type=='search' && $modelid>0){
 		$model=$this->infoModel($modelid);
@@ -4382,7 +4282,7 @@ private function tag_tag($inner,$attrib){
 		$tmp->assign('bold',$tag['isbold']);
 		$tmp->assign('commend',$tag['iscommend']);
 		$tmp->assign('path',$this->pathTag($tag['ktag']));
-
+		
 		$s.=$tmp->output($inner);
 
 	}
@@ -4478,6 +4378,38 @@ private function tag_comment($inner,$attrib,$ass){
 	return $s;
 }
 
+private function tag_relate($inner,$attrib,$ass){
+    global $king;
+    $number=(isset($attrib['number']))?$attrib['number']:10;
+    $listarray=array();
+    $filterid=$attrib['id'];
+    $date=$king->db->getRows_one("select ktag from %s__article where kid={$filterid}");
+    if(!date) return false;
+
+    $_tag=(!isset($attrib['tag']))?$date['ktag']:$attrib['tag'];
+    foreach(explode(',',$_tag) as $tag){
+	$sql="select kid from %s__article where FIND_IN_SET('{$tag}',ktag)>0 and kid<>{$filterid}";
+	foreach($res=$king->db->getRows($sql) as $rs){
+	    if(count($listarray)>=$number) break;
+	    array_push($listarray,$rs['kid']);
+	}
+	if(count($listarray)>=$number) break;
+    }
+    $_sql="select ktitle,kpath from %s__article where kid in (".implode(',',$listarray).")";
+    if(!$relates=$king->db->getRows($_sql)){
+	return false;
+    }
+    $s='';
+    
+    $tmp=new KC_Template_class();
+    
+    foreach($relates as $r){
+	$tmp->assign('title',$r['ktitle']);
+	$tmp->assign('path',$r['kpath']);
+	$s.=$tmp->output($inner);
+    }
+    return $s;
+}
 
 }//!portal_class
 
