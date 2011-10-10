@@ -40,8 +40,8 @@ function king_ajax_add(){
 	if(!isset($kcontent{9})){
 		kc_error($king->lang->get('feedback/error/name',3));
 	}
-
-	if($fbtime>time()-3600){
+        if(false){
+	//if($fbtime>time()-3600){
 		kc_ajax($king->lang->get('system/common/tip'),$king->lang->get('feedback/error/name',5),0);
 	}else{
 		//记录本次发布时间
@@ -83,16 +83,6 @@ function king_ajax_add(){
 */
 function king_def(){
 	global $king;
-
-	$s=$king->openForm($king->lang->get('feedback/name'),'','feedback_add');
-	$s.=$king->htmForm($king->lang->get('feedback/label/title'),kc_htm_input('ktitle','',50,400).'*');
-	$s.=$king->htmForm($king->lang->get('feedback/label/name'),kc_htm_input('kname','',30,400).'*');
-	$s.=$king->htmForm($king->lang->get('feedback/label/email'),kc_htm_input('kemail','',100,400).'*');
-	$s.=$king->htmForm($king->lang->get('feedback/label/qq'),kc_htm_input('kqq','',30,400));
-	$s.=$king->htmForm($king->lang->get('feedback/label/phone'),kc_htm_input('kphone','',20,400));
-	$s.=$king->htmForm($king->lang->get('feedback/label/content'),kc_htm_textarea('kcontent').'*');
-	$s.=$king->htmForm(null,kc_htm_button($king->lang->get('system/common/add'),"\$.kc_ajax({CMD:'add',FORM:'feedback_add'});",1));
-	$s.=$king->closeForm('none');
 	
 	$pid=isset($_GET['pid']) ? kc_get('pid',2,1) :1;
 	$rn=isset($_GET['rn']) ? kc_get('rn',2,1) :10;
@@ -102,12 +92,13 @@ function king_def(){
 	$count=$king->db->getRows_number('%s_feedback');
 	
 	$tmp=new KC_Template_class($king->config('templatepath').'/default.htm',$king->config('templatepath').'/inside/feedback/default.htm');
-	$tmp->assign('content',$s);
+	
 	$tmp->assign('title',$king->lang->get('feedback/name'));
-	$tmp->assign('type','add');
+	$tmp->assign('type','feedback');  //用于分页
 	$tmp->assign('pid',$pid);
 	$tmp->assign('rn',$rn);
-	$tmp->assign('pagelist',kc_pagelist('index.php?pid=PID&rn=RN',$count,$pid,$rn,null));
+	$tmp->assign('count',$count);
+	
 	echo $tmp->output();
 
 }
