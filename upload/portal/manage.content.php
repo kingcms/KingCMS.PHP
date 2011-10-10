@@ -505,7 +505,6 @@ function king_inc_location($safetime,$url){//,$stat
 */
 function king_iframe_create(){
 	global $king;
-        $king->log(5,"进入生成操作第三步:".time());
 	echo '<html><head><script type="text/javascript" charset="UTF-8" src="../system/js/jquery.js"></script><style type="text/css">p{font-size:12px;padding:0px;margin:0px;line-height:14px;width:450px;white-space:nowrap;}</style><meta http-equiv="Content-Type" content="text/html; charset='.PAGE_CHARSET.'" /></head><body></body></html>';
 	$max_execution_time=ini_get('max_execution_time');//安全的执行时间
 	if($max_execution_time>=20){
@@ -529,8 +528,6 @@ function king_iframe_create(){
 		$lists=array_slice($lists,$lists_key);//删除小于$Listid的值
 	}
 	$lists_count=count($lists);
-
-	$king->log(5,"进入生成操作第四步:".time());
 	foreach($lists as $listid){
 		$info=$king->portal->infoList($listid);
 		//生成列表
@@ -544,7 +541,6 @@ function king_iframe_create(){
 			){
 
 			$pid= ($listid==$Listid && isset($_GET['pid'])) ? $_GET['pid'] : 1;
-//			kc_error('<pre>'.print_r($info,1));
 			$pcount=($info['modelid'] >0) ? $info['pcount'] :0;
 
 
@@ -592,7 +588,6 @@ function king_iframe_create(){
 				}
 			}
 		}
-		 $king->log(5,"进入生成操作第五步:".time());
 		//生成页面
 		if($info['npage']==0 && in_array($create,array('','page','all','not')) && (($Listid==$listid && isset($_GET['kid']))||$Listid!=$listid)){
 			$model=$king->portal->infoModel($info['modelid']);
@@ -703,7 +698,6 @@ function king_iframe_create(){
 				}
 			}
 		}
-		$king->log(5,"进入生成操作第六步:".time());
 		$lists_count--;
 	}
 
