@@ -427,8 +427,6 @@ function king_edt(){
 
 	echo $tmp->output();
 
-//	list($left,$right)=king_inc_list();
-//	$king->skin->output($king->lang->get('portal/title/content'.($kid?'edt':'add')),$left,$right,$s);
 
 }
 
