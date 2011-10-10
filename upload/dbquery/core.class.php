@@ -164,7 +164,6 @@ private function tag_count($attrib){
 }
 
 private function tag_select($inner,$attrib){
-
 	$table=kc_val($attrib,'table');
 	if(!kc_validate($table,'/\%s_[A-Za-z0-9_]/')) return False;//判断table数据类型
 
@@ -174,8 +173,8 @@ private function tag_select($inner,$attrib){
 
 	$number=isset($attrib['number']) ? $attrib['number'] :10;
 	if(!kc_validate($number,2)) $number=10;
-
-	$skip=isset($attrib['skip']) ? $attrib['skip'] : 0;//跳过skip个后读取
+	$pid=isset($_GET['pid']) ? kc_get('pid',2,1) :1;
+	$skip=isset($attrib['skip']) ? $attrib['skip'] : ($attrib['dynamic']=='skip')?($pid==1) ? 0 : ($pid-1)*$number:0;//跳过skip个后读取
 	if(!kc_validate($skip,2)) $skip=0;
 
 	$orderby=isset($attrib['orderby']) ? ' order by '.$attrib['orderby'] : '';
@@ -201,7 +200,6 @@ private function tag_select($inner,$attrib){
 
 private function tag_dbquery($inner,$attrib){
 	$query=kc_val($attrib,'query');
-
 	$s='';
 
 	if($res=$this->db->getRows($query)){
