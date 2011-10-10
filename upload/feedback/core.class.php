@@ -125,7 +125,7 @@ public function tag_feedback($inner,$attrib,$ass){
 	$s='';
 	foreach($feedbacks as $rs){
 		$tmp->assign('id',$rs['kid']);
-		$tmp->assign('title',$rs['title']);
+		$tmp->assign('title',$rs['ktitle']);
 		$tmp->assign('mail',$rs['kemail']);
 		$tmp->assign('username',$rs['kname']);
 		$content=safehtmlcode($rs['kcontent']);	
