@@ -115,6 +115,7 @@ public function tag_feedback($inner,$attrib,$ass){
 	$number=isset($attrib['number']) ? $attrib['number'] : $ass['rn'];
 	//跳过条数
 	$skip= ($ass['pid']=='1')?0:(((int)$ass['pid'])-1) * $number;
+	$zebra=isset($attrib['zebra']) ? $attrib['zebra'] :2;
 	$tmp=new KC_Template_class();
 	$where='WHERE nshow=1';
 	$orderby='ORDER BY kid desc';
@@ -123,17 +124,19 @@ public function tag_feedback($inner,$attrib,$ass){
 		return false;
 	}
 	$s='';
+	$i=1;
 	foreach($feedbacks as $rs){
 		$tmp->assign('id',$rs['kid']);
 		$tmp->assign('title',$rs['ktitle']);
 		$tmp->assign('mail',$rs['kemail']);
 		$tmp->assign('username',$rs['kname']);
-		$content=safehtmlcode($rs['kcontent']);	
+		$content=safehtmlcode($rs['kcontent']);
 		$tmp->assign('content',$content);
 		$tmp->assign('date',$rs['ndate']);
 		$tmp->assign('isreply',$rs['nreply']);
 		$tmp->assign('reply',($rs['nreply']!='0')?$rs['kreply']:'正在等待回复');
-		
+		$tmp->assign('zebra',(($i-1) % $zebra)==0 ? 1 : 0);
+		$tmp->assign('i',$i++);
 		$s.=$tmp->output($inner);
 	}
 	return $s;
