@@ -841,14 +841,6 @@ function kc_progress($id='progress',$title=null,$num=0,$count=1,$body=''){
 				? $s='<script>window.parent.$.kc_progress(\''.$id.'\',\''.$king->lang->get('system/progress/ok').' ('.$king->lang->get('system/progress/not').')\',300)</script>'
 				: $s='<p class="k_progress" id="'.$id.'"><label>'.$title.'</label><span><em style="width:0px;"></em></span><var>0%</var></p>';
 		break;
-
-/*
-		case $num>=$count:
-			$diffstart=$thistime-$_GET['time'];//开始时间差
-			$str=$king->lang->get('system/progress/alltime').': '.kc_formattime($diffstart);
-			$s='<script>window.parent.$.kc_progress(\''.$id.'\',\''.$king->lang->get('system/progress/ok').'\',\''.$count.'/'.$count.' '.$str.'\',500);$(\'body\').prepend(\''.addslashes($body).'\')</script>';
-		break;
-*/
 		default:
 
 			//判断客户端的链接状态
