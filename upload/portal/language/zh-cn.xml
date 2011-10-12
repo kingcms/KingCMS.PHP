@@ -17,6 +17,7 @@
 		<portal_content_edt>编辑</portal_content_edt>
 		<portal_content_delete>删除</portal_content_delete>
 		<portal_content_updown>排序</portal_content_updown>
+		<search>搜索</search>
 		<close2>]</close2>
 
 		<br2>|</br2>
@@ -87,6 +88,8 @@
 		<portal_comment>查看</portal_comment>
 		<portal_comment_delete>删除</portal_comment_delete>
 		<close10>]</close10>
+		
+		
 	</ACCESS>
 
 	<CHANNEL>
@@ -187,7 +190,7 @@
 		<express>物流管理</express>
 		<expressedt>编辑物流</expressedt>
 		<delivery>发货设置</delivery>
-
+		<search>关键词搜索</search>
 		<stop>无权访问！</stop>
 	</title>
 
