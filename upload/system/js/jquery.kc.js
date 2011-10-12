@@ -171,13 +171,13 @@ $.kc_userstate=function(id){
 		    url: "/user/index.php?action=getAvatar&id="+userid,
 		    async: false
 		}).responseText; 
+		
 		var auth_obj=$('#'+id+'_hide');
 		var auth_htm=auth_obj.html();
-
-
-
+		
 		auth_htm=auth_htm.replace('[USERID]',userid);
-		auth_htm=auth_htm.replace('[USERNAME]',username);
+		//replace global variable
+		auth_htm=auth_htm.replace(/\[USERNAME\]/g,username);
 		auth_htm=auth_htm.replace('[AVATAR]',userhead);
 		
 		auth_obj.html(auth_htm);
