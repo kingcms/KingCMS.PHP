@@ -88,7 +88,6 @@
 		?>
 	{/king:portal.article}
 
-
 	<h4>调用内容</h4>
 	<p>文章总数 : {king:dbquery.count table="%s__article" where="kid1=0"/}</p>
 	<p>论坛主题贴:{king:dbquery.count table="%s__bbs" where="kid1=0"/}</p>
@@ -153,7 +152,20 @@
 	<h4>指定栏目的推荐文章</h4>
 	{king:portal.article listid='3' type='commend' number='10'}
 		<p><a href="{king:path/}">{king:title/}</a></p>
-	{/king:portal.article}	
+	{/king:portal.article}
+	<h4>最近评论调用</h4>
+	<ul>
+	{king:portal.comment number="5"}
+		<li>
+			<p class="lbms">{king:id/}<b><?php if('{king:username/}'!=''){echo('村民{king:username/}');}else{echo('软件村网友');}?></b>(IP:<?php $ip='{king:ip/}';echo(substr($ip,0,strrpos($ip,'.')));?>.*)发表的评论</p>
+			<p class="lbtxt">{king:content/}</p>
+			<p class="lbxm">发表时间： {king:DATE formatdate="Y-m-d H:i:s"/}</p>
+		</li>
+		{/king:portal.comment}
+	</ul>
+	<h4>站点地图</h4>
+	{king:portal.sitemap outHTML='ul' innerHTML='li' /}
+
 </div>
 
 <div id="bottom">
