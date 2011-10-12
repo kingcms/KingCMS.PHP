@@ -566,7 +566,7 @@ function king_inc_list(){
 
 	$left=array();
 	$right=array();
-
+        //栏目首页
 	$left['']=array(
 		'href'=>'manage.php',
 		'ico'=>'a1',
@@ -599,7 +599,7 @@ function king_inc_list(){
 
 	}
 
-//	$left.='<a href="javascript:;" class="k_ajax" rel="{CMD:\'deletecacheall\'}">'.kc_icon('d8').$king->lang->get('portal/list/delcache').'</a>';
+//$left.='<a href="javascript:;" class="k_ajax" rel="{CMD:\'deletecacheall\'}">'.kc_icon('d8').$king->lang->get('portal/list/delcache').'</a>';
 
 	if($king->acc('portal_model'))
 		$right[]=array(
