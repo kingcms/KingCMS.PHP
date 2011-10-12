@@ -881,6 +881,7 @@ function king_def(){
 		$_js=array("\$.kc_list(K[0],K[3],'manage.content.php?action=edt&listid={$listid}&kid1='+K[1]+'&kid='+K[0],{$model['isid']},1,null,null,null,iskimage(K[5]))");
 	}
 	$_js[]=$_manage;
+	//exit(print($_manage));
 	$nattrib=array('nshow','nhead','ncommend','nup','nfocus','nhot');//默认的nattrib选项
 	$th='';
 	$i=6;
@@ -922,7 +923,7 @@ function king_def(){
 	//统计
 	if($action=='')
 		$_js[]="'<i>'+K[13]+'</i>'";
-
+	//exit(print_r($_js));
 	//右键菜单
 	$_right=array(
 		$king->lang->get('system/common/add') => array(
@@ -977,7 +978,7 @@ function king_def(){
 		}
 		return s;
 	};";
-
+        //行头
 	$str ="ll('".addslashes($model['field']['text']['ktitle'])."','manage'{$th}";//TH标题及Manage
 	if($model['field']['islist']){
 		foreach($model['field']['islist'] as $val){
@@ -988,6 +989,7 @@ function king_def(){
 	if($action=='')//TH统计
 		$str.=",'<i>".$king->lang->get('portal/common/pcount')."</i>'";
 	$str.=",1);";
+	//exit(print_r($str));
 	$s.=$str;
 
 	foreach($_res as $rs){	 //td
