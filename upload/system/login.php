@@ -34,7 +34,6 @@ function king_ajax_login(){
 	}
 	$s.='</p></div>';
 	//增加验证码
-	//$s.='<div><label>'.$king->lang->get('system/common/verify').':</label><p><input type="text" class="k_in w50" name="verify" maxlength="8" /></p></div>';
 	$verify=new KC_Verify_class;
 	$s.=$verify->Show();
 	//expire
