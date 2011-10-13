@@ -53,8 +53,8 @@ private $isMng=0;//前后台判断默认0为前台
 public  $holdmodule=array('system','nav','pagelist','list',
 	'menu','menu1','menu2','menu3','menu4','menu5',
 	'const','skin','home','login','default','data');//需要保护的模块目录
-public  $devname='KingCMS 6.0 SP1';//版本名称
-public  $version='6.0.970';//内部版本名称
+public  $devname='KingCMS 6.0 SP2';//版本名称
+public  $version='6.1.113';//内部版本名称
 
 private $dbver=104;//当前系统数据库版本
 
