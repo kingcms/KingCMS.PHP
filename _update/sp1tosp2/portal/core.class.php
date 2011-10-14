@@ -943,7 +943,8 @@ public function pathTag($tagname){
 	global $king;
 	$link=$king->config('inst');
 	$link.=$king->config('rewritetag') ? "" : "index.php/";
-	$link.="tag".$king->config('rewriteline').urlencode($tagname).$king->config('rewriteend');
+	$link.="tag".$king->config('rewriteline').$tagname.$king->config('rewriteend');
+	
 	return $link;
 }
 /**
