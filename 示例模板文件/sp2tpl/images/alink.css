@@ -1,0 +1,58 @@
+@charset "utf-8";
+/* CSS Document */
+
+/*a style*/
+a,a:visited{text-decoration:none;}
+a:visited{text-decoration:underline;}
+
+#toplink a{color:#666;}
+#extend_block a{color:#666;}
+.left_block a:visited{color:blue;}
+
+#navi ul li.selected{background:url(navi_bg_selected.png) no-repeat scroll 5% 4px;cursor:pointer;}
+#navi ul li a{float:left;line-height:40px;height:40px;padding:0 20px 0 20px !important;color:#fff;cursor:pointer;}
+#navi ul li.selected a{color:#333;}
+
+#what_news dl dd ul li a{color:#666;}
+#what_news dl dd ul li a:hover{color:#ff7300;}
+
+#job_head a,#disp_head a{color:#333;}
+#job_head span a,#disp_head span a{color:#333;}	
+
+#link_result ul li a{padding:8px;color:#666;}		
+
+#page_cmt strong a{position:absolute;right:0;top:0;}
+#page_navi dl dd a:visited{color:#333;}
+
+div.tab ul li a{color:#666;}
+
+#core_navi ul li a{color:#333;}
+#core_navi ul li.curr a{color:#fff;}
+								
+div.tab ul li a,
+div.tab ul li a:visited,
+#job_result table td a,
+#job_result table td a:visited{color:#666;}
+					
+div.tab ul li a:hover,
+#job_result table td a:hover{color:#ff7300;}
+					
+#forum_index table td a:visited{color:blue;}
+
+.forum_btn ul li a{color:#ff7300;}
+
+#news_list ul li a,
+#news_list ul li a:visited{color:#ff7300;}
+
+#relate_list ul li a,
+#relate_list ul li a:visited{color:#666;}
+#relate_list ul li a:hover{color:#ff7300;}		
+
+
+#page_user_navi ul li a{color:#fff;}
+#page_user_navi ul li.this a{color:#ff7300;}
+
+div.proconn_box dl dd a,
+div.proconn_box dl dd a:visited{color:#ff7300;}
+
+#box_info dl dd p a,#box_info dl dd p a:visited{color:#fff;}

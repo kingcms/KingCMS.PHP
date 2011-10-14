@@ -1,0 +1,29 @@
+		<div id="newsbox" class="ctn w960">
+        	<div id="news_layer" class="fl w960">
+           		<div id="page_navi" class="h40">
+                	<dl>
+                            <dt><a name="top">当前位置:</a></dt>
+                            <dd><a href="/">首页</a>&gt;用户中心&gt;{king:title/}</dd>
+                    </dl>
+                </div>
+				<div id="page_user_navi" class="fl m20">
+                	<ul class="fl h40">
+                    	<li><a href="index.php">基本信息</a></li>
+						<li><a href="#" class="k_user_resetpwd">{lang:user.title.resetpwd/}</a></li>
+						<li><a href="index.php?action=safe">{lang:user.title.safe/}</a></li>
+						<li><a href="index.php?action=edit">{lang:user.title.edit/}</a></li>
+						<li><a href="index.php?action=orders">{lang:user.title.orders/}</a></li>
+						<li class="this"><a href="#">{lang:user.title.head/}</a></li>	
+						<li><a class="k_user_logout">{lang:system.login.logout/}</a></li>
+                    </ul>
+                </div>
+                <div class="fl m20">
+					{king:user.info userid='(king:userid/)'}
+					<div class="k_htm"><label>当前头像:</label>
+    					<p>{king:userhead/}</p>
+					</div>
+					{/king:user.info}
+					{king:main/}
+				</div>
+            </div>
+        </div>                

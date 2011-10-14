@@ -1,0 +1,37 @@
+    	<div id="formbox" class="ctn w960">
+        	<div class="w720 ctn m20">
+        	<strong class="tit">&nbsp;</strong>
+        	<div id="user_form" class="fl ctn">
+            	<form name="k_formlist" method="post" id="k_formlist" action="login.php">
+            	<table>
+                	<tr>
+                    	<th>会员名:</th>
+                        <td><input class="w240 h25 br" type="text" name="username" value="" maxlength="15" /><cite><a href="javascript:; " class="k_user_register">我想注册新用户!</a></cite></td>
+                    </tr>
+                	<tr>
+                    	<th>密码:</th>
+                        <td><input class="w240 h25 br" type="password" name="userpass" maxlength="30" /><label for="userpass"><a href="javascript:;" class="k_user_lostpwd">忘记密码?</a></label></td>
+                    </tr>
+                	<tr>
+                    	<th>登录有效期:</th>
+                        <td><input type="radio" name="expire" id="k_expire_0" value="0" />浏览器进程&nbsp;&nbsp;
+							<input type="radio" name="expire" id="k_expire_86400" value="86400" />一天&nbsp;&nbsp;
+							<input type="radio" name="expire" id="k_expire_2592000" value="2592000" checked="true" />一月&nbsp;&nbsp;
+							<input type="radio" name="expire" id="k_expire_15768000" value="15768000" />半年&nbsp;&nbsp;
+							<input type="radio" name="expire" id="k_expire_31536000" value="31536000" />一年&nbsp;&nbsp;
+							<input type="radio" name="expire" id="k_expire_315360000" value="315360000" />永久&nbsp;&nbsp;
+                        </td>
+                    </tr>
+                    <tr>
+                    	<th>验证码:</th>
+                        <td><input type="text" maxlength="4" class="k_verify k_in w50" name="k_verify" id="k_verify"/></td>
+                    </tr>                                        
+                </table>
+           		<input type="hidden" name="k_verify_salt" id="k_verify_salt" />
+				<input type="hidden" name="re" id="re" />
+
+                <p><input type="submit" name="btn" value="登陆" class="btn" /></p>
+                </form>
+            </div>
+        	</div>
+        </div>

@@ -1,0 +1,50 @@
+		<div id="newsbox" class="ctn w960">
+        	<div id="news_layer" class="fl w960">
+           		<div id="page_navi" class="h40">
+                	<dl>
+                            <dt><a name="top">当前位置:</a></dt>
+                            <dd><a href="/">首页</a>&gt;用户中心&gt;{king:title/}</dd>
+                    </dl>
+                </div>
+				<div id="page_user_navi" class="fl m20">
+                	<ul class="fl h40">
+                    	<li><a href="index.php">基本信息</a></li>
+						<li><a href="#" class="k_user_resetpwd">{lang:user.title.resetpwd/}</a></li>
+						<li><a href="index.php?action=safe">{lang:user.title.safe/}</a></li>
+						<li><a href="index.php?action=edit">{lang:user.title.edit/}</a></li>
+						<li class="this"><a href="#">{lang:user.title.orders/}</a></li>
+						<li><a href="index.php?action=head">{lang:user.title.head/}</a></li>	
+						<li><a class="k_user_logout">{lang:system.login.logout/}</a></li>
+                    </ul>
+                </div>
+                <div class="fl m20">
+{king:portal.orders}
+<table class="k_table_list" cellspacing="0" style="margin-bottom:10px;">
+	<caption>订单号: {king:no/}  成交时间:{king:date formatdate="Y-m-d g:i:s A"/}</caption>
+	<tr><td>
+	<!-- content是数组类型,可以循环调用 -->
+	{king:content}
+
+		{king:portal.shop kid="(king:kid/)"}
+			<a href="{king:path/}" target="_blank">{king:kid/}) {king:title/}</a>
+		{/king:portal.shop}
+
+
+		<br/>
+	{/king:content}
+	
+	</td>
+		<td><a href="index.php?action=orders_show&oid={king:oid/}">产品名称: {king:title/}</a></td>
+		<td>产品数量: {king:number/}</td>
+		<td>总费用: ￥{king:alltotal/} 元</td>
+		<td>{king:status/}</td>
+		<td class="w50 c"><a href="javascript:;" class="k_ajax" rel="{URL:'../portal/cart.php',CMD:'payment',oid:{king:oid/}}">详情</a></td>
+	</tr>
+
+</table>
+{/king:portal.orders}
+				</div>
+            </div>
+        </div>
+                
+
