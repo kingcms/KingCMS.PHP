@@ -36,4 +36,15 @@ C:注意:
 /system/core.class.php
 /system/js/jquery.kc.js
 /system/lib/func.php
-/system/editor/xheditor/xheditor-zh-cn.min.js
+/system/editor/xheditor/
+/system/skins/default/default.htm
+/system/skins/default/style.css
+
+D:用户头像功能
+只要在/images下建一个headface文件夹,只里有头象即可(default.gif为默认头像)！代码会读取这个目录下的图片信息.至于样式可以自行定义.
+如果您想变更头像路径可以在以下文件内的函数设为您的目录即可:
+/user/core.class.php中的
+	tag_user_info //此文件对用户信息标签中的头像解析 
+/user/index.php中的
+	king_ajax_avter, //读取头像目录中的图片生成选择表单
+	king_getAvatar   //在ajax更新用户信息时用此函数取到头像文件
