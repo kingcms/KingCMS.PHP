@@ -107,7 +107,7 @@ function king_ajax_about(){
 	$s.='<p>KingCMS for PHP '.$king->devname.'</p>';
 	$s.='<p>Version: '.$king->version.'</p>';///'.$king->lang->get('system/login/about').'
 	$s.='<p>Copyright &copy; <a href="http://www.kingcms.com/" target="_blank">KingCMS.com</a></p>';
-	$s.='<p>2004 - 2010</p>';
+	$s.='<p>2004 - 2011</p>';
 	$s.='</div>';
 	kc_ajax($king->lang->get('system/common/about').'..',$s,0,'',240,290);
 } //!king_ajax_about
