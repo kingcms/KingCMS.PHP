@@ -40,8 +40,8 @@ function king_ajax_add(){
 	if(!isset($kcontent{9})){
 		kc_error($king->lang->get('feedback/error/name',3));
 	}
-        if(false){
-	//if($fbtime>time()-3600){
+        //feedback limit
+	if($fbtime>time()-3600){
 		kc_ajax($king->lang->get('system/common/tip'),$king->lang->get('feedback/error/name',5),0);
 	}else{
 		//记录本次发布时间
