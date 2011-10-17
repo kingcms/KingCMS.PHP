@@ -1,0 +1,61 @@
+		<div id="newsbox" class="ctn w960">
+        	<div id="news_layer" class="fl">
+                <div id="news_page" class="fl">
+                	<div id="page_navi" class="h40">
+                    	<dl>
+                            <dt><a name="top">当前位置:</a></dt> 
+                            <dd><a href="{config:system.inst/}">首页</a>&gt;<a href="{king:ListPath/}">{king:ListTitle/}</a></dd>
+                        </dl>
+                    </div>
+					<div id="forum_btn_top" class="fl forum_btn">
+                    	<ul>
+                        	<li><a href="{king:add/}">添加主题</a></li>
+                            <li><a href="{king:reply/}">回复主题</a></li>
+                        </ul>
+                    </div>
+                    <div id="page_feedback" class="fl">
+                        <div id="page_feedback_result">
+                        	<div class="forumtitle"><strong>{king:title/}</strong>({king:hit/})</div>
+                            {king:portal.bbs type="page"}
+                        	<div class="forumlist">
+								<div class="usercontainer">
+                                	<span class="useravatar">#{king:kid/}楼 {king:user.info userid="(king:userid/)"}{king:username/}{/king:user.info}</span><em> {king:DATE formatdate="Y-m-d H:i:s"/}</em>
+                                </div>
+                                <div class="formesg">
+                                	<div class="contentmesg">{king:content/}</div>                           
+                                </div>
+                                <div class="toolbox">
+                                	<ul class="toolset">    
+										<li><a href="#">回复</a>
+										<li><a href="#">引用</a>
+										<li><a href="#">举报</a>
+										<li><a href="#">编辑</a>
+										<li><a href="#">删除</a>                                                                                	
+                                    </ul>
+                                 </div>
+                            </div>
+                            {/king:portal.bbs}
+                        </div>
+						<div class="fl m20 page">
+  							{king:pagelist}
+   								{king:Previous replace='Previous|上一页'/}
+   								{king:standard/}
+   								{king:Next replace='Next|下一页'/}
+   								{king:jump/} 
+  							{/king:pagelist}
+                        </div>                        
+                    </div>
+                </div>
+                <!--kid相关的文章-->
+                <div id="left_menu" class="fl w200 br ml10">
+                	<h3>相关帖子</h3>
+                	<div id="relate_list">
+                    	<ul>
+                            {king:portal.relate number='5' id='(king:kid/)'}
+                            	<li><a href="{king:path/}">{king:title/}</a></li>
+                            {/king:portal.relate}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>

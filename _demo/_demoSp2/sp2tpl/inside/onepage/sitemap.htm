@@ -1,0 +1,33 @@
+    	<div id="newsbox" class="ctn w960">
+        	<div id="news_layer" class="fl">
+            	<div id="left_menu" class="fl w200 br">
+                	<h3>关于春晖</h3>
+                	<div id="menu_list">
+                    	<ul>
+                        	<li class="vis">网站地图</li>
+                            <li>联系我们</li>
+                            <li>组织机构</li>
+                            <li>企业文化</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div id="news_page" class="fl ml10">
+                	<div id="page_navi" class="h40">
+                    	<dl>
+                            <dt>当前位置:</dt>
+                            <dd><a href="/">首页</a>&gt;{king:title/}</dd>
+                        </dl>
+                    </div>
+                    
+                    <div id="page_result" class="m20">
+
+                        <div id="page_body">
+                             <!--调用网站地图 -->
+                        	{king:portal.sitemap outHTML='ul' innerHTML='li' /}
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
