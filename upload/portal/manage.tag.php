@@ -128,7 +128,7 @@ function king_def(){
 		$res=array();
 	$s.='ll(\''.$king->lang->get('portal/label/ktag').'\',\'manage\',\''.$king->lang->get('portal/list/effect').'\',\'<i>'.$king->lang->get('portal/label/attrib/iscommend').'</i>\',1);';
 	foreach($res as $rs){
-		$s.='ll('.$rs['kid'].',\''.$rs['ktag'].'\',\''.$rs['kcolor'].'\','.$rs['nsize'].','.$rs['isbold'].','.$rs['iscommend'].',\''.urlencode($rs['ktag']).'\',0);';
+		$s.='ll('.$rs['kid'].',\''.$rs['ktag'].'\',\''.$rs['kcolor'].'\','.$rs['nsize'].','.$rs['isbold'].','.$rs['iscommend'].',\''.$rs['ktag'].'\',0);';
 	}
 	//结束列表
 	$s.=$king->closeList();
