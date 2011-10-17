@@ -56,7 +56,7 @@
 			//只搜索portal
 			if(!kc_val($_GET,'action') && strpos(getcwd(),'portal')>0){
 			    $words=empty($_GET['words'])?'':kc_get('words',0);
-			    echo '<input type="text" name="keywords" id="keywords" class="kc_in w150" value="'.$words.'" /><a id="slink" href="javascript:void(0);"><img src="../system/images/white.gif" class="os m1"/>{lang:portal.label.find/}</a>';
+			    echo '<form id="sf" method="get" action="search.php"><input type="text" name="words" id="words" class="kc_in w150" value="'.$words.'" /><a id="slink" href="javascript:void(0);"><img src="../system/images/white.gif" class="os m1"/>{lang:portal.label.find/}</a></form>';
 			}
 			?>
 		</span>
@@ -84,9 +84,12 @@
 		$('#keywords').focus();
 		return false;
 	    }else{
-		var attachparam='search.php?words='+words;
-		
-		$(this).attr("href",attachparam);
+		$('#sf').submit();
+	    }
+	});
+	$('#keywords').keydown(function(event){
+	    if(event.keyCode==13){
+		$('#sf').submit();
 	    }
 	});
     });
