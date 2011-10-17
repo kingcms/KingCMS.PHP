@@ -1984,5 +1984,7 @@ color:#999;
 .k_code p{
 	line-height:18px;
 }
+#sf{display:inline;}
 .kc_in{border:1px solid;border-color:#777 #CCC #CCC #777;font-size:14px;padding:2px;height:20px;}
 .left input{margin-left:10px;display: inline;float:left;}
+.k_login div.k_htm label{color:#333;}
