@@ -81,13 +81,13 @@
 	    
 	    if($.trim(words).length<2){
 		alert('搜索关键词不能少于2个字符');
-		$('#keywords').focus();
+		$('#words').focus();
 		return false;
 	    }else{
 		$('#sf').submit();
 	    }
 	});
-	$('#keywords').keydown(function(event){
+	$('#words').keydown(function(event){
 	    if(event.keyCode==13){
 		$('#sf').submit();
 	    }
