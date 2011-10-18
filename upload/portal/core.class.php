@@ -3121,7 +3121,7 @@ public function index($url){
 	}
 
 	$s='';
-
+        //exit(print($url[0].'---a'));
 	switch($url[0]){
 		case 'page':
 			$kid=$url[2];
@@ -3132,7 +3132,7 @@ public function index($url){
 				$this->error($king->lang->get('system/common/error'),$king->lang->get('portal/error/stop'));
 			}
 			//页面访问权限验证
-			if((int)$info['gid']===0 || $info['gid']>1){
+			if((int)$info['gid']<>-1){
 				$king->Load('user');
 				$king->user->access($info['gid']);
 			}
@@ -3148,12 +3148,13 @@ public function index($url){
 			if($info['nlist']==3){
 				$this->error($king->lang->get('system/common/error'),$king->lang->get('portal/error/stop'));
 			}
-			//页面访问权限验证
-			if($info['modelid']!=0 and ((int)$info['gid']===0 || $info['gid']>1)){
+			//页面访问权限验证.只要不是完全开放就进入检证
+			if($info['modelid']!=0 and ((int)$info['gid']<>-1)){
 				$king->Load('user');
 				$king->user->access($info['gid']);
 			}
 			$s=$this->createList($listid,$pid,1,$order);
+			//exit(print($info['gid']>0));
 		break;
 
 		case 'tag':
