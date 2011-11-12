@@ -17,14 +17,6 @@ function king_ajax_adduser(){
 		$data=kc_data($fields,$data);
 	}
 
-
-/*
-	foreach($datas as $val){
-		if(isset($data[$val])){
-
-		}
-	}
-*/
 	//username
 	$_array=array(
 		array('username',0,3,15),
@@ -277,26 +269,6 @@ function king_def(){
 		}
 	}
 	$s.=$king->closeForm('none');
-	/*
-	$s.='<table class="k_table_form" cellspacing="0">';
-	$s.='<tr><th>'.$king->lang->get('user/title/group').'</th><td>';
-	$s.='<table class="k_side">';
-	$s.='<tr><td class="w200">'.kc_icon('h4').'<a href="javascript:;" class="k_ajax" rel="{CMD:\'edtgroup\',METHOD:\'GET\'}">'.$king->lang->get('user/group/add').'</a></td><td class="w100">&nbsp;</td><td>&nbsp;</td></tr>';
-
-	$s.="<script>function ll(gid,kname,kremark){var s='<tr><td>'+$.kc_icon('a6')+'<a href=\"javascript:;\" class=\"k_ajax\" rel=\"{CMD:\'edtgroup\',METHOD:\'GET\',gid:\''+gid+'\'}\">'+kname+'</a></td>';";
-	$s.="s+='<td><a href=\"javascript:;\" class=\"k_ajax\" rel=\"{CMD:\'delete_group\',gid:\''+gid+'\'}\">'+$.kc_icon('g4','".$king->lang->get('system/common/del')."')+'</a>';";
-	$s.="s+='<a href=\"javascript:;\" class=\"k_ajax\" rel=\"{CMD:\'group_link\',METHOD:\'GET\',gid:\''+gid+'\'}\">'+$.kc_icon('n9','".$king->lang->get('user/group/link')."')+'</a>';";
-	$s.="s+=$.kc_updown(gid,'updown_group')+'</td>';";
-	$s.="s+='<td class=\"gray\">'+kremark+'</td></tr>';document.write(s)};";
-
-	if($res=$king->db->getRows("select gid,kname,kremark from %s_usergroup order by norder")){
-		foreach($res as $rs){
-			$s.="ll({$rs['gid']},'{$rs['kname']}','{$rs['kremark']}');";
-		}
-	}
-	$s.='</script></table>';
-	$s.='</table>';
-	*/
 	$s.=$king->openForm('',$king->lang->get('user/caption/def'));
 
 	//register
@@ -403,7 +375,7 @@ function king_userlist(){
 		"K[7]",
 		"K[6]",
 	);
-	$s=$king->openList($_cmd,'',$_js,$king->db->pagelist("manage.php?action=&pid=PID&rn=RN",$king->db->getRows_number('%s_user',"isdelete=0")));
+	$s=$king->openList($_cmd,'',$_js,$king->db->pagelist("manage.php?action=userlist&pid=PID&rn=RN",$king->db->getRows_number('%s_user',"isdelete=0")));
 	$s.=$king->tdList(array($king->lang->get('user/list/username'),'manage',$king->lang->get('user/list/mail'),$king->lang->get('user/group/owned'),$king->lang->get('user/list/regdate'),$king->lang->get('user/list/lastdate')),1);
 
 	$usergroup=$king->user->getGroup();
@@ -505,7 +477,6 @@ function king_edtuser(){
 		$_array=array();
 	}
 	$s.=$king->htmForm($king->lang->get('portal/user/pass').' (6-30)',kc_htm_input('userpass',$data['userpass'],30,150),$_array,'',kc_htm_setvalue_nl('userpass',kc_random(10,4).NL.kc_random(10,1).NL.kc_random(10)).kc_help('user/help/pass'));
-	//'<input class="k_in w150" type="text" name="userpass" maxlength="30" />'
 
 	//CAPTION
 	$s.=$king->splitForm($king->lang->get('user/caption/userinfo'));
@@ -588,8 +559,6 @@ function king_edtuser(){
 		//删除用户信息
 		$king->user->delUserInfo($userid);
 
-//		$king->cache->del('user/userid/'.$userid);
-
 		kc_goto($king->lang->get('system/goto/isback'),'manage.php?action=edtuser&userid='.$userid,'manage.php?action=userlist');
 	}
 
@@ -627,9 +596,6 @@ function king_log(){
 	$king->access('user_log');
 
 	$s='';
-
-
-
 	$left=array(
 		array(
 			'href'=>'manage.php',
