@@ -133,7 +133,11 @@ public function tag_feedback($inner,$attrib,$ass){
 		$content=safehtmlcode($rs['kcontent']);
 		$tmp->assign('content',$content);
 		$tmp->assign('date',$rs['ndate']);
-		$tmp->assign('isreply',$rs['nreply']);
+		$is=array();
+		if($rs['nreply']){
+			$is[]=array('reply'=>$rs['kreply'],'rdate'=>$rs['krdate']);
+		}
+		$tmp->assign('isreply',$is);
 		$tmp->assign('reply',($rs['nreply']!='0')?$rs['kreply']:'正在等待回复');
 		$tmp->assign('zebra',(($i-1) % $zebra)==0 ? 1 : 0);
 		$tmp->assign('i',$i++);
