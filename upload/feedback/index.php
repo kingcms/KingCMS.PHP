@@ -40,41 +40,40 @@ function king_ajax_add(){
 	if(!isset($kcontent{9})){
 		kc_error($king->lang->get('feedback/error/name',3));
 	}
+	
         //feedback limit
 	if($fbtime>time()-3600){
 		kc_ajax($king->lang->get('system/common/tip'),$king->lang->get('feedback/error/name',5),0);
-	}else{
-		//记录本次发布时间
-		setcookie("fbtime",time(),time()+3600,'/');
-		$king->load('user');
-		$user=$king->user->access();
-		if(!$data=$king->db->getRows_one("select username from %s_user where userid=".$user['userid'])){
-		    //拟名用户
-		    $data=array('username'=>'');
-		    $ishow=0; //不显示
-		}else{
-		    //用户名是否存在已显示的记录
-		    $ishow=($king->db->getRows("select kid from %s_feedback where nshow=1 and username='".$data['username']."'"))?1:0;
-		}
-		$array=array(
-			'ktitle'=>$ktitle,
-			'kname'=>$kname,
-			'kemail'=>$kemail,
-			'kphone'=>$kphone,
-			'kqq'=>$kqq,
-			'kcontent'=>$kcontent,
-			'norder'=>$king->db->neworder('%s_feedback'),
-			'ndate' =>time(),
-			'nip'=>$fip,
-			'username'=>$data['username'],
-			'nshow'=>$ishow,
-		);
-
-		$king->db->insert('%s_feedback',$array);
-
-		kc_ajax('OK','<p class="k_ok">'.$king->lang->get('feedback/ok/add').'</p>'
-		,"<a href=\"index.php\">".$king->lang->get('system/common/enter')."</a>");//添加成功后返回的地址
 	}
+	
+	$king->load('user');
+	$ishow=0; //不显示
+	if($user=$king->user->checkLogin()){
+	    $userid=$user['userid'];
+	    $data=$king->db->getRows_one("select username from %s_user where userid={$userid}");
+	    if(!empty($data)){
+		$ishow=($king->db->getRows("select kid from %s_feedback where nshow=1 and username='".$data['username']."'"))?1:0;
+	    }
+	}
+	$array=array(
+		'ktitle'=>$ktitle,
+		'kname'=>$kname,
+		'kemail'=>$kemail,
+		'kphone'=>$kphone,
+		'kqq'=>$kqq,
+		'kcontent'=>$kcontent,
+		'norder'=>$king->db->neworder('%s_feedback'),
+		'ndate' =>time(),
+		'nip'=>$fip,
+		'username'=>$data['username'],
+		'nshow'=>$ishow,
+	);
+	$king->db->insert('%s_feedback',$array);
+	//记录本次发布时间
+	setcookie("fbtime",time(),time()+3600,'/');
+
+	kc_ajax('OK','<p class="k_ok">'.$king->lang->get('feedback/ok/add').'</p>'
+		,"<a href=\"index.php\">".$king->lang->get('system/common/enter')."</a>");//添加成功后返回的地址
 }
 
 
