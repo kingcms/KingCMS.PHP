@@ -112,10 +112,10 @@ function king_def(){
 
 	foreach($res as $rs){
 		$s.="ll({$rs['kid']},
-		    '".addslashes($rs['ktitle'])."',
+		    '".addslashes(htmlspecialchars($rs['ktitle']))."',
 		    ".$rs['nread'].",
 		    ".$rs['nshow'].",
-		    '".addslashes($rs['kname'])."',
+		    '".addslashes(htmlspecialchars($rs['kname']))."',
 		    '".addslashes($rs['kemail'])."',
 		    '".kc_formatdate($rs['ndate'])."',0);";
 	}

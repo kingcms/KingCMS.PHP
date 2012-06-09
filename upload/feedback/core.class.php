@@ -135,7 +135,7 @@ public function tag_feedback($inner,$attrib,$ass){
 		$tmp->assign('date',$rs['ndate']);
 		$is=array();
 		if($rs['nreply']){
-			$is[]=array('reply'=>$rs['kreply'],'rdate'=>$rs['krdate']);
+			$is[]=array('reply'=>safehtmlcode($rs['kreply']),'rdate'=>$rs['krdate']);
 		}
 		$tmp->assign('isreply',$is);
 		$tmp->assign('reply',($rs['nreply']!='0')?$rs['kreply']:'正在等待回复');
