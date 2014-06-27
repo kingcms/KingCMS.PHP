@@ -86,7 +86,8 @@ $.kc_ready=function(pre){
 	}else{
 		pre =$("head meta[name='generator']").attr('content')=='KingCMS' ? pre+' ': '';
 	}
-
+	
+	$(pre+'.k_ajax').unbind("click"); /*先移除所有绑定的点击事件*/
 	$(pre+'.k_ajax').reset_href().click(function(){$.kc_ajax($(this).attr('rel'))});
 	$(pre+'.k_goto').reset_href().click(function(){$.kc_goto($(this).attr('rel'));return false;});/*不要删除return false,否则IE6下出现无法跳转的bug*/
 	//$(pre+'a.k_ajax,a.k_help,a.k_setvalue,a.k_updown').attr('href','javascript:;');//重置k_ajax链接为空->javascript:;
@@ -377,7 +378,7 @@ $.kc_ajax_show=function(s){//构造ajax交互窗口
 
 		$('#k_ajax').html(str).show();
 		$('#k_ajaxBg').css({
-			'top':document.documentElement.scrollTop,
+			'top':document.documentElement.scrollTop+document.body.scrollTop,
 			'width':w+30,
 			'height':h+30,
 			'left':document.documentElement.scrollLeft
@@ -395,7 +396,7 @@ $.kc_ajax_show=function(s){//构造ajax交互窗口
       'height':nHeight,
       'zindex':'901',
       'position':'absolute',
-      'top':document.documentElement.scrollTop+((h-nHeight)/2)
+      'top':document.body.scrollTop+document.documentElement.scrollTop+((h-nHeight)/2)
     });
 
 		$(window).resize(function(){
