@@ -87,6 +87,9 @@ class uc_note {
 	function deleteuser($get, $post) {
 		$uids = $get['ids'];
 
+		if(!kc_validate($uids,3))
+			return;
+
 		!API_DELETEUSER && exit(API_RETURN_FORBIDDEN);
 		//note 用户删除 API 接口
 		global $king;

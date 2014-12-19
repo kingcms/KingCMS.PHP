@@ -24,8 +24,8 @@ public  $array_varchar=array(1,4,5,6,7,8,10,12,14);//varchar类型的字段
 
 
 /**
-	构造函数，主要是用做版本判断
-*/
+ * 构造函数，主要是用做版本判断
+ */
 public function __construct(){
 	global $king;
 
@@ -44,10 +44,10 @@ public function __construct(){
 /* ------>>> 功能部分 <<<---------------------------- */
 
 /**
-	输出预设的格式化路径
-	@param array $info
-	@return string
-*/
+ * 输出预设的格式化路径
+ * @param array $info
+ * @return string
+ */
 public function depathMode($info){
 	global $king;
 	$path=str_replace('TIME',time(),$info['kpathmode']);
@@ -1113,6 +1113,8 @@ public function infoSite($siteid){
 	@return array
 */
 public function infoModel($modelid){
+	if(!kc_validate($modelid,2) || $modelid==0)
+		return;
 	global $king;
 
 	$cachepath='portal/model/model'.$modelid;
@@ -1253,7 +1255,7 @@ public function infoList($listid=null){
 	if(!$listid)
 		$listid=kc_get('listid',2,1);//必须的
 
-	if($listid==0)
+	if(!kc_validate($listid,2) || $listid==0)
 		return;
 
 	$cachepath='portal/list/'.$listid;
@@ -1385,6 +1387,7 @@ public function infoID($listid,$kid){
 用XML文件进行数据缓存
 
 */
+
 	global $king;
 
 	$info=$this->infoList($listid);
@@ -1396,6 +1399,8 @@ public function infoID($listid,$kid){
 		$xml->load_file($xmlpath);
 		$id=$xml->xml2array();
 	}else{
+		if(!kc_validate($kid,2) || $kid==0)
+			return;
 		$model=$this->infoModel($info['modelid']);
 		if(!$id=$king->db->getRows_one("select * from %s__{$model['modeltable']} where kid={$kid} and listid={$listid}"))
 			return False;
