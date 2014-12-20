@@ -185,7 +185,7 @@ $inner       循环部分
 			break;
 
 			 case 'get':
-  				$s=htmlspecialchars(kc_get($name,0));
+  				$s=kc_get($name,0); 
   				$validate=kc_val($attrib,'validate');
 				if(isset($validate{0})){
 					if(!kc_validate($s,$validate)){

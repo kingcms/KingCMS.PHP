@@ -30,7 +30,7 @@ function king_def(){
 		$king->portal->error($king->lang->get('portal/common/error'),$king->lang->get('portal/error/notmodel'));
 	}
 	$currentArray=current($modelTables);
-	$modelid=isset($_GET['modelid']) ? intval($_GET['modelid']) : $currentArray['modelid'];
+	$modelid=isset($_GET['modelid']) ? $_GET['modelid'] : $currentArray['modelid'];
 
 	$model=$king->portal->infoModel($modelid);
 
