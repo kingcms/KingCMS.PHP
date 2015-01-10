@@ -25,4 +25,4 @@
 
 【需要获得更多的帮助？】
 
-	[http://www.kingcms.com/](KingCMS官网)
+[KingCMS官网](http://www.kingcms.com/)
