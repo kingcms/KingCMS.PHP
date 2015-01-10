@@ -1,8 +1,8 @@
 服务器环境要求】
 
-	PHP版本		5.2+
-	MySQL		5.0+
-	GD		2.0+
+PHP版本|5.2+
+MySQL|5.0+
+GD|2.0+
 
 
 【推荐环境】
@@ -12,8 +12,8 @@
 	
 【目录介绍】
 
-	upload	KingCMS安装文件目录
-	_demo   KingCMS SP1演示模板
+upload|KingCMS安装文件目录
+_demo|KingCMS SP1演示模板
 
 【完整的帮助】
 
