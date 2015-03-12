@@ -653,7 +653,7 @@ public function formdecode($rs,$data){
 public function getUrl(){
 	$path_info=isset($_SERVER['PATH_INFO'])
 		? $_SERVER['PATH_INFO']
-		:(isset($_SERVER['ORIG_PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : '');
+		:(isset($_SERVER['ORIG_PATH_INFO']) ? $_SERVER['ORIG_PATH_INFO'] : $_SERVER['REQUEST_URI']);
 
 	if( isset($path_info{0}) && False!==strpos($_SERVER['SERVER_SOFTWARE'],'IIS') ) $path_info=iconv('GBK','UTF-8',$path_info);
 
