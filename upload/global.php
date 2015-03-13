@@ -26,6 +26,14 @@ require ROOT.'system/core.class.php';
 
 require ROOT.'system/lib/func.php';
 
+if(function_exists('spl_autoload_register')) {
+	spl_autoload_register('autoload');
+} else {
+	function __autoload($class) {
+		return autoload($class);
+	}
+}
+
 //Beta版->正式版的重大变更，自动升级config.php
 if(!defined('DB_TYPE') && defined('KC_DB_TYPE')){
 	$isupdate=1;

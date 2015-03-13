@@ -13,7 +13,7 @@
  * ================================================== */
 
 
-function __autoload($class_name){
+function autoload($class_name){
 	//加入对文件的判断，如果不存在则输出错误提示
 
 	$clsname=strtolower(substr($class_name,0,strlen($class_name)-6));
